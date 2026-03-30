@@ -31,6 +31,17 @@
   --color-warm-low: #F5F3F0;
   --color-ink-muted: #3E4949;
 
+  /* Human OS Brand Tokens */
+  --color-gold-bright: #F0C040;
+  --color-gold-glow: rgba(201, 168, 76, 0.15);
+  --color-slate: #1C2B3A;
+  --color-slate-deep: #061625;
+  --color-amber: #D4A843;
+  --color-amber-dim: #B38B27;
+  --color-amber-light: #EEC058;
+  --color-cool: #F8F9FA;
+  --color-cool-low: #F3F4F5;
+
   /* Font families */
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
