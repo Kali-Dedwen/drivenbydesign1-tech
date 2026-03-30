@@ -65,16 +65,17 @@ export default function Contact() {
     const lastName = nameParts.slice(1).join(" ") || "";
 
     try {
+      const params = new URLSearchParams();
+      params.append("first_name", firstName);
+      params.append("last_name", lastName);
+      params.append("platform", activeLane.label);
+      params.append("email", form.email);
+      params.append("message", form.message);
+
       await fetch(EMPLOYER_WEBHOOK, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          platform: activeLane.label,
-          email: form.email,
-          message: form.message,
-        }),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
       });
     } catch (err) {
       console.error("Contact webhook error:", err);

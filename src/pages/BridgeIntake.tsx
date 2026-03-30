@@ -58,26 +58,27 @@ export default function BridgeIntake() {
     e.preventDefault();
 
     try {
+      const params = new URLSearchParams();
+      params.append("first_name", form.firstName);
+      params.append("last_name", form.lastName);
+      params.append("title", form.title);
+      params.append("org_name", form.orgName);
+      params.append("email", form.email);
+      params.append("phone", form.phone);
+      params.append("location", form.location);
+      params.append("org_size", form.orgSize);
+      params.append("industry", form.industry);
+      params.append("transition_type", form.transitionType);
+      params.append("affected", form.affected);
+      params.append("goal", form.goal);
+      params.append("timeline", form.timeline);
+      params.append("budget", form.budget);
+      params.append("notes", form.notes);
+
       await fetch(EMPLOYER_WEBHOOK, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          first_name: form.firstName,
-          last_name: form.lastName,
-          title: form.title,
-          org_name: form.orgName,
-          email: form.email,
-          phone: form.phone,
-          location: form.location,
-          org_size: form.orgSize,
-          industry: form.industry,
-          transition_type: form.transitionType,
-          affected: form.affected,
-          goal: form.goal,
-          timeline: form.timeline,
-          budget: form.budget,
-          notes: form.notes,
-        }),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
       });
     } catch (err) {
       console.error("BRIDGE OS™ webhook error:", err);
