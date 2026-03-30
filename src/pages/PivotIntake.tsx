@@ -7,21 +7,21 @@ import { Link } from "react-router-dom";
    Converted to React/TypeScript + Tailwind v4
 ───────────────────────────────────────────── */
 
-// TODO: Replace with Make.com Workflow 1 webhook URL
-// Format will be: https://hook.us1.make.com/[your-hook-id]
-// Wire this after Workflow 1 Gmail fix is complete
-const WEBHOOK_URL = "";
+const WEBHOOK_URL =
+  "https://hook.us2.make.com/8cb4ybsfueyte66krghpes9j8v71b3mx";
 
 interface IntakeForm {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  currentRole: string;
-  transitionGoal: string;
-  militaryVeteran: string;
-  urgency: string;
-  message: string;
+  location: string;
+  situation: string;
+  industry: string;
+  experience: string;
+  goal: string;
+  timeline: string;
+  notes: string;
 }
 
 const INITIAL_FORM: IntakeForm = {
@@ -29,11 +29,13 @@ const INITIAL_FORM: IntakeForm = {
   lastName: "",
   email: "",
   phone: "",
-  currentRole: "",
-  transitionGoal: "",
-  militaryVeteran: "",
-  urgency: "",
-  message: "",
+  location: "",
+  situation: "",
+  industry: "",
+  experience: "",
+  goal: "",
+  timeline: "",
+  notes: "",
 };
 
 export default function PivotIntake() {
@@ -44,13 +46,30 @@ export default function PivotIntake() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    // TODO: Replace console.log with POST to Make.com webhook
-    // once Workflow 1 Gmail fix is complete
-    console.log("PIVOT OS™ Intake Submission:", form);
-    console.log("Webhook URL (not wired yet):", WEBHOOK_URL);
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          location: form.location,
+          situation: form.situation,
+          industry: form.industry,
+          experience: form.experience,
+          goal: form.goal,
+          timeline: form.timeline,
+          notes: form.notes,
+        }),
+      });
+    } catch (err) {
+      console.error("PIVOT OS™ webhook error:", err);
+    }
 
     setSubmitted(true);
   }
@@ -176,79 +195,110 @@ export default function PivotIntake() {
               </div>
             </div>
 
-            {/* Current Role */}
-            <div className="mb-5">
-              <label className={labelClasses}>Current Role / Title *</label>
-              <input
-                type="text"
-                required
-                placeholder="e.g. Senior Operations Manager"
-                value={form.currentRole}
-                onChange={(e) => update("currentRole", e.target.value)}
-                className={inputClasses}
-              />
+            {/* Location + Industry */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+              <div>
+                <label className={labelClasses}>Location</label>
+                <input
+                  type="text"
+                  placeholder="City, State"
+                  value={form.location}
+                  onChange={(e) => update("location", e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
+              <div>
+                <label className={labelClasses}>Industry</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Financial Services, Defense"
+                  value={form.industry}
+                  onChange={(e) => update("industry", e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
             </div>
 
-            {/* Transition Goal */}
+            {/* Situation */}
             <div className="mb-5">
-              <label className={labelClasses}>Transition Goal</label>
+              <label className={labelClasses}>Current Situation *</label>
               <select
-                value={form.transitionGoal}
-                onChange={(e) => update("transitionGoal", e.target.value)}
+                required
+                value={form.situation}
+                onChange={(e) => update("situation", e.target.value)}
                 className={selectClasses}
               >
                 <option value="">Select one...</option>
-                <option value="career-pivot">Career pivot to a new industry</option>
-                <option value="role-elevation">Role elevation within current field</option>
+                <option value="employed-seeking-change">Employed — seeking change</option>
+                <option value="between-roles">Between roles</option>
                 <option value="military-transition">Military to civilian transition</option>
+                <option value="recently-separated">Recently separated / laid off</option>
                 <option value="entrepreneurship">Launching a business or practice</option>
-                <option value="executive-repositioning">Executive repositioning</option>
-                <option value="unsure">Not sure yet — need clarity</option>
+                <option value="other">Other</option>
               </select>
             </div>
 
-            {/* Veteran + Urgency row */}
+            {/* Experience + Goal */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               <div>
-                <label className={labelClasses}>Military Veteran?</label>
+                <label className={labelClasses}>Years of Experience</label>
                 <select
-                  value={form.militaryVeteran}
-                  onChange={(e) => update("militaryVeteran", e.target.value)}
+                  value={form.experience}
+                  onChange={(e) => update("experience", e.target.value)}
                   className={selectClasses}
                 >
                   <option value="">Select...</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                  <option value="active-duty">Active Duty</option>
-                  <option value="reserve">Reserve / Guard</option>
+                  <option value="0-5">0–5 years</option>
+                  <option value="5-10">5–10 years</option>
+                  <option value="10-15">10–15 years</option>
+                  <option value="15-20">15–20 years</option>
+                  <option value="20+">20+ years</option>
                 </select>
               </div>
               <div>
-                <label className={labelClasses}>Urgency</label>
+                <label className={labelClasses}>Transition Goal</label>
                 <select
-                  value={form.urgency}
-                  onChange={(e) => update("urgency", e.target.value)}
+                  value={form.goal}
+                  onChange={(e) => update("goal", e.target.value)}
                   className={selectClasses}
                 >
                   <option value="">Select...</option>
-                  <option value="immediate">Immediate — actively transitioning</option>
-                  <option value="1-3-months">1–3 months</option>
-                  <option value="3-6-months">3–6 months</option>
-                  <option value="exploring">Just exploring</option>
+                  <option value="career-pivot">Career pivot to a new industry</option>
+                  <option value="role-elevation">Role elevation within current field</option>
+                  <option value="executive-repositioning">Executive repositioning</option>
+                  <option value="entrepreneurship">Launching a business or practice</option>
+                  <option value="unsure">Not sure yet — need clarity</option>
                 </select>
               </div>
             </div>
 
-            {/* Message */}
+            {/* Timeline */}
+            <div className="mb-5">
+              <label className={labelClasses}>Timeline</label>
+              <select
+                value={form.timeline}
+                onChange={(e) => update("timeline", e.target.value)}
+                className={selectClasses}
+              >
+                <option value="">Select...</option>
+                <option value="immediate">Immediate — actively transitioning</option>
+                <option value="1-3-months">1–3 months</option>
+                <option value="3-6-months">3–6 months</option>
+                <option value="6-12-months">6–12 months</option>
+                <option value="exploring">Just exploring</option>
+              </select>
+            </div>
+
+            {/* Notes */}
             <div className="mb-8">
               <label className={labelClasses}>
-                What should we know before your session?
+                Additional Notes
               </label>
               <textarea
                 rows={4}
                 placeholder="Anything relevant about your situation, goals, or what's not working..."
-                value={form.message}
-                onChange={(e) => update("message", e.target.value)}
+                value={form.notes}
+                onChange={(e) => update("notes", e.target.value)}
                 className={`${inputClasses} resize-y`}
               />
             </div>
