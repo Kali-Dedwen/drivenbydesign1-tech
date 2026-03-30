@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Homepage from './pages/index'
 import PivotOS from './pages/pivot-os'
+import PivotOSLanding from './pages/PivotOSLanding'
 import BridgeOS from './pages/bridge-os'
 import HumanOS from './pages/human-os'
 import About from './pages/about'
@@ -16,6 +17,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/pivot-os" element={<PivotOS />} />
+        <Route path="/pivot-os-landing" element={<PivotOSLanding />} />
+        <Route path="/pivot-intake" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>PIVOT OS™ Intake — Coming Soon</h1></div>} />
+        <Route path="/archive" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Archive — Coming Soon</h1></div>} />
         <Route path="/bridge-os" element={<BridgeOS />} />
         <Route path="/human-os" element={<HumanOS />} />
         <Route path="/about" element={<About />} />

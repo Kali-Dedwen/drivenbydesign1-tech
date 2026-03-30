@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  /* PIVOT OS Brand Tokens */
+  --color-navy: #0A1628;
+  --color-navy-deep: #101C2E;
+  --color-navy-mid: #0D2045;
+  --color-navy-light: #1A3560;
+  --color-gold: #C9A84C;
+  --color-gold-dim: #B3933B;
+  --color-gold-light: #E6C364;
+  --color-gold-muted: #9E7E38;
+  --color-cream: #FAF9F8;
+  --color-ink-muted: #45474C;
+  --color-pivot: #4A90D9;
+  --color-pivot-light: rgba(74, 144, 217, 0.15);
+  --color-pivot-border: rgba(74, 144, 217, 0.25);
+  --color-white-soft: #E8EDF5;
+  --color-white-dim: #A0AEC0;
+
+  /* Font families */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
