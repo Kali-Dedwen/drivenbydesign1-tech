@@ -1,17 +1,12 @@
 import { useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — Contact / Intake Page
    Converted to React/TypeScript + Tailwind v4
 ───────────────────────────────────────────── */
-
-const openCalendly = () => {
-  (window as any).Calendly.initPopupWidget({
-    url: "https://calendly.com/kevin-m2m",
-  });
-  return false;
-};
 
 const LANES = [
   { id: "pivot", label: "PIVOT OS™", sub: "Individual reinvention", color: "#4A90D9", rgb: "74,144,217" },
@@ -90,19 +85,7 @@ export default function Contact() {
 
   return (
     <>
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 h-[72px] flex items-center justify-between px-[clamp(1.5rem,5vw,4rem)] bg-navy/[0.92] backdrop-blur-[12px] border-b border-gold/[0.12]">
-        <Link to="/" className="font-display text-2xl font-bold text-white no-underline">
-          M2M<span className="text-gold">~</span>Inc.
-        </Link>
-        <ul className="flex items-center gap-8 list-none">
-          <li className="hidden md:block"><Link to="/about" className="text-[0.875rem] font-medium text-white-soft no-underline hover:text-gold transition-colors">About</Link></li>
-          <li className="hidden md:block"><Link to="/pivot-os" className="text-[0.875rem] font-medium text-white-soft no-underline hover:text-gold transition-colors">PIVOT OS™</Link></li>
-          <li className="hidden md:block"><Link to="/bridge-os" className="text-[0.875rem] font-medium text-white-soft no-underline hover:text-gold transition-colors">BRIDGE OS™</Link></li>
-          <li className="hidden md:block"><Link to="/human-os" className="text-[0.875rem] font-medium text-white-soft no-underline hover:text-gold transition-colors">Human OS™</Link></li>
-          <li className="hidden md:block"><Link to="/speaking" className="text-[0.875rem] font-medium text-white-soft no-underline hover:text-gold transition-colors">Speaking</Link></li>
-        </ul>
-      </nav>
+      <Navbar />
 
       {/* ── HERO ── */}
       <section className="pt-[140px] pb-16 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0D2045_60%,#0A1628_100%)] text-center relative overflow-hidden">
@@ -313,30 +296,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#060F1E] py-10 px-[clamp(1.5rem,5vw,4rem)] border-t border-gold/10">
-        <div className="max-w-[1280px] mx-auto flex justify-between items-center flex-wrap gap-4">
-          <div className="font-display text-[1.1rem] font-bold text-white">
-            M2M<span className="text-gold">~</span>Inc.
-          </div>
-          <div className="flex items-center gap-3 flex-wrap font-mono text-[0.6rem] tracking-[0.12em] text-gold-muted uppercase">
-            {["SDVOSB", "·", "VBE", "·", "SAFe 6", "·", "USPTO", "·", "Tuck"].map(
-              (t, i) => (
-                <span key={i}>{t}</span>
-              )
-            )}
-          </div>
-        </div>
-        <div className="max-w-[1280px] mx-auto mt-6 pt-5 border-t border-white/5 text-[0.72rem] text-white-dim flex justify-between flex-wrap gap-2">
-          <span>
-            © 2026 M2M~Inc. PIVOT OS™ · BRIDGE OS™ · Human OS™ are pending
-            trademarks.
-          </span>
-          <Link to="/" className="text-gold no-underline hover:text-gold-light transition-colors">
-            model2message.net
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — BRIDGE OS™ Intake Form
@@ -122,18 +124,7 @@ export default function BridgeIntake() {
 
   return (
     <>
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 h-[72px] flex items-center justify-between px-[clamp(1.5rem,5vw,4rem)] bg-navy/[0.92] backdrop-blur-[12px] border-b border-bridge-border">
-        <Link to="/" className="font-display text-2xl font-bold text-white no-underline">
-          M2M<span className="text-gold">~</span>Inc.
-        </Link>
-        <Link
-          to="/bridge-os"
-          className="text-[0.8rem] text-white-dim no-underline flex items-center gap-1.5 font-mono tracking-[0.05em] hover:text-bridge transition-colors"
-        >
-          ← Back to BRIDGE OS™
-        </Link>
-      </nav>
+      <Navbar />
 
       {/* ── FORM SECTION ── */}
       <section className="min-h-screen pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0C1F35_60%,#0A1628_100%)]">
@@ -388,30 +379,7 @@ export default function BridgeIntake() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#060F1E] py-10 px-[clamp(1.5rem,5vw,4rem)] border-t border-gold/10">
-        <div className="max-w-[1280px] mx-auto flex justify-between items-center flex-wrap gap-4">
-          <div className="font-display text-[1.1rem] font-bold text-white">
-            M2M<span className="text-gold">~</span>Inc. ·{" "}
-            <span className="text-bridge text-[0.9em]">BRIDGE OS™</span>
-          </div>
-          <div className="flex items-center gap-3 flex-wrap font-mono text-[0.6rem] tracking-[0.12em] text-gold-muted uppercase">
-            {["SDVOSB", "·", "VBE", "·", "SAFe 6", "·", "USPTO", "·", "Tuck"].map(
-              (t, i) => (
-                <span key={i}>{t}</span>
-              )
-            )}
-          </div>
-        </div>
-        <div className="max-w-[1280px] mx-auto mt-6 pt-5 border-t border-white/5 text-[0.72rem] text-white-dim flex justify-between flex-wrap gap-2">
-          <span>
-            © 2026 M2M~Inc. BRIDGE OS™ is a pending trademark of M2M~Inc.
-          </span>
-          <Link to="/" className="text-gold no-underline hover:text-gold-light transition-colors">
-            model2message.net
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

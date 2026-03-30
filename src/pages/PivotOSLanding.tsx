@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — PIVOT OS™ Landing Page
@@ -75,13 +77,6 @@ const WHO_ITS_FOR = [
   "You need a system — not a pep talk, not a resume refresh, not a LinkedIn audit",
 ];
 
-const openCalendly = () => {
-  (window as any).Calendly.initPopupWidget({
-    url: 'https://calendly.com/kevin-m2m'
-  });
-  return false;
-};
-
 export default function PivotOSLanding() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -95,32 +90,7 @@ export default function PivotOSLanding() {
 
   return (
     <>
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 h-[72px] flex items-center justify-between px-[clamp(1.5rem,5vw,4rem)] bg-navy/[0.92] backdrop-blur-[12px] border-b border-pivot-border">
-        <Link to="/" className="font-display text-2xl font-bold text-white no-underline">
-          M2M<span className="text-gold">~</span>Inc.
-        </Link>
-        <Link
-          to="/"
-          className="text-[0.8rem] text-white-dim no-underline flex items-center gap-1.5 font-mono tracking-[0.05em] hover:text-pivot transition-colors"
-        >
-          ← All Platforms
-        </Link>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={openCalendly}
-            className="text-[0.8rem] text-white-dim font-mono tracking-[0.05em] hover:text-pivot transition-colors cursor-pointer bg-transparent border-none"
-          >
-            Access Archive
-          </button>
-          <button
-            onClick={() => navigate("/pivot-intake")}
-            className="bg-pivot text-white text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-115 hover:scale-[1.02] transition-all cursor-pointer border-none"
-          >
-            Start Your Pivot
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* ── HERO ── */}
       <section className="min-h-screen flex items-center pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0B1E3A_60%,#0A1628_100%)] relative overflow-hidden">
@@ -339,36 +309,7 @@ export default function PivotOSLanding() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#060F1E] py-10 px-[clamp(1.5rem,5vw,4rem)] border-t border-gold/10">
-        <div className="max-w-[1280px] mx-auto flex justify-between items-center flex-wrap gap-4">
-          <div className="font-display text-[1.1rem] font-bold text-white">
-            M2M<span className="text-gold">~</span>Inc. ·{" "}
-            <span className="text-pivot text-[0.9em]">PIVOT OS™</span>
-          </div>
-          <div className="flex items-center gap-3 flex-wrap font-mono text-[0.6rem] tracking-[0.12em] text-gold-muted uppercase">
-            {["SDVOSB", "·", "VBE", "·", "SAFe 6", "·", "USPTO", "·", "Tuck"].map(
-              (t, i) => (
-                <span key={i}>{t}</span>
-              )
-            )}
-          </div>
-        </div>
-        <div className="max-w-[1280px] mx-auto mt-6 pt-5 border-t border-white/5 text-[0.72rem] text-white-dim flex justify-between flex-wrap gap-2">
-          <span>
-            © 2026 M2M~Inc. PIVOT OS™, RPA™, C.A.L.M.™, Three Spaces Framework™,
-            Sully Sequence™, Evangelist Shift™ are pending trademarks.
-          </span>
-          <div className="flex gap-4">
-            <button onClick={openCalendly} className="text-gold hover:text-gold-light transition-colors cursor-pointer bg-transparent border-none font-inherit text-[0.72rem]">
-              Book a Discovery Call
-            </button>
-            <Link to="/" className="text-gold no-underline hover:text-gold-light transition-colors">
-              model2message.net
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

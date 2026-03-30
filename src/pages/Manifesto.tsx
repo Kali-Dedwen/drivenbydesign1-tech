@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — The Manifesto
@@ -95,35 +97,7 @@ export default function Manifesto() {
         style={{ width: `${progress}%` }}
       />
 
-      {/* ── HEADER ── */}
-      <header className="bg-cream border-b border-navy/5 sticky top-0 z-50">
-        <nav className="flex justify-between items-center w-full px-8 py-5 max-w-[1280px] mx-auto">
-          <Link to="/" className="flex items-center gap-3 text-navy no-underline">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <rect width="20" height="20" fill="#0A1628" />
-              <path d="M5 10h10M10 5v10" stroke="#C9A84C" strokeWidth="1.5" />
-            </svg>
-            <span className="text-xl font-display font-bold tracking-tighter">M2M~Inc.</span>
-          </Link>
-          <div className="hidden lg:flex gap-8">
-            {CHAPTERS.map((ch) => (
-              <a
-                key={ch.id}
-                href={`#${ch.id}`}
-                className="font-mono text-[10px] tracking-[0.1em] text-ink-muted/40 hover:text-gold transition-colors uppercase no-underline"
-              >
-                {ch.label}
-              </a>
-            ))}
-          </div>
-          <button
-            onClick={openCalendly}
-            className="bg-navy text-cream px-6 py-2.5 font-mono text-xs tracking-[0.1em] hover:bg-navy-deep transition-colors uppercase cursor-pointer border-none"
-          >
-            To the Work →
-          </button>
-        </nav>
-      </header>
+      <Navbar />
 
       {/* ── MANIFESTO COVER ── */}
       <section className="bg-navy bg-[radial-gradient(circle,rgba(10,22,40,0.055)_1px,transparent_1px)] bg-[length:28px_28px] min-h-[70vh] flex flex-col justify-end px-8 pb-20 pt-32">
@@ -493,31 +467,7 @@ export default function Manifesto() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-navy-deep border-t border-gold/10">
-        <div className="max-w-[1280px] mx-auto px-12 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="font-mono text-[10px] text-white/20 tracking-[0.1em] uppercase">
-            © 2025 M2M~Inc. All Rights Reserved. SDVOSB · VBE Certified.
-          </p>
-          <div className="flex gap-8">
-            {[
-              { to: "/about", label: "About" },
-              { to: "/contact", label: "Contact" },
-              { to: "/pivot-os", label: "PIVOT OS™" },
-              { to: "/bridge-os", label: "BRIDGE OS™" },
-              { to: "/human-os", label: "Human OS™" },
-            ].map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="font-mono text-[10px] text-white/30 hover:text-gold tracking-[0.1em] uppercase transition-colors no-underline"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
