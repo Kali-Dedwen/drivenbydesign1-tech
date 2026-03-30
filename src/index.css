@@ -18,6 +18,19 @@
   --color-white-soft: #E8EDF5;
   --color-white-dim: #A0AEC0;
 
+  /* BRIDGE OS Brand Tokens */
+  --color-bridge: #48BB78;
+  --color-bridge-light: rgba(72, 187, 120, 0.12);
+  --color-bridge-border: rgba(72, 187, 120, 0.25);
+  --color-teal: #0D7377;
+  --color-teal-deep: #00595C;
+  --color-teal-light: #A2F5F9;
+  --color-coral: #E8604C;
+  --color-coral-dim: #C94A38;
+  --color-warm: #FAF8F5;
+  --color-warm-low: #F5F3F0;
+  --color-ink-muted: #3E4949;
+
   /* Font families */
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
