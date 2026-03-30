@@ -7,33 +7,42 @@ import { Link } from "react-router-dom";
    React/TypeScript + Tailwind v4
 ───────────────────────────────────────────── */
 
-// TODO: Replace with Make.com webhook URL when workflow is ready
-// Format will be: https://hook.us2.make.com/[your-hook-id]
-const WEBHOOK_URL = "";
+const EMPLOYER_WEBHOOK =
+  "https://hook.us2.make.com/6isxh840yu2ouw5qg6pxcca0gfzaruaq";
 
 interface IntakeForm {
-  contactName: string;
+  firstName: string;
+  lastName: string;
   title: string;
-  organization: string;
+  orgName: string;
   email: string;
   phone: string;
+  location: string;
   orgSize: string;
   industry: string;
-  challenge: string;
+  transitionType: string;
+  affected: string;
+  goal: string;
   timeline: string;
+  budget: string;
   notes: string;
 }
 
 const INITIAL_FORM: IntakeForm = {
-  contactName: "",
+  firstName: "",
+  lastName: "",
   title: "",
-  organization: "",
+  orgName: "",
   email: "",
   phone: "",
+  location: "",
   orgSize: "",
   industry: "",
-  challenge: "",
+  transitionType: "",
+  affected: "",
+  goal: "",
   timeline: "",
+  budget: "",
   notes: "",
 };
 
@@ -45,12 +54,34 @@ export default function BridgeIntake() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    // TODO: Replace console.log with POST to Make.com webhook
-    console.log("BRIDGE OS™ Assessment Submission:", form);
-    console.log("Webhook URL (not wired yet):", WEBHOOK_URL);
+    try {
+      await fetch(EMPLOYER_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: form.firstName,
+          last_name: form.lastName,
+          title: form.title,
+          org_name: form.orgName,
+          email: form.email,
+          phone: form.phone,
+          location: form.location,
+          org_size: form.orgSize,
+          industry: form.industry,
+          transition_type: form.transitionType,
+          affected: form.affected,
+          goal: form.goal,
+          timeline: form.timeline,
+          budget: form.budget,
+          notes: form.notes,
+        }),
+      });
+    } catch (err) {
+      console.error("BRIDGE OS™ webhook error:", err);
+    }
 
     setSubmitted(true);
   }
@@ -126,19 +157,34 @@ export default function BridgeIntake() {
             onSubmit={handleSubmit}
             className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-bridge/20 rounded-2xl p-8 md:p-10 shadow-[0_0_40px_rgba(72,187,120,0.07)]"
           >
-            {/* Contact Name + Title */}
+            {/* First Name + Last Name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               <div>
-                <label className={labelClasses}>Contact Name *</label>
+                <label className={labelClasses}>First Name *</label>
                 <input
                   type="text"
                   required
-                  placeholder="Full name"
-                  value={form.contactName}
-                  onChange={(e) => update("contactName", e.target.value)}
+                  placeholder="First name"
+                  value={form.firstName}
+                  onChange={(e) => update("firstName", e.target.value)}
                   className={inputClasses}
                 />
               </div>
+              <div>
+                <label className={labelClasses}>Last Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Last name"
+                  value={form.lastName}
+                  onChange={(e) => update("lastName", e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
+            </div>
+
+            {/* Title + Organization */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               <div>
                 <label className={labelClasses}>Title / Role *</label>
                 <input
@@ -150,19 +196,17 @@ export default function BridgeIntake() {
                   className={inputClasses}
                 />
               </div>
-            </div>
-
-            {/* Organization */}
-            <div className="mb-5">
-              <label className={labelClasses}>Organization *</label>
-              <input
-                type="text"
-                required
-                placeholder="Company or agency name"
-                value={form.organization}
-                onChange={(e) => update("organization", e.target.value)}
-                className={inputClasses}
-              />
+              <div>
+                <label className={labelClasses}>Organization *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Company or agency name"
+                  value={form.orgName}
+                  onChange={(e) => update("orgName", e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
             </div>
 
             {/* Email + Phone */}
@@ -190,7 +234,31 @@ export default function BridgeIntake() {
               </div>
             </div>
 
-            {/* Org Size + Industry */}
+            {/* Location + Industry */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+              <div>
+                <label className={labelClasses}>Location</label>
+                <input
+                  type="text"
+                  placeholder="City, State"
+                  value={form.location}
+                  onChange={(e) => update("location", e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
+              <div>
+                <label className={labelClasses}>Industry</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Healthcare, Government, Finance"
+                  value={form.industry}
+                  onChange={(e) => update("industry", e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
+            </div>
+
+            {/* Org Size + Affected */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               <div>
                 <label className={labelClasses}>Organization Size</label>
@@ -208,24 +276,24 @@ export default function BridgeIntake() {
                 </select>
               </div>
               <div>
-                <label className={labelClasses}>Industry</label>
+                <label className={labelClasses}>Employees Affected</label>
                 <input
                   type="text"
-                  placeholder="e.g. Healthcare, Government, Finance"
-                  value={form.industry}
-                  onChange={(e) => update("industry", e.target.value)}
+                  placeholder="e.g. 50, 200, entire division"
+                  value={form.affected}
+                  onChange={(e) => update("affected", e.target.value)}
                   className={inputClasses}
                 />
               </div>
             </div>
 
-            {/* Workforce Challenge */}
+            {/* Transition Type */}
             <div className="mb-5">
-              <label className={labelClasses}>Primary Workforce Challenge *</label>
+              <label className={labelClasses}>Transition Type *</label>
               <select
                 required
-                value={form.challenge}
-                onChange={(e) => update("challenge", e.target.value)}
+                value={form.transitionType}
+                onChange={(e) => update("transitionType", e.target.value)}
                 className={selectClasses}
               >
                 <option value="">Select one...</option>
@@ -237,6 +305,42 @@ export default function BridgeIntake() {
                 <option value="community-reentry">Community re-entry / workforce dev</option>
                 <option value="other">Other</option>
               </select>
+            </div>
+
+            {/* Goal + Budget */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+              <div>
+                <label className={labelClasses}>Primary Goal</label>
+                <select
+                  value={form.goal}
+                  onChange={(e) => update("goal", e.target.value)}
+                  className={selectClasses}
+                >
+                  <option value="">Select...</option>
+                  <option value="reduce-turnover">Reduce turnover</option>
+                  <option value="transition-support">Workforce transition support</option>
+                  <option value="manager-training">Manager readiness training</option>
+                  <option value="veteran-onboarding">Veteran onboarding</option>
+                  <option value="full-deployment">Full BRIDGE OS™ deployment</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelClasses}>Budget Range</label>
+                <select
+                  value={form.budget}
+                  onChange={(e) => update("budget", e.target.value)}
+                  className={selectClasses}
+                >
+                  <option value="">Select...</option>
+                  <option value="under-10k">Under $10K</option>
+                  <option value="10k-25k">$10K–$25K</option>
+                  <option value="25k-50k">$25K–$50K</option>
+                  <option value="50k-100k">$50K–$100K</option>
+                  <option value="100k+">$100K+</option>
+                  <option value="tbd">TBD / Budgeting</option>
+                </select>
+              </div>
             </div>
 
             {/* Timeline */}

@@ -54,11 +54,32 @@ export default function Contact() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!form.name || !form.email) return;
-    const subject = `M2M~Inc. Inquiry — ${activeLane.label} — ${form.name}`;
-    const body = `Name: ${form.name}\nOrganization: ${form.org}\nEmail: ${form.email}\nPhone: ${form.phone}\nInquiry Type: ${form.type}\nLane: ${lane}\n\nMessage:\n${form.message}`;
-    window.location.href = `mailto:info@model2message.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    const EMPLOYER_WEBHOOK =
+      "https://hook.us2.make.com/6isxh840yu2ouw5qg6pxcca0gfzaruaq";
+
+    const nameParts = form.name.trim().split(/\s+/);
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+
+    try {
+      await fetch(EMPLOYER_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          platform: activeLane.label,
+          email: form.email,
+          message: form.message,
+        }),
+      });
+    } catch (err) {
+      console.error("Contact webhook error:", err);
+    }
+
     setSubmitted(true);
   }
 
