@@ -25,6 +25,8 @@ export default function App() {
         <Route path="/human-os" element={<HumanOSLanding />} />
         <Route path="/human-intake" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Human OS™ Enterprise Intake — Coming Soon</h1></div>} />
         <Route path="/archive" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Archive — Coming Soon</h1></div>} />
+        <Route path="/manifesto" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Manifesto — Coming Soon</h1></div>} />
+        <Route path="/practitioner" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Practitioner Access — Coming Soon</h1></div>} />
         <Route path="/about" element={<About />} />
         <Route path="/speaking" element={<Speaking />} />
         <Route path="/contact" element={<Contact />} />

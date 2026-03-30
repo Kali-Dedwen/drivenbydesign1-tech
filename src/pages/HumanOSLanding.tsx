@@ -102,6 +102,13 @@ const NAICS = [
   { code: "611710", desc: "Educational Support Services" },
 ];
 
+const openCalendly = () => {
+  (window as any).Calendly.initPopupWidget({
+    url: 'https://calendly.com/kevin-m2m'
+  });
+  return false;
+};
+
 export default function HumanOSLanding() {
   const navigate = useNavigate();
 
@@ -119,7 +126,7 @@ export default function HumanOSLanding() {
           ← All Platforms
         </Link>
         <button
-          onClick={() => navigate("/human-intake")}
+          onClick={openCalendly}
           className="bg-gold text-navy text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all cursor-pointer border-none"
         >
           Schedule an Enterprise Briefing
@@ -152,7 +159,7 @@ export default function HumanOSLanding() {
             </p>
             <div className="flex gap-4 flex-wrap mb-10 animate-[fade-in-up_0.6s_0.4s_ease_forwards] opacity-0">
               <button
-                onClick={() => navigate("/human-intake")}
+                onClick={openCalendly}
                 className="bg-gold text-navy text-[0.875rem] font-bold py-3.5 px-8 rounded-full border-none cursor-pointer tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all"
               >
                 Schedule an Enterprise Briefing
@@ -397,7 +404,7 @@ export default function HumanOSLanding() {
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <button
-              onClick={() => navigate("/human-intake")}
+              onClick={openCalendly}
               className="bg-gold text-navy text-[0.875rem] font-bold py-3.5 px-8 rounded-full border-none cursor-pointer tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all"
             >
               Schedule an Enterprise Briefing
@@ -434,9 +441,9 @@ export default function HumanOSLanding() {
             trademarks.
           </span>
           <div className="flex gap-4">
-            <Link to="/contact" className="text-gold no-underline hover:text-gold-light transition-colors">
+            <button onClick={openCalendly} className="text-gold hover:text-gold-light transition-colors cursor-pointer bg-transparent border-none font-inherit text-[0.72rem]">
               Book a Discovery Call
-            </Link>
+            </button>
             <Link to="/" className="text-gold no-underline hover:text-gold-light transition-colors">
               model2message.net
             </Link>

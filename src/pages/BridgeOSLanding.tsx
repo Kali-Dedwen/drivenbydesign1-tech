@@ -80,6 +80,13 @@ const METRICS = [
   { num: "60%", desc: "of reskilling programs fail to change on-the-job behavior" },
 ];
 
+const openCalendly = () => {
+  (window as any).Calendly.initPopupWidget({
+    url: 'https://calendly.com/kevin-m2m'
+  });
+  return false;
+};
+
 export default function BridgeOSLanding() {
   const navigate = useNavigate();
 
@@ -97,7 +104,7 @@ export default function BridgeOSLanding() {
           ← All Platforms
         </Link>
         <button
-          onClick={() => navigate("/bridge-intake")}
+          onClick={openCalendly}
           className="bg-bridge text-navy text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all cursor-pointer border-none"
         >
           Request a BRIDGE Assessment
@@ -316,7 +323,7 @@ export default function BridgeOSLanding() {
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <button
-              onClick={() => navigate("/bridge-intake")}
+              onClick={openCalendly}
               className="bg-bridge text-navy text-[0.875rem] font-bold py-3.5 px-8 rounded-full border-none cursor-pointer tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all"
             >
               Request a BRIDGE Assessment
@@ -352,9 +359,9 @@ export default function BridgeOSLanding() {
             M2M~Inc. SDVOSB · VBE Certified.
           </span>
           <div className="flex gap-4">
-            <Link to="/contact" className="text-gold no-underline hover:text-gold-light transition-colors">
+            <button onClick={openCalendly} className="text-gold hover:text-gold-light transition-colors cursor-pointer bg-transparent border-none font-inherit text-[0.72rem]">
               Book a Discovery Call
-            </Link>
+            </button>
             <Link to="/" className="text-gold no-underline hover:text-gold-light transition-colors">
               model2message.net
             </Link>

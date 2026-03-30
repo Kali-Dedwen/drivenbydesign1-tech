@@ -75,6 +75,13 @@ const WHO_ITS_FOR = [
   "You need a system — not a pep talk, not a resume refresh, not a LinkedIn audit",
 ];
 
+const openCalendly = () => {
+  (window as any).Calendly.initPopupWidget({
+    url: 'https://calendly.com/kevin-m2m'
+  });
+  return false;
+};
+
 export default function PivotOSLanding() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -100,12 +107,12 @@ export default function PivotOSLanding() {
           ← All Platforms
         </Link>
         <div className="flex items-center gap-3">
-          <Link
-            to="/archive"
-            className="text-[0.8rem] text-white-dim no-underline font-mono tracking-[0.05em] hover:text-pivot transition-colors"
+          <button
+            onClick={openCalendly}
+            className="text-[0.8rem] text-white-dim font-mono tracking-[0.05em] hover:text-pivot transition-colors cursor-pointer bg-transparent border-none"
           >
             Access Archive
-          </Link>
+          </button>
           <button
             onClick={() => navigate("/pivot-intake")}
             className="bg-pivot text-white text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-115 hover:scale-[1.02] transition-all cursor-pointer border-none"
@@ -353,9 +360,9 @@ export default function PivotOSLanding() {
             Sully Sequence™, Evangelist Shift™ are pending trademarks.
           </span>
           <div className="flex gap-4">
-            <Link to="/contact" className="text-gold no-underline hover:text-gold-light transition-colors">
+            <button onClick={openCalendly} className="text-gold hover:text-gold-light transition-colors cursor-pointer bg-transparent border-none font-inherit text-[0.72rem]">
               Book a Discovery Call
-            </Link>
+            </button>
             <Link to="/" className="text-gold no-underline hover:text-gold-light transition-colors">
               model2message.net
             </Link>
