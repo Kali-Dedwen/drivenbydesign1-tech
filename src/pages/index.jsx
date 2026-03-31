@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useI18n } from "../i18n";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — model2message.net
@@ -585,14 +586,23 @@ const CREDENTIALS = [
 ];
 
 export default function M2MHomepage() {
+  const { t } = useI18n();
   const [wordIdx, setWordIdx] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
+
+  const audiences = [
+    t("audiences.veterans"),
+    t("audiences.workforce"),
+    t("audiences.enterprise"),
+    t("audiences.leaders"),
+    t("audiences.builders"),
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setWordVisible(false);
       setTimeout(() => {
-        setWordIdx((i) => (i + 1) % AUDIENCES.length);
+        setWordIdx((i) => (i + 1) % 5);
         setWordVisible(true);
       }, 400);
     }, 2800);
@@ -610,9 +620,9 @@ export default function M2MHomepage() {
       <section className="hero">
         <div className="hero-inner">
           <div>
-            <p className="hero-eyebrow animate-in">The Sovereign Architect Platform</p>
+            <p className="hero-eyebrow animate-in">{t("hero.eyebrow")}</p>
             <h1 className="hero-headline animate-in delay-1">
-              Built for{" "}
+              {t("hero.headline.prefix")}{" "}
               <span
                 className="rotating-word"
                 style={{
@@ -622,19 +632,17 @@ export default function M2MHomepage() {
                   display: "inline-block",
                 }}
               >
-                {AUDIENCES[wordIdx]}
+                {audiences[wordIdx]}
               </span>
-              <br />Who Refuse to<br />
-              <span style={{ color: TOKENS.gold }}>Stay Stuck.</span>
+              <br />{t("hero.headline.suffix")}<br />
+              <span style={{ color: TOKENS.gold }}>{t("hero.headline.accent")}</span>
             </h1>
             <p className="hero-subhead animate-in delay-2">
-              M2M~Inc. is a veteran-owned workforce intelligence firm delivering
-              the Human OS™ platform — a proven system that converts human
-              potential into measurable organizational performance.
+              {t("hero.sub")}
             </p>
             <div className="hero-cta-group animate-in delay-3">
-              <a href="#platform" className="btn-primary">Explore the Platform</a>
-              <a href="#contact" className="btn-secondary">Schedule a Consult</a>
+              <a href="#platform" className="btn-primary">{t("hero.cta.primary")}</a>
+              <a href="#contact" className="btn-secondary">{t("hero.cta.secondary")}</a>
             </div>
             <div className="trust-bar animate-in delay-4">
               {["SDVOSB", "VBE", "SAFe 6", "Tuck", "USPTO"].map((item, i) => (

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LanguageToggle from "./LanguageToggle";
 
 const openCalendly = () => {
   (window as any).Calendly.initPopupWidget({
@@ -32,12 +33,15 @@ export default function Navbar() {
           </Link>
         ))}
       </div>
-      <button
-        onClick={openCalendly}
-        className="bg-gold text-navy text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all cursor-pointer border-none"
-      >
-        Book a Call
-      </button>
+      <div className="flex items-center gap-4">
+        <LanguageToggle />
+        <button
+          onClick={openCalendly}
+          className="bg-gold text-navy text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all cursor-pointer border-none"
+        >
+          Book a Call
+        </button>
+      </div>
     </nav>
   );
 }
