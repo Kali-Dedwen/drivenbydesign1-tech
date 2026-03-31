@@ -86,6 +86,7 @@ export default function Contact() {
   return (
     <>
       <Navbar />
+      <main>
 
       {/* ── HERO ── */}
       <section className="pt-[140px] pb-16 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0D2045_60%,#0A1628_100%)] text-center relative overflow-hidden">
@@ -296,6 +297,7 @@ export default function Contact() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

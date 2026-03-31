@@ -38,6 +38,7 @@ export default function About() {
   return (
     <>
       <Navbar />
+      <main>
 
       {/* ── HERO ── */}
       <section className="min-h-[75vh] flex items-end pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0D2045_60%,#0A1628_100%)] relative overflow-hidden">
@@ -260,6 +261,7 @@ export default function About() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

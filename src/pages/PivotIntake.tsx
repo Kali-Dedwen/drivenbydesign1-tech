@@ -89,9 +89,9 @@ export default function PivotIntake() {
           <div className="w-16 h-16 rounded-full bg-pivot-light flex items-center justify-center mx-auto mb-6">
             <span className="text-pivot text-3xl">✓</span>
           </div>
-          <h1 className="font-display text-[clamp(2rem,4vw,3rem)] font-black text-white mb-4">
+          <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-black text-white mb-4">
             Intake <span className="text-pivot">Received.</span>
-          </h1>
+          </h2>
           <p className="text-white-soft leading-[1.7] mb-8">
             Your PIVOT OS™ intake consultation has been submitted. We'll review
             your information and reach out within 48 hours to schedule your
@@ -111,6 +111,7 @@ export default function PivotIntake() {
   return (
     <>
       <Navbar />
+      <main>
 
       {/* ── FORM SECTION ── */}
       <section className="min-h-screen pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0B1E3A_60%,#0A1628_100%)]">
@@ -310,6 +311,7 @@ export default function PivotIntake() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

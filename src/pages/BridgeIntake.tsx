@@ -103,9 +103,9 @@ export default function BridgeIntake() {
           <div className="w-16 h-16 rounded-full bg-bridge-light flex items-center justify-center mx-auto mb-6">
             <span className="text-bridge text-3xl">✓</span>
           </div>
-          <h1 className="font-display text-[clamp(2rem,4vw,3rem)] font-black text-white mb-4">
+          <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-black text-white mb-4">
             Assessment <span className="text-bridge">Requested.</span>
-          </h1>
+          </h2>
           <p className="text-white-soft leading-[1.7] mb-8">
             Your BRIDGE OS™ workforce transition assessment request has been
             submitted. Our team will review your organization's profile and
@@ -125,6 +125,7 @@ export default function BridgeIntake() {
   return (
     <>
       <Navbar />
+      <main>
 
       {/* ── FORM SECTION ── */}
       <section className="min-h-screen pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0C1F35_60%,#0A1628_100%)]">
@@ -379,6 +380,7 @@ export default function BridgeIntake() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

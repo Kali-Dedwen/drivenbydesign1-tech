@@ -98,6 +98,7 @@ export default function Manifesto() {
       />
 
       <Navbar />
+      <main>
 
       {/* ── MANIFESTO COVER ── */}
       <section className="bg-navy bg-[radial-gradient(circle,rgba(10,22,40,0.055)_1px,transparent_1px)] bg-[length:28px_28px] min-h-[70vh] flex flex-col justify-end px-8 pb-20 pt-32">
@@ -467,6 +468,7 @@ export default function Manifesto() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

@@ -91,6 +91,7 @@ export default function PivotOSLanding() {
   return (
     <>
       <Navbar />
+      <main>
 
       {/* ── HERO ── */}
       <section className="min-h-screen flex items-center pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0B1E3A_60%,#0A1628_100%)] relative overflow-hidden">
@@ -309,6 +310,7 @@ export default function PivotOSLanding() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );
