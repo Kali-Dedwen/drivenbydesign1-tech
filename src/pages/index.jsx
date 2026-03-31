@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { getCurrentLang, translations } from "../i18n";
+import { getCurrentLang, translations } from "../lang";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — model2message.net
@@ -587,23 +587,22 @@ const CREDENTIALS = [
 
 export default function M2MHomepage() {
   const lang = getCurrentLang();
-  const t = (key) => translations[lang]?.[key] ?? translations.en[key] ?? key;
+  const tx = translations[lang] || translations.en;
   const [wordIdx, setWordIdx] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
 
   const audiences = [
-    t("audiences.veterans"),
-    t("audiences.workforce"),
-    t("audiences.enterprise"),
-    t("audiences.leaders"),
-    t("audiences.builders"),
+    tx.audience_1,
+    tx.audience_2,
+    tx.audience_3,
+    tx.audience_4,
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setWordVisible(false);
       setTimeout(() => {
-        setWordIdx((i) => (i + 1) % 5);
+        setWordIdx((i) => (i + 1) % 4);
         setWordVisible(true);
       }, 400);
     }, 2800);
@@ -621,9 +620,9 @@ export default function M2MHomepage() {
       <section className="hero">
         <div className="hero-inner">
           <div>
-            <p className="hero-eyebrow animate-in">{t("hero.eyebrow")}</p>
+            <p className="hero-eyebrow animate-in">{tx.eyebrow}</p>
             <h1 className="hero-headline animate-in delay-1">
-              {t("hero.headline.prefix")}{" "}
+              {tx.headline_prefix}{" "}
               <span
                 className="rotating-word"
                 style={{
@@ -635,15 +634,15 @@ export default function M2MHomepage() {
               >
                 {audiences[wordIdx]}
               </span>
-              <br />{t("hero.headline.suffix")}<br />
-              <span style={{ color: TOKENS.gold }}>{t("hero.headline.accent")}</span>
+              <br />{tx.headline_suffix}<br />
+              <span style={{ color: TOKENS.gold }}>{tx.headline_accent}</span>
             </h1>
             <p className="hero-subhead animate-in delay-2">
-              {t("hero.sub")}
+              {tx.subheadline}
             </p>
             <div className="hero-cta-group animate-in delay-3">
-              <a href="#platform" className="btn-primary">{t("hero.cta.primary")}</a>
-              <a href="#contact" className="btn-secondary">{t("hero.cta.secondary")}</a>
+              <a href="#platform" className="btn-primary">{tx.cta_primary}</a>
+              <a href="#contact" className="btn-secondary">{tx.cta_secondary}</a>
             </div>
             <div className="trust-bar animate-in delay-4">
               {["SDVOSB", "VBE", "SAFe 6", "Tuck", "USPTO"].map((item, i) => (

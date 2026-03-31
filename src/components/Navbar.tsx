@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import LanguageToggle from "./LanguageToggle";
+import LanguageToggle from "./LanguageToggle.jsx";
 
 const openCalendly = () => {
   (window as any).Calendly.initPopupWidget({
