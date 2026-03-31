@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useI18n } from "../i18n";
+import { getCurrentLang, translations } from "../i18n";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — model2message.net
@@ -586,7 +586,8 @@ const CREDENTIALS = [
 ];
 
 export default function M2MHomepage() {
-  const { t } = useI18n();
+  const lang = getCurrentLang();
+  const t = (key) => translations[lang]?.[key] ?? translations.en[key] ?? key;
   const [wordIdx, setWordIdx] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
 

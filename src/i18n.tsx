@@ -1,14 +1,8 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
-
 export type Lang = "en" | "es" | "fr";
 
-interface I18nContextValue {
-  lang: Lang;
-  setLang: (lang: Lang) => void;
-  t: (key: string) => string;
-}
+const STORAGE_KEY = "m2m-lang";
 
-const translations: Record<Lang, Record<string, string>> = {
+export const translations: Record<Lang, Record<string, string>> = {
   en: {
     "hero.eyebrow": "The Sovereign Architect Platform",
     "hero.headline.prefix": "Built for",
@@ -56,50 +50,14 @@ const translations: Record<Lang, Record<string, string>> = {
   },
 };
 
-const STORAGE_KEY = "m2m-lang";
-
-function getInitialLang(): Lang {
-  if (typeof window === "undefined") return "en";
+export function getCurrentLang(): Lang {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === "en" || stored === "es" || stored === "fr") return stored;
   return "en";
 }
 
-const I18nContext = createContext<I18nContextValue>({
-  lang: "en",
-  setLang: () => {},
-  t: (key: string) => key,
-});
-
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(getInitialLang);
-
-  const setLang = useCallback((newLang: Lang) => {
-    setLangState(newLang);
-    localStorage.setItem(STORAGE_KEY, newLang);
-    document.documentElement.lang = newLang;
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
-
-  const t = useCallback(
-    (key: string): string => {
-      return translations[lang]?.[key] ?? translations.en[key] ?? key;
-    },
-    [lang]
-  );
-
-  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
-
-  return (
-    <I18nContext.Provider value={value}>
-      {children}
-    </I18nContext.Provider>
-  );
-}
-
-export function useI18n() {
-  return useContext(I18nContext);
+export function setCurrentLang(lang: Lang) {
+  localStorage.setItem(STORAGE_KEY, lang);
+  document.documentElement.lang = lang;
+  window.location.reload();
 }
