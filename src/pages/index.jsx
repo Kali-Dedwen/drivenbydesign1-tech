@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 /* ─────────────────────────────────────────────
    M2M~Inc. — model2message.net
@@ -601,16 +603,7 @@ export default function M2MHomepage() {
     <>
       <style>{styles}</style>
 
-      {/* ── NAV ── */}
-      <nav className="nav">
-        <a href="/" className="nav-logo">M2M<span>~</span>Inc.</a>
-        <ul className="nav-links">
-          <li><a href="#platform">Platform</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#speaking">Speaking</a></li>
-          <li><a href="#contact" className="nav-cta">Schedule a Call</a></li>
-        </ul>
-      </nav>
+      <Navbar />
 
       {/* ── HERO ── */}
       <section className="hero">
@@ -840,43 +833,7 @@ export default function M2MHomepage() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="footer">
-        <div className="footer-inner">
-          <div>
-            <div className="footer-logo">M2M<span>~</span>Inc.</div>
-            <p style={{ fontSize: "0.75rem", color: TOKENS.whiteDim, marginTop: "0.4rem" }}>
-              model2message.net · Winston-Salem, NC
-            </p>
-          </div>
-          <div className="footer-trust">
-            {["SDVOSB", "VBE", "SAFe 6 Agilist", "USPTO — 9 Marks Pending", "Tuck Executive Education"].map(
-              (item, i) => (
-                <span key={item} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span className="footer-trust-item">{item}</span>
-                  {i < 4 && (
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        color: "rgba(201,168,76,0.3)",
-                        fontSize: "0.7rem",
-                      }}
-                    >
-                      ·
-                    </span>
-                  )}
-                </span>
-              )
-            )}
-          </div>
-        </div>
-        <div className="footer-inner">
-          <div className="footer-copy">
-            <span>© 2026 M2M~Inc. All rights reserved. PIVOT OS™ · BRIDGE OS™ · Human OS™ · M2M Composure Architecture™ are pending trademarks.</span>
-            <span style={{ color: TOKENS.gold }}>info@model2message.net</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
