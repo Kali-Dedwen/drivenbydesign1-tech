@@ -604,6 +604,7 @@ export default function M2MHomepage() {
       <style>{styles}</style>
 
       <Navbar />
+      <main>
 
       {/* ── HERO ── */}
       <section className="hero">
@@ -833,6 +834,7 @@ export default function M2MHomepage() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );
