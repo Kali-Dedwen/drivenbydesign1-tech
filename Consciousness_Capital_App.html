@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Consciousness Capital — M2M~Inc.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1C1F4A;--navy-dk:#0D0F2B;--navy-md:#252866;
+  --gold:#C9A84C;--gold-lt:#E8C97A;--gold-dk:#9E7A2A;
+  --teal:#028090;--teal-lt:#02B5CE;
+  --cream:#F5F2EC;--white:#FFFFFF;
+  --gray:#8A8FA8;--gray-lt:#EAEAF2;
+  --red:#8B1A2A;
+  --font-display:'Cormorant Garamond',serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy-dk);color:var(--cream);font-family:var(--font-body);overflow-x:hidden;line-height:1.6}
+#nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5vw;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,15,43,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.15)}
+.nav-logo{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--gold);text-decoration:none;letter-spacing:.04em}
+.nav-logo span{color:var(--cream);font-weight:300}
+.nav-links{display:flex;gap:1.4rem;align-items:center}
+.nav-links a{font-size:.7rem;font-weight:500;color:var(--gray);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold)!important;color:var(--navy-dk)!important;padding:.28rem .8rem;border-radius:2px;font-weight:600!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#mmenu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(13,15,43,.97);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem}
+#mmenu.open{display:flex}
+#mmenu a{font-family:var(--font-display);font-size:1.7rem;color:var(--cream);text-decoration:none;transition:color .2s}
+#mmenu a:hover{color:var(--gold)}
+#prog{position:fixed;top:56px;left:0;height:2px;background:var(--gold);z-index:999;width:0%;transition:width .1s}
+#dots{position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.65rem;z-index:100}
+.dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;cursor:pointer;display:block;transition:all .25s;text-decoration:none}
+.dot.active{background:var(--gold);transform:scale(1.3)}
+.dot:hover{background:rgba(201,168,76,.4)}
+section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 5vw 50px;position:relative;overflow:hidden}
+.stag{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.stag::before{content:'';width:20px;height:1px;background:var(--teal)}
+h1.ht{font-family:var(--font-display);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;line-height:1.05;color:var(--white);margin-bottom:.4rem}
+h2.st{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.9rem);font-weight:700;line-height:1.1;color:var(--white);margin-bottom:.4rem}
+.gr{width:55px;height:2px;background:var(--gold);margin:1rem 0}
+.lead{font-size:clamp(.9rem,1.4vw,1.05rem);color:var(--gray);max-width:680px;line-height:1.8}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:1.4rem;position:relative;overflow:hidden;transition:all .3s}
+.card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.3)}
+.card.ga::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.card.ta::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--teal)}
+.card.ra::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+.bg1{background:var(--navy-dk)}
+.bg2{background:var(--navy)}
+.gbl{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.dot-item{display:flex;gap:.65rem;align-items:flex-start;margin-bottom:.55rem}
+.di-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.5rem}
+.di-text{font-size:.85rem;color:var(--cream);line-height:1.55}
+.btn-p{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:var(--navy-dk);padding:.72rem 1.65rem;font-weight:600;font-size:.88rem;text-decoration:none;border-radius:2px;letter-spacing:.04em;transition:all .25s;border:none;cursor:pointer}
+.btn-p:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(201,168,76,.25)}
+.btn-o{display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid var(--gold);color:var(--gold);padding:.68rem 1.55rem;font-weight:500;font-size:.88rem;text-decoration:none;border-radius:2px;letter-spacing:.04em;transition:all .25s;background:transparent;cursor:pointer}
+.btn-o:hover{background:rgba(201,168,76,.08)}
+footer{background:var(--navy-dk);border-top:1px solid rgba(201,168,76,.2);padding:1.4rem 5vw;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem}
+.fb{font-family:var(--font-display);font-size:1rem;color:var(--gold);font-weight:600}
+.fc{font-size:.73rem;color:var(--gray)}
+.fs{font-family:var(--font-mono);font-size:.73rem;color:var(--teal);letter-spacing:.08em}
+@media(max-width:880px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  #dots{display:none}
+  .dual-wrap{flex-direction:column}
+  .balance-vs-wrap{display:none}
+  .balance-center{display:none}
+}
+@media(max-width:600px){
+  h1.ht{font-size:2.4rem}
+  h2.st{font-size:1.7rem}
+  .audit-tbl .a-col,.audit-tbl .d-col{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Consciousness<span> Capital</span></a>
+  <div class="nav-links">
+    <a href="#framework">Framework</a>
+    <a href="#alignment">Alignment</a>
+    <a href="#resilience">Resilience</a>
+    <a href="#voices">Voices</a>
+    <a href="#seasons">Seasons</a>
+    <a href="#audit" class="nav-cta">Take the Audit</a>
+  </div>
+  <button class="hamburger" id="hbg" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div id="mmenu">
+  <a href="#premise">Premise</a>
+  <a href="#framework">Framework</a>
+  <a href="#alignment">Alignment</a>
+  <a href="#resilience">Resilience</a>
+  <a href="#resurrection">Resurrection</a>
+  <a href="#voices">Nine Voices</a>
+  <a href="#seasons">Seasons</a>
+  <a href="#audit">Consciousness Audit</a>
+  <a href="#protocol">Daily Protocol</a>
+  <a href="#elevation">Elevation</a>
+</div>
+<div id="prog"></div>
+<div id="dots">
+  <a class="dot active" href="#hero" title="Home"></a>
+  <a class="dot" href="#premise" title="Premise"></a>
+  <a class="dot" href="#framework" title="Framework"></a>
+  <a class="dot" href="#alignment" title="Alignment"></a>
+  <a class="dot" href="#focus" title="Focus Law"></a>
+  <a class="dot" href="#nervous" title="Nervous System"></a>
+  <a class="dot" href="#resilience" title="Resilience Cycle"></a>
+  <a class="dot" href="#resurrection" title="Resurrection"></a>
+  <a class="dot" href="#voices" title="Nine Voices"></a>
+  <a class="dot" href="#seasons" title="Seasons"></a>
+  <a class="dot" href="#audit" title="Consciousness Audit"></a>
+  <a class="dot" href="#protocol" title="Daily Protocol"></a>
+  <a class="dot" href="#roi" title="ROI"></a>
+  <a class="dot" href="#elevation" title="Elevation"></a>
+</div>
+
+<!-- HERO -->
+<section id="hero" class="bg1">
+  <div style="position:absolute;width:600px;height:600px;right:-80px;top:-80px;border-radius:50%;background:radial-gradient(circle,rgba(2,128,144,.12) 0%,transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;width:350px;height:350px;right:100px;top:100px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;width:280px;height:280px;left:-60px;bottom:80px;border-radius:50%;background:radial-gradient(circle,rgba(2,128,144,.07) 0%,transparent 70%);pointer-events:none"></div>
+  <div class="gbl"></div>
+  <div style="position:relative;z-index:1;max-width:900px">
+    <div class="stag reveal">Executive Leadership Doctrine &nbsp;·&nbsp; M2M~Inc.</div>
+    <h1 class="ht reveal d1">Consciousness<br/>Capital</h1>
+    <p style="font-family:var(--font-display);font-size:clamp(1rem,2.5vw,1.5rem);font-style:italic;color:var(--gold-lt);margin-bottom:1.2rem" class="reveal d2">The Balance Sheet of Human Performance</p>
+    <p style="font-size:clamp(.88rem,1.4vw,1rem);color:rgba(245,242,236,.65);max-width:580px;line-height:1.8;margin-bottom:1.6rem" class="reveal d2">A C-Suite framework for human resilience, organizational renewal, and productive leadership across every season of life and business.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:2rem" class="reveal d3">
+      <span style="padding:.3rem .8rem;border:1px solid rgba(201,168,76,.3);font-size:.7rem;letter-spacing:.08em;color:var(--cream);border-radius:2px;font-family:var(--font-mono)">Human Genome</span>
+      <span style="padding:.3rem .8rem;border:1px solid rgba(201,168,76,.3);font-size:.7rem;letter-spacing:.08em;color:var(--cream);border-radius:2px;font-family:var(--font-mono)">Loss &amp; Resurrection</span>
+      <span style="padding:.3rem .8rem;border:1px solid rgba(201,168,76,.3);font-size:.7rem;letter-spacing:.08em;color:var(--cream);border-radius:2px;font-family:var(--font-mono)">Asset vs. Liability Consciousness</span>
+      <span style="padding:.3rem .8rem;border:1px solid rgba(201,168,76,.3);font-size:.7rem;letter-spacing:.08em;color:var(--cream);border-radius:2px;font-family:var(--font-mono)">Abundance · Harvest · Lack</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:.9rem" class="reveal d4">
+      <a href="#framework" class="btn-p">Explore the Framework ↓</a>
+      <a href="#audit" class="btn-o">Take the Consciousness Audit</a>
+    </div>
+  </div>
+</section>
+
+<!-- PREMISE -->
+<section id="premise" class="bg2">
+  <div class="stag reveal">Executive Premise</div>
+  <h2 class="st reveal">The Hidden Balance Sheet</h2>
+  <div class="gr reveal"></div>
+  <div class="g2 reveal d1" style="margin-top:1.4rem">
+    <div class="card ra">
+      <p style="font-size:.72rem;font-weight:600;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">The Untracked Liability</p>
+      <p style="font-size:.95rem;color:var(--cream);line-height:1.75;margin-bottom:.8rem">Every C-suite leader tracks P&amp;L, EBITDA, and market share. Yet the most consequential balance sheet in any organization goes completely unaudited:</p>
+      <p style="font-family:var(--font-display);font-size:1.3rem;color:var(--white);margin-bottom:.8rem;font-weight:600">The consciousness of its people.</p>
+      <p style="font-size:.85rem;color:var(--gray);line-height:1.7">Dysregulated leaders drain energy, stall decisions, and create cultures of reactive survival. The cost never appears in the quarterly report — but it is always present in the results.</p>
+    </div>
+    <div class="card ga" style="background:rgba(201,168,76,.05);border-color:rgba(201,168,76,.2)">
+      <p style="font-size:.72rem;font-weight:600;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">The Consciousness Capital Thesis</p>
+      <p style="font-size:.95rem;color:var(--cream);line-height:1.75;margin-bottom:.9rem">When leaders treat consciousness as capital — auditing internal assets and liabilities with the same rigor as financial ones — they unlock compounding returns:</p>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Faster recovery from loss and failure</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Sustained productivity across all cycles</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Deeper organizational trust</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Measurable team resilience</span></div>
+      <p style="margin-top:1rem;font-family:var(--font-display);font-size:1.1rem;color:var(--gold-lt);font-style:italic">This framework is the audit tool.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK -->
+<section id="framework" class="bg1">
+  <div class="stag reveal">Framework Overview</div>
+  <h2 class="st reveal">The Internal Balance Sheet</h2>
+  <div class="gr reveal"></div>
+  <div style="display:grid;grid-template-columns:1fr 56px 1fr;gap:1.2rem;margin-top:1.4rem;align-items:start" class="reveal d1">
+    <div>
+      <div style="background:var(--teal);padding:.45rem .9rem;font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--white);text-transform:uppercase;margin-bottom:.8rem;border-radius:2px">ASSET CONSCIOUSNESS — Building Energy</div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Heart as Sea of Love</strong><span class="di-text">Remaining emotionally open, receptive, and compassionate rather than closed off by loss or hardship. The bedrock of organizational trust.</span></div></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Mind as River of Detachment</strong><span class="di-text">Allowing thoughts and past failures to flow through without stagnation or over-attachment. Adaptive leadership lives here.</span></div></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Focus on Blessings</strong><span class="di-text">The deliberate habit of vocalizing and centering gratitude amplifies your positive energy capital — compounding daily.</span></div></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Regulated Nervous System</strong><span class="di-text">A stable physiological and psychological foundation that prevents reactive, survival-mode leadership behaviors.</span></div></div>
+    </div>
+    <div class="balance-vs-wrap" style="display:flex;align-items:center;justify-content:center;padding-top:2rem">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.68rem;font-weight:500;color:var(--gold)">VS</div>
+    </div>
+    <div>
+      <div style="background:var(--red);padding:.45rem .9rem;font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--white);text-transform:uppercase;margin-bottom:.8rem;border-radius:2px">LIABILITY CONSCIOUSNESS — Depleting Energy</div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--red)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Closed Heart After Loss</strong><span class="di-text">Hardening emotionally after setback creates isolation, distrust, and organizational disconnection at every level.</span></div></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--red)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Fixated Mind</strong><span class="di-text">Anchoring mental energy to past failures, identity loss, or rigid expectations blocks adaptive and strategic leadership.</span></div></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--red)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Focus on Burdens</strong><span class="di-text">Constant narration of hardship traps collective energy in deficiency thinking and rapidly depletes team morale.</span></div></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--red)"></div><div><strong style="display:block;font-size:.9rem;color:var(--white);margin-bottom:.1rem">Dysregulated System</strong><span class="di-text">Survival-mode leadership produces reactive decisions, fractured communication, and accelerated executive burnout.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ALIGNMENT -->
+<section id="alignment" class="bg2">
+  <div class="stag reveal">Architecture of Alignment</div>
+  <h2 class="st reveal">The Internal Dual-Engine of Performance</h2>
+  <div class="gr reveal"></div>
+  <div style="display:flex;gap:1.2rem;align-items:stretch;margin-top:1.4rem" class="reveal d1 dual-wrap">
+    <div style="flex:1;border-radius:6px;padding:1.5rem 1.3rem;background:rgba(2,128,144,.08);border:1px solid rgba(2,128,144,.35)">
+      <p style="font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--teal-lt);margin-bottom:.15rem">♥ HEART</p>
+      <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--gold-lt);margin-bottom:.9rem">The Sea of Love</p>
+      <div style="height:1px;background:rgba(255,255,255,.08);margin-bottom:.8rem"></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Vast, open, and receptive — not reactive or guarded</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Fuels authentic connection, the foundation of organizational trust</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Absorbs difficulty without closing; remains life-giving even after loss</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">The emotional anchor that makes mental detachment safe</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text" style="font-style:italic;color:var(--gray)">Measured by: depth of relationships, recovery speed after conflict</span></div>
+    </div>
+    <div class="balance-center" style="display:flex;align-items:center;justify-content:center;min-width:80px">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.58rem;font-weight:600;color:var(--navy-dk);text-align:center;line-height:1.3;letter-spacing:.04em">BALANCE<br/>&amp;<br/>FLOW</div>
+    </div>
+    <div style="flex:1;border-radius:6px;padding:1.5rem 1.3rem;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.3)">
+      <p style="font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--gold);margin-bottom:.15rem">◈ MIND</p>
+      <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--gold-lt);margin-bottom:.9rem">The River of Detachment</p>
+      <div style="height:1px;background:rgba(255,255,255,.08);margin-bottom:.8rem"></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Structured, forward-moving — never stagnant or over-attached</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Releases past failures, lost identities, and rigid expectations</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Enables adaptive leadership: pivoting without ego collapse</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">The cognitive freedom that allows strategy to replace reaction</span></div>
+      <div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text" style="font-style:italic;color:var(--gray)">Measured by: decision speed, emotional reset time, adaptability</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOCUS LAW -->
+<section id="focus" class="bg1">
+  <div class="stag reveal">The Focus Doctrine</div>
+  <h2 class="st reveal">The Primary Law of Consciousness Capital</h2>
+  <div class="gr reveal"></div>
+  <div style="background:rgba(201,168,76,.07);border:2px solid var(--gold);border-radius:6px;padding:1.4rem 2rem;margin:1.4rem 0;text-align:center" class="reveal d1">
+    <p style="font-family:var(--font-display);font-size:clamp(1.4rem,3vw,2.2rem);font-style:italic;color:var(--gold)">"Where focus goes, energy flows."</p>
+  </div>
+  <div class="g3 reveal d2">
+    <div class="card ta"><p style="font-size:.72rem;font-weight:600;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">For the Individual</p><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Narrate blessings to amplify performance capital</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Audit daily language for burden vs. asset ratio</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Redirect rumination within 90 seconds of onset</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span class="di-text">Build gratitude protocol into your morning ritual</span></div></div>
+    <div class="card ga"><p style="font-size:.72rem;font-weight:600;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">For the Team</p><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Meeting language shapes collective energy output</span></div><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Replace post-mortem blame with forward lessons</span></div><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Celebrate micro-wins publicly and consistently</span></div><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span class="di-text">Name progress before naming problems in every meeting</span></div></div>
+    <div class="card"><p style="font-size:.72rem;font-weight:600;color:var(--teal-lt);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">For the Organization</p><div class="dot-item"><div class="di-dot" style="background:var(--teal-lt)"></div><span class="di-text">Culture is the aggregate of 10,000 daily focus choices</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal-lt)"></div><span class="di-text">Reinforce asset language in all performance reviews</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal-lt)"></div><span class="di-text">Lead with mission in moments of contraction</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal-lt)"></div><span class="di-text">Vision-first communication in all major transitions</span></div></div>
+  </div>
+</section>
+
+<!-- NERVOUS SYSTEM -->
+<section id="nervous" class="bg2">
+  <div class="stag reveal">Performance Infrastructure</div>
+  <h2 class="st reveal">The Nervous System Is Your Operating System</h2>
+  <div class="gr reveal"></div>
+  <div class="g2 reveal d1" style="margin-top:1.4rem;align-items:start">
+    <div class="card" style="border-color:rgba(255,255,255,.05);background:rgba(255,255,255,.02)">
+      <p style="font-size:.72rem;font-weight:600;color:var(--gray);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">COMMON MISCONCEPTION — Limited Regulation</p>
+      <p style="font-size:.88rem;color:var(--gray);line-height:1.7;margin-bottom:.9rem;font-style:italic">Society frames nervous system regulation as isolated sessions:</p>
+      <div style="display:flex;flex-direction:column;gap:.45rem;margin-bottom:.9rem;opacity:.55">
+        <span style="font-size:.95rem;color:var(--gray);padding:.4rem .75rem;background:rgba(255,255,255,.03);border-radius:3px">Breathwork</span>
+        <span style="font-size:.95rem;color:var(--gray);padding:.4rem .75rem;background:rgba(255,255,255,.03);border-radius:3px">Meditation</span>
+        <span style="font-size:.95rem;color:var(--gray);padding:.4rem .75rem;background:rgba(255,255,255,.03);border-radius:3px">Journaling</span>
+      </div>
+      <p style="font-size:.82rem;color:var(--red);font-weight:500">Limited scope leads to depletion and burnout.</p>
+    </div>
+    <div class="card" style="border-color:rgba(2,128,144,.35);background:rgba(2,128,144,.04)">
+      <p style="font-size:.72rem;font-weight:600;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem">THE HOLISTIC REALITY — True Regulation</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+        <div style="padding:.55rem .7rem;background:rgba(2,128,144,.1);border-radius:4px;border:1px solid rgba(2,128,144,.2)"><p style="font-size:.83rem;font-weight:600;color:var(--gold);margin-bottom:.12rem">Self-Trust</p><p style="font-size:.73rem;color:var(--gray)">Inner compact with your own reliability</p></div>
+        <div style="padding:.55rem .7rem;background:rgba(2,128,144,.1);border-radius:4px;border:1px solid rgba(2,128,144,.2)"><p style="font-size:.83rem;font-weight:600;color:var(--gold);margin-bottom:.12rem">Boundaries</p><p style="font-size:.73rem;color:var(--gray)">Limits that protect cognitive resources</p></div>
+        <div style="padding:.55rem .7rem;background:rgba(2,128,144,.1);border-radius:4px;border:1px solid rgba(2,128,144,.2)"><p style="font-size:.83rem;font-weight:600;color:var(--gold);margin-bottom:.12rem">Connection</p><p style="font-size:.73rem;color:var(--gray)">Authentic relationship as regulation</p></div>
+        <div style="padding:.55rem .7rem;background:rgba(2,128,144,.1);border-radius:4px;border:1px solid rgba(2,128,144,.2)"><p style="font-size:.83rem;font-weight:600;color:var(--gold);margin-bottom:.12rem">Sunlight &amp; Sleep</p><p style="font-size:.73rem;color:var(--gray)">Non-negotiable physiological sovereignty</p></div>
+        <div style="padding:.55rem .7rem;background:rgba(2,128,144,.1);border-radius:4px;border:1px solid rgba(2,128,144,.2)"><p style="font-size:.83rem;font-weight:600;color:var(--gold);margin-bottom:.12rem">Nourishment</p><p style="font-size:.73rem;color:var(--gray)">Fuel for executive function &amp; resilience</p></div>
+        <div style="padding:.55rem .7rem;background:rgba(2,128,144,.1);border-radius:4px;border:1px solid rgba(2,128,144,.2)"><p style="font-size:.83rem;font-weight:600;color:var(--gold);margin-bottom:.12rem">Safety &amp; Movement</p><p style="font-size:.73rem;color:var(--gray)">Physical &amp; psychological security</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESILIENCE CYCLE -->
+<section id="resilience" class="bg1">
+  <div class="stag reveal">The Resilience Genome</div>
+  <h2 class="st reveal">The Four-Phase Human Performance Cycle</h2>
+  <div class="gr reveal"></div>
+  <div class="g4 reveal d1" style="margin-top:1.4rem">
+    <div style="border-radius:6px;overflow:hidden">
+      <div style="background:rgba(139,26,42,.35);border:1px solid rgba(139,26,42,.5);border-bottom:none;padding:.75rem 1rem;border-radius:6px 6px 0 0"><div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.6);margin-bottom:.2rem">PHASE 01</div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--white)">CONTRACTION</div><div style="font-style:italic;font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.1rem">The Necessary Loss</div></div>
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--red);border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.88rem;font-weight:600;color:var(--white);margin:-1px auto .75rem">01</div>
+      <div style="padding:.7rem 1rem;background:rgba(0,0,0,.2);border:1px solid rgba(139,26,42,.3);border-top:none;font-size:.8rem;color:var(--cream);line-height:1.55">Loss, failure, and disruption as the biological signal for evolution. The organism contracts to protect its core.</div>
+      <div style="padding:.6rem 1rem;border:1px solid rgba(139,26,42,.3);border-top:none;border-radius:0 0 6px 6px;font-size:.72rem;color:var(--gold)"><strong style="display:block;font-family:var(--font-mono);letter-spacing:.1em;font-size:.6rem;margin-bottom:.2rem;opacity:.7">KEY ASSETS</strong>Emotional honesty, grief as data, self-trust</div>
+    </div>
+    <div style="border-radius:6px;overflow:hidden">
+      <div style="background:rgba(2,128,144,.2);border:1px solid rgba(2,128,144,.4);border-bottom:none;padding:.75rem 1rem;border-radius:6px 6px 0 0"><div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.6);margin-bottom:.2rem">PHASE 02</div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--white)">PIVOT</div><div style="font-style:italic;font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.1rem">The Detachment Point</div></div>
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--teal);border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.88rem;font-weight:600;color:var(--white);margin:-1px auto .75rem">02</div>
+      <div style="padding:.7rem 1rem;background:rgba(0,0,0,.2);border:1px solid rgba(2,128,144,.3);border-top:none;font-size:.8rem;color:var(--cream);line-height:1.55">The mind becomes a river. Past identity is released. New adaptive capacity emerges from the stillness of detachment.</div>
+      <div style="padding:.6rem 1rem;border:1px solid rgba(2,128,144,.3);border-top:none;border-radius:0 0 6px 6px;font-size:.72rem;color:var(--gold)"><strong style="display:block;font-family:var(--font-mono);letter-spacing:.1em;font-size:.6rem;margin-bottom:.2rem;opacity:.7">KEY ASSETS</strong>Detachment, boundaries, honest counsel</div>
+    </div>
+    <div style="border-radius:6px;overflow:hidden">
+      <div style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-bottom:none;padding:.75rem 1rem;border-radius:6px 6px 0 0"><div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.6);margin-bottom:.2rem">PHASE 03</div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--white)">HARVEST</div><div style="font-style:italic;font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.1rem">The Resurrection</div></div>
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--gold);border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.88rem;font-weight:600;color:var(--navy-dk);margin:-1px auto .75rem">03</div>
+      <div style="padding:.7rem 1rem;background:rgba(0,0,0,.2);border:1px solid rgba(201,168,76,.3);border-top:none;font-size:.8rem;color:var(--cream);line-height:1.55">Compounding of lessons, relationships, and renewed focus. The heart reopens; performance accelerates beyond prior baseline.</div>
+      <div style="padding:.6rem 1rem;border:1px solid rgba(201,168,76,.3);border-top:none;border-radius:0 0 6px 6px;font-size:.72rem;color:var(--gold)"><strong style="display:block;font-family:var(--font-mono);letter-spacing:.1em;font-size:.6rem;margin-bottom:.2rem;opacity:.7">KEY ASSETS</strong>Blessings focus, social capital, movement</div>
+    </div>
+    <div style="border-radius:6px;overflow:hidden">
+      <div style="background:rgba(2,181,206,.12);border:1px solid rgba(2,181,206,.3);border-bottom:none;padding:.75rem 1rem;border-radius:6px 6px 0 0"><div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.6);margin-bottom:.2rem">PHASE 04</div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--white)">SCALE</div><div style="font-style:italic;font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.1rem">The Abundance Protocol</div></div>
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-lt);border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.88rem;font-weight:600;color:var(--navy-dk);margin:-1px auto .75rem">04</div>
+      <div style="padding:.7rem 1rem;background:rgba(0,0,0,.2);border:1px solid rgba(2,181,206,.2);border-top:none;font-size:.8rem;color:var(--cream);line-height:1.55">Sustained productivity built on regulated infrastructure. The cycle now serves as teacher for the next generation of leaders.</div>
+      <div style="padding:.6rem 1rem;border:1px solid rgba(2,181,206,.2);border-top:none;border-radius:0 0 6px 6px;font-size:.72rem;color:var(--gold)"><strong style="display:block;font-family:var(--font-mono);letter-spacing:.1em;font-size:.6rem;margin-bottom:.2rem;opacity:.7">KEY ASSETS</strong>Systems, community, regulated nervous system</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESURRECTION -->
+<section id="resurrection" class="bg2">
+  <div class="stag reveal">Resurrection Protocol</div>
+  <h2 class="st reveal">From Loss to Legacy: The Strategic Comeback</h2>
+  <div class="gr reveal"></div>
+  <div style="background:rgba(201,168,76,.07);border-left:3px solid var(--gold);padding:.8rem 1.2rem;margin:1.2rem 0;border-radius:0 4px 4px 0" class="reveal d1">
+    <p style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:var(--gold-lt)">"Failure is not the opposite of success — it is the most honest data point in your performance history."</p>
+  </div>
+  <div class="g2 reveal d2">
+    <div style="display:flex;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:1rem 1.2rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'"><div style="min-width:38px;height:38px;background:var(--navy-dk);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.82rem;font-weight:500;color:var(--gold);flex-shrink:0">01</div><div><p style="font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.25rem">Name the Loss Precisely</p><p style="font-size:.8rem;color:var(--gray);line-height:1.6">Do not generalize. "I lost everything" is a liability. Specific naming contains the loss and converts it from emotion to actionable data.</p></div></div>
+    <div style="display:flex;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:1rem 1.2rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'"><div style="min-width:38px;height:38px;background:var(--navy-dk);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.82rem;font-weight:500;color:var(--gold);flex-shrink:0">02</div><div><p style="font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.25rem">Activate the Sea of Love</p><p style="font-size:.8rem;color:var(--gray);line-height:1.6">Before the mind strategizes, the heart must open. Reach for connection — not isolation. Loss processed in community becomes wisdom.</p></div></div>
+    <div style="display:flex;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:1rem 1.2rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'"><div style="min-width:38px;height:38px;background:var(--navy-dk);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.82rem;font-weight:500;color:var(--gold);flex-shrink:0">03</div><div><p style="font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.25rem">Release via River of Detachment</p><p style="font-size:.8rem;color:var(--gray);line-height:1.6">Your identity is not the failed venture. Detach the outcome from the self. You are the strategist — not the failed strategy.</p></div></div>
+    <div style="display:flex;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:1rem 1.2rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'"><div style="min-width:38px;height:38px;background:var(--navy-dk);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.82rem;font-weight:500;color:var(--gold);flex-shrink:0">04</div><div><p style="font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.25rem">Audit Your Asset Column</p><p style="font-size:.8rem;color:var(--gray);line-height:1.6">Within 72 hours, conduct a blessing audit: skills retained, relationships intact, lessons captured, character refined.</p></div></div>
+    <div style="display:flex;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:1rem 1.2rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'"><div style="min-width:38px;height:38px;background:var(--navy-dk);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.82rem;font-weight:500;color:var(--gold);flex-shrink:0">05</div><div><p style="font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.25rem">Rebuild the Infrastructure</p><p style="font-size:.8rem;color:var(--gray);line-height:1.6">Sleep, sunlight, movement, nourishment, boundaries. Resurrection requires a regulated nervous system first. Performance follows.</p></div></div>
+    <div style="display:flex;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:1rem 1.2rem;transition:all .3s" onmouseover="this.style.borderColor='rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'"><div style="min-width:38px;height:38px;background:var(--navy-dk);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.82rem;font-weight:500;color:var(--gold);flex-shrink:0">06</div><div><p style="font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.25rem">Deploy into the Next Cycle</p><p style="font-size:.8rem;color:var(--gray);line-height:1.6">Re-enter not as the same leader, but as an upgraded version. The Harvest Phase awaits those who complete the Protocol with integrity.</p></div></div>
+  </div>
+</section>
+
+<!-- NINE VOICES -->
+<section id="voices" class="bg1">
+  <div class="stag reveal">Social Capital Architecture</div>
+  <h2 class="st reveal">The Nine Essential Voices</h2>
+  <div class="gr reveal"></div>
+  <div class="g3 reveal d1" style="margin-top:1.4rem">
+    <div class="card" style="background:rgba(2,128,144,.07);border-color:rgba(2,128,144,.28)"><div style="width:28px;height:28px;border-radius:50%;background:rgba(2,128,144,.2);color:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">1</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Listener</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Creates space for authentic expression; the nervous system anchor. Heard = regulated.</p></div>
+    <div class="card" style="background:rgba(2,128,144,.07);border-color:rgba(2,128,144,.28)"><div style="width:28px;height:28px;border-radius:50%;background:rgba(2,128,144,.2);color:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">2</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Encourager</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Positive reinforcement that amplifies asset-conscious narrative and rebuilds momentum after loss.</p></div>
+    <div class="card" style="background:rgba(2,128,144,.07);border-color:rgba(2,128,144,.28)"><div style="width:28px;height:28px;border-radius:50%;background:rgba(2,128,144,.2);color:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">3</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Inspirer</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Elevates vision; stimulates creative and strategic thinking beyond current perceived constraints.</p></div>
+    <div class="card" style="background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.22)"><div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.15);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">4</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Optimist</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Maintains possibility focus; counters liability-consciousness thinking with evidence-based hope.</p></div>
+    <div class="card" style="background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.22)"><div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.15);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">5</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Practical Motivator</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Bridges spiritual vision and operational execution. Converts aspiration into action.</p></div>
+    <div class="card" style="background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.22)"><div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.15);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">6</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Brutally Honest</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Delivers unvarnished truth. Prevents ego-driven blind spots from becoming organizational liabilities.</p></div>
+    <div class="card"><div style="width:28px;height:28px;border-radius:50%;background:rgba(245,242,236,.08);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">7</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Challenger</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Disrupts stagnation; maintains the river of detachment by challenging rigid thinking and identity lock-in.</p></div>
+    <div class="card"><div style="width:28px;height:28px;border-radius:50%;background:rgba(245,242,236,.08);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">8</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Empathiser</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Validates emotional experience and sustains the sea of love. Provides safety when the heart needs to reopen after loss.</p></div>
+    <div class="card"><div style="width:28px;height:28px;border-radius:50%;background:rgba(245,242,236,.08);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.7rem;font-weight:600;margin-bottom:.6rem">9</div><p style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.28rem">The Accountability Partner</p><p style="font-size:.78rem;color:var(--gray);line-height:1.55">Enforces commitment and closes the gap between intention and action. Non-negotiable for real resurrection.</p></div>
+  </div>
+</section>
+
+<!-- SEASONS -->
+<section id="seasons" class="bg2">
+  <div class="stag reveal">The Seasons Framework</div>
+  <h2 class="st reveal">Productive in Every Season</h2>
+  <div class="gr reveal"></div>
+  <div class="g3 reveal d1" style="margin-top:1.4rem">
+    <div style="border-radius:6px;overflow:hidden;border:1px solid rgba(2,128,144,.3);background:rgba(2,128,144,.06)">
+      <div style="background:rgba(2,128,144,.18);padding:1.2rem;text-align:center"><div style="font-size:1.8rem;margin-bottom:.4rem">❋</div><div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;letter-spacing:.08em;color:var(--teal-lt)">ABUNDANCE</div></div>
+      <div style="padding:.9rem 1.1rem;font-size:.82rem;line-height:1.65;border-top:1px solid rgba(255,255,255,.08);font-style:italic;color:var(--cream);opacity:.85">Resources, relationships, and momentum are flowing. The risk is complacency, over-expansion, and disconnection from the disciplines that built the season.</div>
+      <div style="padding:.9rem 1.1rem;border-top:1px solid rgba(255,255,255,.08)"><p style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;display:block;margin-bottom:.55rem;opacity:.65;color:var(--teal)">STRATEGY</p><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span style="font-size:.8rem;color:var(--cream)">Protect the infrastructure that generated abundance</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span style="font-size:.8rem;color:var(--cream)">Build reserves: financial, relational, physiological</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span style="font-size:.8rem;color:var(--cream)">Invest in all nine voices actively</span></div><div class="dot-item"><div class="di-dot" style="background:var(--teal)"></div><span style="font-size:.8rem;color:var(--cream)">Maintain boundaries even when pressure relaxes</span></div></div>
+    </div>
+    <div style="border-radius:6px;overflow:hidden;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.06)">
+      <div style="background:rgba(201,168,76,.12);padding:1.2rem;text-align:center"><div style="font-size:1.8rem;margin-bottom:.4rem">◈</div><div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;letter-spacing:.08em;color:var(--gold)">HARVEST</div></div>
+      <div style="padding:.9rem 1.1rem;font-size:.82rem;line-height:1.65;border-top:1px solid rgba(255,255,255,.08);font-style:italic;color:var(--cream);opacity:.85">The season of collection, consolidation, and gratitude. Previous investments are yielding returns. Deepen roots before the next cycle begins.</div>
+      <div style="padding:.9rem 1.1rem;border-top:1px solid rgba(255,255,255,.08)"><p style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;display:block;margin-bottom:.55rem;opacity:.65;color:var(--gold)">STRATEGY</p><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span style="font-size:.8rem;color:var(--cream)">Document what worked — build the asset ledger</span></div><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span style="font-size:.8rem;color:var(--cream)">Redirect energy from acquisition to integration</span></div><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span style="font-size:.8rem;color:var(--cream)">Mentor others from your surplus</span></div><div class="dot-item"><div class="di-dot" style="background:var(--gold)"></div><span style="font-size:.8rem;color:var(--cream)">Plant seeds for the next cycle while harvesting this one</span></div></div>
+    </div>
+    <div style="border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02)">
+      <div style="background:rgba(255,255,255,.04);padding:1.2rem;text-align:center"><div style="font-size:1.8rem;margin-bottom:.4rem">△</div><div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;letter-spacing:.08em;color:var(--cream)">LACK</div></div>
+      <div style="padding:.9rem 1.1rem;font-size:.82rem;line-height:1.65;border-top:1px solid rgba(255,255,255,.08);font-style:italic;color:var(--cream);opacity:.85">The most misunderstood season. Lack is not failure — it is the composting season of consciousness. What dies here becomes the fertilizer of the next abundance.</div>
+      <div style="padding:.9rem 1.1rem;border-top:1px solid rgba(255,255,255,.08)"><p style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;display:block;margin-bottom:.55rem;opacity:.65;color:var(--cream)">STRATEGY</p><div class="dot-item"><div class="di-dot" style="background:var(--cream)"></div><span style="font-size:.8rem;color:var(--cream)">Activate the Resurrection Protocol immediately</span></div><div class="dot-item"><div class="di-dot" style="background:var(--cream)"></div><span style="font-size:.8rem;color:var(--cream)">Reduce to your highest-leverage activities only</span></div><div class="dot-item"><div class="di-dot" style="background:var(--cream)"></div><span style="font-size:.8rem;color:var(--cream)">Double down on nervous system regulation basics</span></div><div class="dot-item"><div class="di-dot" style="background:var(--cream)"></div><span style="font-size:.8rem;color:var(--cream)">Name one blessing per day — non-negotiable</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSCIOUSNESS AUDIT -->
+<section id="audit" class="bg1">
+  <div class="stag reveal">Interactive Coaching Tool</div>
+  <h2 class="st reveal">The Consciousness Audit</h2>
+  <div class="gr reveal"></div>
+  <p class="lead reveal" style="margin-bottom:1rem">Rate each dimension 1–10. Scores below 6 indicate active liabilities requiring immediate capital reallocation.</p>
+  <div class="reveal d1" style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse" id="atbl">
+      <thead><tr>
+        <th style="background:var(--teal);color:var(--white);padding:.55rem .9rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:left">Domain</th>
+        <th style="background:var(--teal);color:var(--white);padding:.55rem .9rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:left" class="d-col">Audit Question</th>
+        <th style="background:var(--teal);color:var(--white);padding:.55rem .9rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:left" class="a-col">Asset Category</th>
+        <th style="background:var(--teal);color:var(--white);padding:.55rem .9rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:center;width:90px">Score /10</th>
+      </tr></thead>
+      <tbody id="abody">
+        <tr><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold);font-size:.83rem">Heart Openness</td><td class="d-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;color:var(--cream)">Am I emotionally available, or have I hardened from recent loss?</td><td class="a-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.78rem;color:var(--teal-lt)">Sea of Love</td><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+        <tr style="background:rgba(255,255,255,.02)"><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold);font-size:.83rem">Mental Flow</td><td class="d-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;color:var(--cream)">Is my mind forward-moving, or anchored in past failures and identity?</td><td class="a-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.78rem;color:var(--teal-lt)">River of Detachment</td><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+        <tr><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold);font-size:.83rem">Focus Ratio</td><td class="d-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;color:var(--cream)">What percentage of my daily narration focuses on blessings vs. burdens?</td><td class="a-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.78rem;color:var(--teal-lt)">Energy Direction</td><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+        <tr style="background:rgba(255,255,255,.02)"><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold);font-size:.83rem">Physiological Base</td><td class="d-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;color:var(--cream)">Am I sleeping, moving, eating, and receiving sunlight consistently?</td><td class="a-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.78rem;color:var(--teal-lt)">Nervous System</td><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+        <tr><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold);font-size:.83rem">Boundary Integrity</td><td class="d-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;color:var(--cream)">Do my daily commitments reflect my stated values and limits?</td><td class="a-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.78rem;color:var(--teal-lt)">Self-Trust</td><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+        <tr style="background:rgba(255,255,255,.02)"><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold);font-size:.83rem">Social Capital</td><td class="d-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;color:var(--cream)">Do I have all nine essential voices actively present in my ecosystem?</td><td class="a-col" style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.78rem;color:var(--teal-lt)">Community Architecture</td><td style="padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+        <tr><td style="padding:.65rem .9rem;font-weight:600;color:var(--gold);font-size:.83rem">Season Awareness</td><td class="d-col" style="padding:.65rem .9rem;font-size:.82rem;color:var(--cream)">Do I know which season I am in and am I operating accordingly?</td><td class="a-col" style="padding:.65rem .9rem;font-size:.78rem;color:var(--teal-lt)">Cycle Intelligence</td><td style="padding:.65rem .9rem;text-align:center"><input class="sc" type="number" min="1" max="10" placeholder="—" style="width:60px;padding:.3rem .4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:3px;color:var(--gold);font-family:var(--font-mono);font-size:.82rem;text-align:center;outline:none;transition:border .2s"/></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="aresult" style="display:none;margin-top:1.4rem;padding:1.2rem 1.5rem;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);flex-wrap:wrap;gap:1.5rem;align-items:center">
+    <div><div id="ascore" style="font-family:var(--font-display);font-size:3rem;font-weight:700;line-height:1"></div><div style="font-size:.72rem;color:var(--gray);margin-top:.2rem;font-family:var(--font-mono);letter-spacing:.08em">TOTAL SCORE / 70</div></div>
+    <div id="averdict" style="flex:1;min-width:200px"></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1rem" class="reveal d2">
+    <span style="padding:.22rem .55rem;border-radius:2px;font-size:.68rem;font-family:var(--font-mono);font-weight:500;background:rgba(139,26,42,.2);color:var(--red);border:1px solid rgba(139,26,42,.3)">1–4 = Critical Liability</span>
+    <span style="padding:.22rem .55rem;border-radius:2px;font-size:.68rem;font-family:var(--font-mono);font-weight:500;background:rgba(138,143,168,.1);color:var(--gray);border:1px solid rgba(138,143,168,.2)">5–6 = Managed Risk</span>
+    <span style="padding:.22rem .55rem;border-radius:2px;font-size:.68rem;font-family:var(--font-mono);font-weight:500;background:rgba(2,128,144,.1);color:var(--teal-lt);border:1px solid rgba(2,128,144,.2)">7–8 = Asset Building</span>
+    <span style="padding:.22rem .55rem;border-radius:2px;font-size:.68rem;font-family:var(--font-mono);font-weight:500;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.22)">9–10 = Compounding Capital</span>
+  </div>
+</section>
+
+<!-- DAILY PROTOCOL -->
+<section id="protocol" class="bg2">
+  <div class="stag reveal">Daily Practice</div>
+  <h2 class="st reveal">The Sovereign Practice: Daily Operating Protocol</h2>
+  <div class="gr reveal"></div>
+  <div style="display:flex;flex-direction:column;gap:.5rem;margin-top:1.2rem" class="reveal d1">
+    <div>
+      <div onclick="tp('m',this)" style="padding:.6rem 1rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:3px;font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.15em;color:var(--gold);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none">
+        <span>☀ MORNING — First 30 Minutes</span><span id="am">▼</span>
+      </div>
+      <div id="pm" style="overflow:hidden;max-height:300px;transition:max-height .35s ease;background:rgba(0,0,0,.2)">
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Nervous System Prime</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">Sunlight (10+ min) + movement + nourishment — before screens, before strategy. Non-negotiable.</p></div></div>
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Consciousness Audit Check-In</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">One question: Am I opening or closing today? Name one asset and one liability from yesterday.</p></div></div>
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Blessing Declaration</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">Speak three blessings aloud before the day's demands arrive. This activates the energy flow law.</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div onclick="tp('d',this)" style="padding:.6rem 1rem;background:rgba(2,128,144,.1);border:1px solid rgba(2,128,144,.25);border-radius:3px;font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.15em;color:var(--teal-lt);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none">
+        <span>◎ MIDDAY — Transition Point</span><span id="ad">▼</span>
+      </div>
+      <div id="pd" style="overflow:hidden;max-height:200px;transition:max-height .35s ease;background:rgba(0,0,0,.2)">
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">River Reset</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">5-minute detachment: What am I over-attached to this morning? Name it. Release it deliberately.</p></div></div>
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Season Check</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">Which season am I in today — abundance, harvest, or lack? Align the next three decisions accordingly.</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div onclick="tp('e',this)" style="padding:.6rem 1rem;background:rgba(245,242,236,.04);border:1px solid rgba(245,242,236,.1);border-radius:3px;font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.15em;color:var(--cream);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none">
+        <span>◑ EVENING — Last 20 Minutes</span><span id="ae">▼</span>
+      </div>
+      <div id="pe" style="overflow:hidden;max-height:300px;transition:max-height .35s ease;background:rgba(0,0,0,.2)">
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:8px;height:8px;border-radius:50%;background:var(--cream);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Asset Ledger Entry</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">Document one win, one lesson, one person who activated one of the nine voices today.</p></div></div>
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:8px;height:8px;border-radius:50%;background:var(--cream);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Heart Restoration</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">Connection — a real conversation with a sea-of-love relationship before sleep. Not a screen. A person.</p></div></div>
+        <div style="display:flex;gap:.85rem;padding:.8rem 1.1rem"><div style="width:8px;height:8px;border-radius:50%;background:var(--cream);flex-shrink:0;margin-top:.4rem"></div><div><p style="font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.2rem">Recovery Investment</p><p style="font-size:.8rem;color:var(--gray);line-height:1.55">Sleep is non-negotiable capital. It is not rest — it is reinvestment in tomorrow's executive performance.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI -->
+<section id="roi" class="bg1">
+  <div class="stag reveal">ROI Framework</div>
+  <h2 class="st reveal">Measuring the Return on Consciousness Investment</h2>
+  <div class="gr reveal"></div>
+  <div class="reveal d1" style="overflow-x:auto;margin-top:1.2rem">
+    <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+      <thead><tr>
+        <th style="background:var(--navy);color:var(--gold);padding:.52rem .85rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:left;border-bottom:2px solid var(--gold)">Consciousness Asset</th>
+        <th style="background:var(--navy);color:var(--gold);padding:.52rem .85rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:left;border-bottom:2px solid var(--gold)">Observable Business Indicator</th>
+        <th style="background:var(--navy);color:var(--gold);padding:.52rem .85rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-align:left;border-bottom:2px solid var(--gold)">Lagging ROI Signal</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold-lt)">Heart as Sea of Love</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--cream)">Team psychological safety scores, retention rate</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--gray)">Reduced turnover cost, increased innovation output</td></tr>
+        <tr style="background:rgba(255,255,255,.02)"><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold-lt)">Mind as River of Detachment</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--cream)">Decision speed post-crisis, pivot execution time</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--gray)">Competitive adaptability, restructuring success rate</td></tr>
+        <tr><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold-lt)">Focus on Blessings</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--cream)">All-hands language sentiment, meeting energy scores</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--gray)">Engagement scores, NPS, cultural brand strength</td></tr>
+        <tr style="background:rgba(255,255,255,.02)"><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold-lt)">Nervous System Regulation</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--cream)">Executive absenteeism, decision quality under pressure</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--gray)">Long-term leadership tenure, reduced healthcare cost</td></tr>
+        <tr><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);font-weight:600;color:var(--gold-lt)">Social Capital (9 Voices)</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--cream)">360 feedback quality, mentorship participation rates</td><td style="padding:.62rem .85rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--gray)">Leadership pipeline depth, succession readiness</td></tr>
+        <tr style="background:rgba(255,255,255,.02)"><td style="padding:.62rem .85rem;font-weight:600;color:var(--gold-lt)">Season Awareness</td><td style="padding:.62rem .85rem;color:var(--cream)">Forecast accuracy, capital allocation discipline</td><td style="padding:.62rem .85rem;color:var(--gray)">EBITDA resilience through market contractions</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:1.2rem;padding:.8rem 1.2rem;border-left:3px solid var(--teal);background:rgba(2,128,144,.06);border-radius:0 4px 4px 0" class="reveal d2">
+    <p style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:var(--teal-lt)">Consciousness Capital is not a soft metric — it is a leading indicator of every hard metric that matters to the board.</p>
+  </div>
+</section>
+
+<!-- ELEVATION -->
+<section id="elevation" class="bg1">
+  <div style="position:absolute;width:550px;height:550px;right:-60px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(2,128,144,.1) 0%,transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;width:320px;height:320px;right:80px;top:80px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none"></div>
+  <div class="gbl"></div>
+  <div style="position:relative;z-index:1;max-width:800px">
+    <div class="stag reveal">The Call to Elevation</div>
+    <p style="font-family:var(--font-display);font-size:clamp(2.2rem,5vw,4rem);font-weight:700;line-height:1.1;color:var(--white);margin-bottom:1.4rem" class="reveal d1">Your consciousness is your most <span style="color:var(--gold)">strategic</span> asset.</p>
+    <p style="font-family:var(--font-display);font-size:clamp(.95rem,1.8vw,1.25rem);font-style:italic;color:rgba(245,242,236,.62);line-height:1.75;max-width:600px;margin-bottom:1.8rem" class="reveal d2">The leader who audits their inner balance sheet with the same discipline as their financial one will outperform, outlast, and outlead every competitor who does not.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:2rem" class="reveal d3">
+      <div style="display:flex;gap:.7rem;align-items:flex-start;padding:.8rem .95rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:3px"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.52rem"></div><span style="font-size:.88rem;color:var(--cream)">Audit your consciousness weekly — not occasionally.</span></div>
+      <div style="display:flex;gap:.7rem;align-items:flex-start;padding:.8rem .95rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:3px"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.52rem"></div><span style="font-size:.88rem;color:var(--cream)">Invest in your nervous system infrastructure daily.</span></div>
+      <div style="display:flex;gap:.7rem;align-items:flex-start;padding:.8rem .95rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:3px"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.52rem"></div><span style="font-size:.88rem;color:var(--cream)">Curate all nine essential voices actively.</span></div>
+      <div style="display:flex;gap:.7rem;align-items:flex-start;padding:.8rem .95rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:3px"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.52rem"></div><span style="font-size:.88rem;color:var(--cream)">Know your season and lead accordingly.</span></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:.9rem" class="reveal d4">
+      <a href="#audit" class="btn-p">Take the Consciousness Audit</a>
+      <a href="#hero" class="btn-o">Back to Top ↑</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fb">Consciousness Capital</div>
+  <div class="fc">© 2026 M2M~Inc. | Sovereign Architect | model2message.net | All Rights Reserved</div>
+  <div class="fs">To the work.</div>
+</footer>
+
+<script>
+const navEl=document.getElementById('nav');
+const prog=document.getElementById('prog');
+const hbg=document.getElementById('hbg');
+const mm=document.getElementById('mmenu');
+const dots=document.querySelectorAll('.dot');
+const sids=['hero','premise','framework','alignment','focus','nervous','resilience','resurrection','voices','seasons','audit','protocol','roi','elevation'];
+
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.body.scrollHeight-window.innerHeight;
+  prog.style.width=(s/t*100)+'%';
+  navEl.style.background=s>50?'rgba(13,15,43,.96)':'rgba(13,15,43,.92)';
+  let cur=0;
+  sids.forEach((id,i)=>{const el=document.getElementById(id);if(el&&s>=el.offsetTop-window.innerHeight/2)cur=i;});
+  dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+});
+
+hbg.addEventListener('click',()=>{hbg.classList.toggle('open');mm.classList.toggle('open');});
+mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hbg.classList.remove('open');mm.classList.remove('open');}));
+
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+function tp(id,hdr){
+  const map={m:'pm',d:'pd',e:'pe'};
+  const arMap={m:'am',d:'ad',e:'ae'};
+  const el=document.getElementById(map[id]);
+  const ar=document.getElementById(arMap[id]);
+  const open=el.style.maxHeight!=='0px'&&el.style.maxHeight!=='';
+  el.style.maxHeight=open?'0px':el.scrollHeight+'px';
+  ar.textContent=open?'▶':'▼';
+}
+
+// Audit logic
+const inputs=document.querySelectorAll('.sc');
+const aresult=document.getElementById('aresult');
+const ascore=document.getElementById('ascore');
+const averdict=document.getElementById('averdict');
+const verdicts=[
+  {min:0,max:29,color:'var(--red)',label:'Critical — Liability State',text:'Your consciousness balance sheet is running a significant deficit. Prioritize immediate investment in nervous system regulation and social capital. Begin the Resurrection Protocol now.'},
+  {min:30,max:42,color:'var(--gray)',label:'Managed Risk — Awareness Active',text:'You have awareness but insufficient infrastructure. Select 2–3 dimensions with scores below 6 and deploy targeted capital immediately. You are entering the Pivot phase.'},
+  {min:43,max:56,color:'var(--teal-lt)',label:'Asset Building — Momentum Present',text:'Your foundation is developing. Identify your highest-scoring dimensions and protect them. Bring your weaker areas into alignment to unlock compounding returns.'},
+  {min:57,max:70,color:'var(--gold)',label:'Compounding Capital — Sovereign State',text:'You are operating from a strong internal asset position. Focus now shifts to teaching the framework and building your Harvest Season infrastructure.'}
+];
+inputs.forEach(inp=>{
+  inp.addEventListener('input',()=>{
+    const vals=[...inputs].map(i=>{const v=parseInt(i.value);return(!isNaN(v)&&v>=1&&v<=10)?v:null;});
+    const filled=vals.filter(v=>v!==null);
+    if(!filled.length){aresult.style.display='none';return;}
+    const total=filled.reduce((a,b)=>a+b,0);
+    const display=filled.length===7?total:`~${Math.round(total/filled.length*7)}`;
+    const check=filled.length===7?total:Math.round(total/filled.length*7);
+    const v=verdicts.find(vv=>check>=vv.min&&check<=vv.max)||verdicts[3];
+    ascore.textContent=display;
+    ascore.style.color=v.color;
+    averdict.innerHTML=`<h4 style="color:${v.color};margin-bottom:.35rem;font-size:1rem;font-weight:600">${v.label}</h4><p style="font-size:.83rem;color:var(--gray);line-height:1.65">${v.text}</p>`;
+    aresult.style.display='flex';
+    inputs.forEach(i=>{const val=parseInt(i.value);i.style.borderColor=!isNaN(val)&&val<=4?'var(--red)':!isNaN(val)&&val>=9?'var(--gold)':'rgba(201,168,76,.3)';});
+  });
+});
+</script>
+</body>
+</html>
