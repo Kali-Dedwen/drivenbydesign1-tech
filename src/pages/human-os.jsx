@@ -210,46 +210,7 @@ const ENT_SERVICES = [
   { icon: "◆", title: "Executive Leadership Development", body: "Behavioral intelligence programming for C-suite and senior leadership teams navigating AI disruption, organizational change, and human capital strategy." },
 ];
 
-const TIERS = [
-  {
-    name: "Associate Practitioner", title: "M2M-AP™",
-    price: "$2,800", priceSub: "+ $200/mo platform access",
-    featured: false,
-    features: [
-      "RPA™ Assessment Certification",
-      "C.A.L.M.™ Framework Delivery",
-      "PIVOT OS™ Client Facilitation",
-      "M2M Digital Practitioner Portal",
-      "Monthly Cohort Supervision",
-    ],
-  },
-  {
-    name: "Professional Practitioner", title: "M2M-PP™",
-    price: "$4,800", priceSub: "+ $300/mo platform access",
-    featured: true,
-    features: [
-      "Full PIVOT + BRIDGE OS™ Certification",
-      "Three Spaces Framework™ License",
-      "Sully Sequence™ Deployment Rights",
-      "Client Assessment Dashboard",
-      "Quarterly M2M Cohort Access",
-      "Co-facilitation Opportunities",
-    ],
-  },
-  {
-    name: "Executive Practitioner", title: "M2M-EP™",
-    price: "$9,500", priceSub: "+ $400/mo platform access",
-    featured: false,
-    features: [
-      "Full Human OS™ Enterprise License",
-      "All IP Frameworks — Full Rights",
-      "White-Label Delivery Option",
-      "Direct Access to Dr. Kevin A. Smith",
-      "Enterprise Client Co-Delivery",
-      "Annual M2M Summit Seat",
-    ],
-  },
-];
+const TIERS = [];
 
 const NAICS = [
   { code: "611430", desc: "Professional and Management Development Training" },
@@ -405,27 +366,27 @@ export default function HumanOS() {
             workforce professionals ready to deploy Human OS™ methodology inside
             their organizations or with their own clients.
           </p>
-          <div className="tiers-grid">
-            {TIERS.map((t) => (
-              <div key={t.title} className={`tier-card${t.featured ? " featured" : ""}`}>
-                {t.featured && <div className="tier-badge">Most Popular</div>}
-                <p className="tier-name">{t.name}</p>
-                <h3 className="tier-title">{t.title}</h3>
-                <div className="tier-price">{t.price}</div>
-                <div className="tier-price-sub">{t.priceSub}</div>
-                <ul className="tier-features">
-                  {t.features.map((f) => (
-                    <li key={f} className="tier-feature">
-                      <span className="tier-feature-icon">✦</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a href="#contact" className={t.featured ? "btn-gold" : "btn-outline"} style={{ display: "block", textAlign: "center", fontSize: "0.8rem" }}>
-                  Apply for Certification
-                </a>
-              </div>
-            ))}
+          <div style={{textAlign:'center', padding:'48px 0'}}>
+            <a 
+              href="https://calendly.com/kevin-m2m"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display:'inline-block',
+                background:'linear-gradient(135deg,#B8860B,#C9A449)',
+                color:'#0B1F3A',
+                fontFamily:'sans-serif',
+                fontWeight:700,
+                fontSize:'14px',
+                letterSpacing:'0.08em',
+                textTransform:'uppercase',
+                padding:'16px 44px',
+                textDecoration:'none',
+                borderRadius:'2px'
+              }}
+            >
+              Apply for Certification →
+            </a>
           </div>
         </div>
       </section>
