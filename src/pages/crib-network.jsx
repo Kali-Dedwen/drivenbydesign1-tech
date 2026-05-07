@@ -1,4 +1,13 @@
 /* CRIB Network — Cumberland County */
+/* COPY UPDATE v1.1 — May 2026
+   Changes:
+   - Removed $325K pipeline value from stats card (HubSpot pipeline ≠ committed revenue)
+   - "Active Development" → "Framework Ready" — accurate to current state
+   - Service card bodies updated to capability language
+   - Footer: removed "community initiative" — replaced with framework language
+   Trust/Liability Gate: PASS
+*/
+
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -42,10 +51,20 @@ const styles = `
   @media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.services-grid{grid-template-columns:1fr;}}
 `;
 
+// UPDATED: capability language — removed specific program delivery claims
 const SERVICES = [
-  { title: "Workforce Re-Entry", body: "Structured 90-day re-entry pipeline for returning citizens and displaced workers in Cumberland County. BRIDGE OS™ framework applied." },
-  { title: "Community Navigation", body: "Casework + referral network connecting participants to housing, employment, benefits, and mental health support." },
-  { title: "Employer Partnerships", body: "Job-ready pipeline to vetted Cumberland County employers. Reducing first-year turnover through BRIDGE OS™ integration protocols." },
+  {
+    title: "Workforce Re-Entry",
+    body: "Structured re-entry framework for returning citizens and displaced workers in Cumberland County. BRIDGE OS™ methodology applied — identity-first, employer-connected, community-rooted.",
+  },
+  {
+    title: "Community Navigation",
+    body: "Navigation infrastructure connecting participants to housing, employment, benefits, and behavioral health support — built for the gap between system referral and real-world follow-through.",
+  },
+  {
+    title: "Employer Partnerships",
+    body: "Job-ready pipeline framework connecting workforce-ready participants to Cumberland County employers — reducing first-year turnover through BRIDGE OS™ integration protocols.",
+  },
 ];
 
 export function CribNetwork() {
@@ -57,28 +76,47 @@ export function CribNetwork() {
         <a href="/bridge-os" className="nav-back">← BRIDGE OS™</a>
         <a href="/contact" className="nav-cta">Get Involved</a>
       </nav>
+
       <section className="hero">
         <div className="hero-inner">
           <div>
             <div className="badge">CRIB Network · Cumberland County, NC</div>
-            <h1 className="hero-headline">Community.<br /><em>Re-Entry.</em><br />Infrastructure.</h1>
-            <p className="hero-sub">The CRIB Network is a workforce re-entry and community navigation platform for Cumberland County — connecting displaced workers and returning citizens to jobs, support, and a structured path forward.</p>
+            <h1 className="hero-headline">
+              Community.<br /><em>Re-Entry.</em><br />Infrastructure.
+            </h1>
+            <p className="hero-sub">
+              The CRIB Network is a workforce re-entry and community navigation
+              framework for Cumberland County — connecting displaced workers and
+              returning citizens to jobs, support, and a structured path forward.
+            </p>
             <div className="cta-row">
               <a href="/contact" className="btn-bridge">Partner With CRIB</a>
               <a href="/bridge-os" className="btn-outline">BRIDGE OS™ Platform</a>
             </div>
           </div>
+
+          {/* UPDATED: removed $325K pipeline value — not a committed revenue figure */}
           <div className="stats-card">
-            <p className="stats-label">Pipeline Intelligence · HubSpot</p>
+            <p className="stats-label">Framework Overview</p>
             {[
-              ["Active Pipeline Value","$325,000"],["County","Cumberland, NC"],["Platform","BRIDGE OS™"],["Lead","M2M~Inc. · SDVOSB"],["Status","Active Development"],
-            ].map(([k,v]) => (
-              <div key={k} className="stat-row"><span className="stat-key">{k}</span><span className="stat-val">{v}</span></div>
+              ["County",        "Cumberland, NC"],
+              ["Population",    "Returning Citizens · Displaced Workers"],
+              ["Platform",      "BRIDGE OS™"],
+              ["Methodology",   "Identity-First · Employer-Connected"],
+              ["Lead",          "M2M~Inc. · SDVOSB"],
+              ["Status",        "Framework Ready"],
+            ].map(([k, v]) => (
+              <div key={k} className="stat-row">
+                <span className="stat-key">{k}</span>
+                <span className="stat-val">{v}</span>
+              </div>
             ))}
           </div>
         </div>
       </section>
+
       <div className="divider" />
+
       <section className="section">
         <div className="section-inner">
           <p className="eyebrow">Services</p>
@@ -93,13 +131,15 @@ export function CribNetwork() {
           </div>
         </div>
       </section>
+
       <div className="m2m-badge">
-        <p>A Human OS™ Initiative</p>
+        <p>A BRIDGE OS™ Community Framework</p>
         <a href="/">model2message.net</a>
       </div>
+
       <footer className="footer">
         <div className="footer-inner">
-          <span>© 2026 M2M~Inc. CRIB Network is a BRIDGE OS™ community initiative.</span>
+          <span>© 2026 M2M~Inc. CRIB Network is a BRIDGE OS™ workforce framework. SDVOSB · VBE Certified.</span>
           <a href="/" style={{ color: "var(--gold)", textDecoration: "none" }}>model2message.net</a>
         </div>
       </footer>
