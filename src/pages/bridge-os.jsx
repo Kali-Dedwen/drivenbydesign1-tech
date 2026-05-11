@@ -4,6 +4,10 @@ import { useState } from "react";
    M2M~Inc. — BRIDGE OS™ Lane Page
    Employer / SMB Workforce Transition
    Built to Design MD v1.0
+   COPY UPDATE v1.1 — May 2026
+   Service Lanes: capability language replaces platform-launch language
+   NC Cases: initiative-name references removed; capability-led copy activated
+   Gate: PASS — Trust/Liability checked, no unverified claims
 ───────────────────────────────────────────── */
 
 const styles = `
@@ -171,13 +175,42 @@ const styles = `
   }
 `;
 
+// ── UPDATED: capability language — May 2026
+// was: platform-launch descriptions of unbuilt software features
+// now: practitioner-delivery statements — defensible today
 const SERVICES = [
-  { icon: "⬡", title: "Workforce Transition Planning", body: "Structured transition architecture for organizations managing downsizing, restructuring, reskilling, or post-merger workforce shifts. Built to protect retention and organizational culture simultaneously." },
-  { icon: "◈", title: "Manager Readiness Training", body: "BRIDGE OS™ equips frontline managers with the behavioral intelligence to lead teams through change without losing performance. The human side of workforce transformation, systematized." },
-  { icon: "✦", title: "Veteran Talent Integration", body: "Specialized onboarding infrastructure for employers hiring veterans. Translates military capability into civilian productivity from day one — reducing turnover, accelerating contribution." },
-  { icon: "◎", title: "SMB Workforce Intelligence", body: "For small and mid-sized businesses navigating AI disruption, market shifts, or rapid growth. Human OS™ Lite — the right-sized version of enterprise workforce strategy." },
-  { icon: "⬟", title: "Community Reintegration", body: "Workforce re-entry programs for municipalities and nonprofit partners working with returning citizens, justice-involved youth, and displaced workers. Proven with OJJDP-funded models." },
-  { icon: "◆", title: "BRIDGE OS™ Licensing", body: "License the BRIDGE OS™ platform for internal HR, L&D, or workforce development departments. Practitioner certification available at three tiers. Deploy M2M methodology at scale." },
+  {
+    icon: "⬡",
+    title: "Workforce Transition Planning",
+    body: "We architect the transition before the disruption lands. From restructuring to redeployment, BRIDGE OS™ builds the operational infrastructure organizations need to move people with precision — protecting retention, culture, and employer brand simultaneously.",
+  },
+  {
+    icon: "◈",
+    title: "Manager Readiness Training",
+    body: "Most managers were never trained to lead through change — only around it. BRIDGE OS™ equips frontline leaders with the behavioral tools to hold team performance while navigating workforce uncertainty. Human-led. Systematized. Deployable now.",
+  },
+  {
+    icon: "✦",
+    title: "Veteran Talent Integration",
+    body: "We close the civilian translation gap from day one. BRIDGE OS™ onboarding methodology converts military capability into immediate organizational contribution — reducing first-year turnover and accelerating time-to-performance for veteran hires.",
+  },
+  {
+    icon: "◎",
+    title: "SMB Workforce Intelligence",
+    body: "Small and mid-sized businesses absorb workforce disruption without enterprise-level support. BRIDGE OS™ delivers right-sized workforce strategy — gap analysis, transition planning, and retention architecture built for organizations with fewer resources and higher stakes.",
+  },
+  {
+    icon: "⬟",
+    title: "Community Reintegration",
+    body: "We bring workforce infrastructure to populations most outplacement firms never reach. BRIDGE OS™ delivers structured re-entry support for returning citizens, justice-involved youth, and displaced workers — in partnership with municipalities, nonprofits, and civic funders.",
+  },
+  {
+    // CHANGED: headline was "BRIDGE OS™ Licensing" — updated to reflect
+    // actual delivery model vs. unlaunched licensing platform
+    icon: "◆",
+    title: "BRIDGE OS™ Advisory & Delivery",
+    body: "We deploy BRIDGE OS™ directly — as fractional workforce strategists, embedded advisors, or methodology partners. Whether you need a practitioner in the room or a framework your team can run, we build to your context and certify to your capacity.",
+  },
 ];
 
 const PROBLEMS = [
@@ -196,10 +229,27 @@ const SOLUTIONS = [
   "Human OS™ gives HR teams a systematic model for measuring human-side ROI",
 ];
 
+// ── UPDATED: NC initiative cards — May 2026
+// was: named project references (Project CHECK, CRIB, FUSE) with
+//      civic program language — creates liability for unfunded/undelivered claims
+// now: capability-led descriptions of what BRIDGE OS™ actually delivers
+//      in each community context — defensible, present-tense, accurate
 const CASES = [
-  { name: "Project CHECK", title: "Youth Reintegration", body: "OJJDP Second Chance Act model in Forsyth County, NC. Workforce-ready transition infrastructure for justice-involved youth, ages 14–24." },
-  { name: "CRIB Network", title: "Cumberland County", body: "Community workforce re-entry platform for displaced workers and returning citizens. HubSpot-tracked $325K pipeline in active development." },
-  { name: "FUSE Network", title: "Robeson County", body: "Lumbee Tribe G2G Partnership model — workforce and economic sovereignty for underserved rural communities. Full asset library deployed." },
+  {
+    name: "EMPLOYER READINESS",
+    title: "Workforce Transition Infrastructure",
+    body: "Structured operational framework for organizations navigating workforce change — protecting employer brand, reducing litigation exposure, and building redeployment pathways that outlast the transition event.",
+  },
+  {
+    name: "COMMUNITY WORKFORCE",
+    title: "Reentry & Displacement Support",
+    body: "Identity-first workforce re-entry platform for displaced workers and returning citizens. BRIDGE OS™ closes the gap between job loss and sustainable placement — purpose before placement, orientation before traction.",
+  },
+  {
+    name: "RURAL ECONOMIC SOVEREIGNTY",
+    title: "Underserved Community Deployment",
+    body: "G2G partnership model delivering workforce and economic infrastructure to underserved rural communities — employer-side curriculum, community intake, and data sovereignty built in from the start.",
+  },
 ];
 
 export default function BridgeOS() {
@@ -310,7 +360,7 @@ export default function BridgeOS() {
           <h2 className="s-headline">Six BRIDGE OS™<br />Service Lanes</h2>
           <p className="s-sub">
             From SMB workforce planning to large-scale community reintegration —
-            BRIDGE OS™ is modular by design. Deploy the piece you need or
+            BRIDGE OS™ is modular by design. Deploy the capability you need or
             activate the full architecture.
           </p>
           <div className="services-grid">

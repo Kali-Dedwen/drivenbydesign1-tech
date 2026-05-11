@@ -50,53 +50,6 @@ const ARCH_COLS = [
   },
 ];
 
-const TIERS = [
-  {
-    name: "Associate Practitioner",
-    title: "M2M-AP™",
-    price: "$2,800",
-    priceSub: "+ $200/mo platform access",
-    featured: false,
-    features: [
-      "RPA™ Assessment Certification",
-      "C.A.L.M.™ Framework Delivery",
-      "PIVOT OS™ Client Facilitation",
-      "M2M Digital Practitioner Portal",
-      "Monthly Cohort Supervision",
-    ],
-  },
-  {
-    name: "Professional Practitioner",
-    title: "M2M-PP™",
-    price: "$4,800",
-    priceSub: "+ $300/mo platform access",
-    featured: true,
-    features: [
-      "Full PIVOT + BRIDGE OS™ Certification",
-      "Three Spaces Framework™ License",
-      "Sully Sequence™ Deployment Rights",
-      "Client Assessment Dashboard",
-      "Quarterly M2M Cohort Access",
-      "Co-facilitation Opportunities",
-    ],
-  },
-  {
-    name: "Executive Practitioner",
-    title: "M2M-EP™",
-    price: "$9,500",
-    priceSub: "+ $400/mo platform access",
-    featured: false,
-    features: [
-      "Full Human OS™ Enterprise License",
-      "All IP Frameworks — Full Rights",
-      "White-Label Delivery Option",
-      "Direct Access to Dr. Kevin A. Smith",
-      "Enterprise Client Co-Delivery",
-      "Annual M2M Summit Seat",
-    ],
-  },
-];
-
 const NAICS = [
   { code: "611430", desc: "Professional and Management Development Training" },
   { code: "541611", desc: "Administrative Management and General Management Consulting" },
@@ -286,58 +239,19 @@ export default function HumanOSLanding() {
             Build a Practice.
           </h2>
           <p className="text-base text-white-soft max-w-[560px] leading-[1.7] mb-12">
-            Three certification tiers for HR leaders, coaches, consultants, and
-            workforce professionals ready to deploy Human OS™ methodology inside
-            their organizations or with their own clients.
+            Practitioner certification is available by application — for HR leaders,
+            coaches, consultants, and workforce professionals ready to deploy
+            Human OS™ methodology inside their organizations or with their own clients.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {TIERS.map((t) => (
-              <div
-                key={t.title}
-                className={`bg-[linear-gradient(145deg,#0D2045,#1A3560)] border rounded-[14px] p-8 text-center relative overflow-hidden hover:-translate-y-1.5 transition-all duration-300 ${
-                  t.featured
-                    ? "border-gold/40 shadow-[0_0_40px_rgba(201,168,76,0.1)]"
-                    : "border-gold/[0.12] hover:border-gold/30"
-                }`}
-              >
-                {t.featured && (
-                  <div className="absolute top-4 right-4 font-mono text-[0.58rem] tracking-[0.1em] py-0.5 px-2 rounded-full bg-gold/15 text-gold border border-gold/30">
-                    Most Popular
-                  </div>
-                )}
-                <p className="font-mono text-[0.7rem] tracking-[0.12em] text-gold-muted uppercase mb-2">
-                  {t.name}
-                </p>
-                <h3 className="font-display text-[1.4rem] font-bold text-white mb-3">
-                  {t.title}
-                </h3>
-                <div className="font-display text-[2rem] font-black text-gold mb-1">
-                  {t.price}
-                </div>
-                <div className="text-[0.75rem] text-white-dim mb-6">{t.priceSub}</div>
-                <ul className="text-left flex flex-col gap-2 mb-6">
-                  {t.features.map((f) => (
-                    <li
-                      key={f}
-                      className="text-[0.82rem] text-white-soft flex items-start gap-2"
-                    >
-                      <span className="text-gold shrink-0 mt-px">✦</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  onClick={() => navigate("/human-intake")}
-                  className={`block w-full text-center text-[0.8rem] py-3 rounded-full cursor-pointer tracking-[0.03em] transition-all ${
-                    t.featured
-                      ? "bg-gold text-navy font-bold border-none hover:brightness-110 hover:scale-[1.02]"
-                      : "bg-transparent text-gold font-semibold border-[1.5px] border-gold hover:bg-gold/[0.08]"
-                  }`}
-                >
-                  Apply for Certification
-                </button>
-              </div>
-            ))}
+          <div className="flex justify-center py-8">
+            <a
+              href="https://calendly.com/kevin-m2m"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gold text-navy text-[0.875rem] font-bold py-3.5 px-8 rounded-full border-none cursor-pointer tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all inline-block no-underline"
+            >
+              Apply for Certification →
+            </a>
           </div>
         </div>
       </section>

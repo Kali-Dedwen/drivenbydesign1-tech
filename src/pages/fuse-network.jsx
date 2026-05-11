@@ -1,4 +1,14 @@
 /* FUSE Network — Robeson County / Lumbee Tribe */
+/* COPY UPDATE v1.1 — May 2026
+   Changes:
+   - Hero sub: removed "in partnership with the Lumbee Tribe" — G2G framework
+     built, but formal agreement not executed; replaced with "designed with"
+   - Partnership card: softened to framework/design language vs. active partnership
+   - Six pillars: updated from active program language to capability/framework language
+   - Footer: removed "in partnership with the Lumbee Tribe of North Carolina"
+   Trust/Liability Gate: PASS
+*/
+
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -47,13 +57,39 @@ const styles = `
   @media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.pillars-grid{grid-template-columns:1fr;}}
 `;
 
+// UPDATED: framework/capability language — removed active program delivery claims
+// Pillars describe what FUSE is designed to deliver, not what is currently running
 const PILLARS = [
-  { num: "01", title: "Sovereign Workforce Development", body: "Workforce readiness programming built on Lumbee cultural sovereignty — not external dependency frameworks. Skills + identity, together." },
-  { num: "02", title: "G2G Economic Infrastructure", body: "Government-to-government partnership model connecting Lumbee Tribe to federal and state workforce funding channels through M2M's SDVOSB-certified capacity." },
-  { num: "03", title: "Rural Business Incubation", body: "SMB and entrepreneurship support for Robeson County residents — connecting local business formation to the BRIDGE OS™ platform and regional employer networks." },
-  { num: "04", title: "Education & Credentialing", body: "Alternative credential pathways for rural youth and adults — aligned to real employer demand in the Robeson County and southeastern NC labor market." },
-  { num: "05", title: "Cultural Knowledge Systems", body: "Integrating Lumbee oral history, traditional knowledge, and community wisdom into workforce and leadership development programming." },
-  { num: "06", title: "Community Health & Stability", body: "Behavioral health and stability support tied to workforce participation — addressing the upstream factors that determine whether re-entry and workforce programs succeed." },
+  {
+    num: "01",
+    title: "Sovereign Workforce Development",
+    body: "Workforce readiness framework designed around Lumbee cultural sovereignty — not external dependency models. Skills and identity developed together, community outward.",
+  },
+  {
+    num: "02",
+    title: "G2G Economic Infrastructure",
+    body: "Government-to-government partnership framework connecting Robeson County to federal and state workforce funding channels through M2M's SDVOSB-certified delivery capacity.",
+  },
+  {
+    num: "03",
+    title: "Rural Business Incubation",
+    body: "SMB and entrepreneurship support framework for Robeson County residents — connecting local business formation to the BRIDGE OS™ methodology and regional employer networks.",
+  },
+  {
+    num: "04",
+    title: "Education & Credentialing",
+    body: "Alternative credential pathway framework for rural youth and adults — aligned to real employer demand in the Robeson County and southeastern NC labor market.",
+  },
+  {
+    num: "05",
+    title: "Cultural Knowledge Systems",
+    body: "Framework for integrating community oral history, traditional knowledge, and lived wisdom into workforce and leadership development programming — not as supplement, but as foundation.",
+  },
+  {
+    num: "06",
+    title: "Community Health & Stability",
+    body: "Behavioral health and stability support framework tied to workforce participation — addressing the upstream factors that determine whether re-entry and workforce programs hold.",
+  },
 ];
 
 export default function FuseNetwork() {
@@ -65,6 +101,7 @@ export default function FuseNetwork() {
         <a href="/bridge-os" className="nav-back">← BRIDGE OS™</a>
         <a href="/contact" className="nav-cta">Partner With FUSE</a>
       </nav>
+
       <section className="hero">
         <div className="hero-inner">
           <div>
@@ -75,33 +112,52 @@ export default function FuseNetwork() {
             <h1 className="hero-headline">
               Workforce.<br /><em>Sovereignty.</em><br />Robeson County.
             </h1>
-            <p className="hero-sub">The FUSE Network is a government-to-government workforce and economic sovereignty platform for Robeson County — built with the Lumbee Tribe and anchored in M2M's BRIDGE OS™ infrastructure.</p>
+            {/* UPDATED: "in partnership with" → "designed with" — G2G framework
+                built but formal agreement not yet executed */}
+            <p className="hero-sub">
+              The FUSE Network is a government-to-government workforce and economic
+              sovereignty framework for Robeson County — designed with Lumbee
+              community input and anchored in M2M's BRIDGE OS™ infrastructure.
+            </p>
             <div className="cta-row">
               <a href="/contact" className="btn-fuse">Partner With FUSE</a>
               <a href="/bridge-os" className="btn-outline">BRIDGE OS™ Platform</a>
             </div>
           </div>
+
+          {/* UPDATED: "G2G Partnership Model" → "G2G Framework" — reflects
+              design state vs. executed agreement */}
           <div className="partnership-card">
-            <p className="card-label">G2G Partnership Model</p>
-            <div className="card-title">Lumbee Tribe<br />of North Carolina</div>
-            <p className="card-body">A government-to-government workforce partnership connecting Lumbee tribal sovereignty with M2M's SDVOSB-certified platform and federal funding access.</p>
+            <p className="card-label">G2G Framework</p>
+            <div className="card-title">Robeson County<br />Workforce Initiative</div>
+            <p className="card-body">
+              A government-to-government workforce framework designed for
+              Robeson County — connecting community sovereignty with M2M's
+              SDVOSB-certified delivery capacity and federal funding access.
+            </p>
             <div className="card-divider" />
             <div className="card-detail">
               County: Robeson, NC<br />
-              Tribal Partner: Lumbee Tribe of NC<br />
-              Model: G2G Partnership Agreement<br />
+              Community: Lumbee Tribe of NC<br />
+              Model: G2G Framework<br />
               Platform: BRIDGE OS™ · Human OS™<br />
               Lead: M2M~Inc. · SDVOSB Certified
             </div>
           </div>
         </div>
       </section>
+
       <div className="divider" />
+
       <section className="section">
         <div className="section-inner">
           <p className="eyebrow">Program Architecture</p>
           <h2 className="s-headline">Six Pillars of Sovereign<br />Workforce Development</h2>
-          <p className="s-sub">FUSE doesn't impose an outside model on Robeson County. It builds from community sovereignty outward — using M2M infrastructure to amplify what's already there.</p>
+          <p className="s-sub">
+            FUSE doesn't impose an outside model on Robeson County. It builds
+            from community sovereignty outward — using M2M infrastructure to
+            amplify what's already there.
+          </p>
           <div className="pillars-grid">
             {PILLARS.map(p => (
               <div key={p.num} className="pillar">
@@ -113,17 +169,22 @@ export default function FuseNetwork() {
           </div>
         </div>
       </section>
+
       <div className="m2m-badge">
-        <p>A Human OS™ Initiative</p>
+        <p>A BRIDGE OS™ Community Framework</p>
         <a href="/">model2message.net</a>
         <p style={{ marginTop: "0.5rem", fontSize: "0.7rem" }}>M2M~Inc. · SDVOSB · VBE · Winston-Salem, NC</p>
       </div>
+
       <footer className="footer">
         <div className="footer-inner">
-          <span>© 2026 M2M~Inc. FUSE Network is a BRIDGE OS™ community initiative in partnership with the Lumbee Tribe of North Carolina.</span>
+          {/* UPDATED: removed "in partnership with the Lumbee Tribe" — formal
+              agreement not executed; framework designed with community input */}
+          <span>© 2026 M2M~Inc. FUSE Network is a BRIDGE OS™ workforce framework for Robeson County. SDVOSB · VBE Certified.</span>
           <a href="/" style={{ color: "var(--gold)", textDecoration: "none" }}>model2message.net</a>
         </div>
       </footer>
     </>
   );
 }
+
