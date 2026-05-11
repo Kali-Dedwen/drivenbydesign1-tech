@@ -15,7 +15,7 @@ import CribNetwork from './pages/crib-network'
 import FuseNetwork from './pages/fuse-network'
 import PivotDashboard from './pages/PivotDashboard'
 export default function App() {
-  return (
+  return (import ThankYou from './pages/ThankYou'
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
@@ -36,7 +36,7 @@ export default function App() {
         <Route path="/project-check" element={<ProjectCheck />} />
         <Route path="/crib-network" element={<CribNetwork />} />
         <Route path="/fuse-network" element={<FuseNetwork />} />
-      </Routes>
+      </Routes><Route path="/thank-you" element={<ThankYou />} />
     </BrowserRouter>
   )
 }
