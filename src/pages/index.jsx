@@ -9,23 +9,7 @@ import { getCurrentLang, translations } from "../lang";
    Navy / Gold · Sovereign Architect Platform
 ───────────────────────────────────────────── */
 
-const TOKENS = {
-  navy:        "#0A1628",
-  navyMid:     "#0D2045",
-  navyLight:   "#1A3560",
-  gold:        "#C9A84C",
-  goldBright:  "#F0C040",
-  goldMuted:   "#9E7E38",
-  white:       "#FFFFFF",
-  whiteSoft:   "#E8EDF5",
-  whiteDim:    "#A0AEC0",
-  pivotBlue:   "#4A90D9",
-  bridgeGreen: "#48BB78",
-};
-
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -548,28 +532,28 @@ const OS_LANES = [
   {
     name: "PIVOT OS™",
     tag: "Individual",
-    tagColor: TOKENS.pivotBlue,
+    tagColor: 'var(--color-pivot)',
     icon: "◈",
     iconBg: "rgba(74,144,217,0.15)",
-    accentColor: TOKENS.pivotBlue,
+    accentColor: 'var(--color-pivot)',
     body: "Career reinvention for veterans and professionals navigating the space between what they were and who they're becoming. A structured system, not a motivational speech.",
   },
   {
     name: "BRIDGE OS™",
     tag: "Employer / SMB",
-    tagColor: TOKENS.bridgeGreen,
+    tagColor: 'var(--color-bridge)',
     icon: "⬡",
     iconBg: "rgba(72,187,120,0.15)",
-    accentColor: TOKENS.bridgeGreen,
+    accentColor: 'var(--color-bridge)',
     body: "Workforce transition infrastructure for employers, municipalities, and SMBs managing the human side of organizational change. Built for retention, not replacement.",
   },
   {
     name: "Human OS™",
     tag: "Enterprise / Gov",
-    tagColor: TOKENS.gold,
+    tagColor: 'var(--color-gold)',
     icon: "⬟",
     iconBg: "rgba(201,168,76,0.15)",
-    accentColor: TOKENS.gold,
+    accentColor: 'var(--color-gold)',
     body: "Enterprise and government workforce intelligence at scale. The full M2M Composure Architecture™ deployed across teams, agencies, and institutions ready to lead through disruption.",
   },
 ];
@@ -635,7 +619,7 @@ export default function M2MHomepage() {
                 {audiences[wordIdx]}
               </span>
               <br />{tx.headline_suffix}<br />
-              <span style={{ color: TOKENS.gold }}>{tx.headline_accent}</span>
+              <span style={{ color: 'var(--color-gold)' }}>{tx.headline_accent}</span>
             </h1>
             <p className="hero-subhead animate-in delay-2">
               {tx.subheadline}
@@ -665,9 +649,9 @@ export default function M2MHomepage() {
                 </p>
                 <div className="platform-lanes">
                   {[
-                    { color: TOKENS.pivotBlue, label: "PIVOT OS™", badge: "Individual" },
-                    { color: TOKENS.bridgeGreen, label: "BRIDGE OS™", badge: "Employer" },
-                    { color: TOKENS.gold, label: "Human OS™", badge: "Enterprise" },
+                    { color: 'var(--color-pivot)', label: "PIVOT OS™", badge: "Individual" },
+                    { color: 'var(--color-bridge)', label: "BRIDGE OS™", badge: "Employer" },
+                    { color: 'var(--color-gold)', label: "Human OS™", badge: "Enterprise" },
                   ].map((lane) => (
                     <div key={lane.label} className="lane-chip">
                       <div className="lane-dot" style={{ background: lane.color }} />
@@ -778,7 +762,7 @@ export default function M2MHomepage() {
           <div>
             <p className="section-eyebrow">The Architect</p>
             <h2 className="section-headline">Dr. Kevin A. Smith</h2>
-            <p style={{ fontSize: "1rem", color: TOKENS.whiteSoft, lineHeight: 1.7, marginBottom: "1.5rem" }}>
+            <p style={{ fontSize: "1rem", color: 'var(--color-white-soft)', lineHeight: 1.7, marginBottom: "1.5rem" }}>
               Founder & Chief Opportunity Officer of M2M~Inc. Navy veteran.
               Behavioral systems architect. Keynote speaker. The platform is
               built from lived experience — military discipline, workforce
@@ -788,7 +772,7 @@ export default function M2MHomepage() {
             <div className="credential-grid">
               {CREDENTIALS.map((c) => (
                 <div key={c} className="credential-chip">
-                  <span style={{ color: TOKENS.gold, fontSize: "0.7rem" }}>✦</span>
+                  <span style={{ color: 'var(--color-gold)', fontSize: "0.7rem" }}>✦</span>
                   <span className="credential-mark">{c}</span>
                 </div>
               ))}
@@ -802,7 +786,7 @@ export default function M2MHomepage() {
             </blockquote>
             <p className="sovereign-quote-attr">
               — <strong>Dr. Kevin A. Smith</strong>, Founder · M2M~Inc.<br />
-              <span style={{ color: TOKENS.whiteDim }}>Sovereign Architect · Navy Veteran · Hon. D.H.L.</span>
+              <span style={{ color: 'var(--color-white-dim)' }}>Sovereign Architect · Navy Veteran · Hon. D.H.L.</span>
             </p>
           </div>
         </div>
@@ -816,7 +800,7 @@ export default function M2MHomepage() {
               fontFamily: "var(--font-mono)",
               fontSize: "0.68rem",
               letterSpacing: "0.18em",
-              color: TOKENS.gold,
+              color: 'var(--color-gold)',
               textTransform: "uppercase",
               marginBottom: "1rem",
             }}
