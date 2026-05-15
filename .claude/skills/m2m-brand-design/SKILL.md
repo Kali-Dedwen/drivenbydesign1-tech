@@ -72,9 +72,14 @@ Email:
 - No HTML formatting in Make.com to Gmail to Superhuman pipeline
 
 ## Platform Lane Colors
-- PIVOT OS: Navy + Gold, warm amber
-- BRIDGE OS: Teal + Coral
-- Human OS: Deep slate + Electric blue
+
+Brand level (platform-wide): Navy #0A1628 + Gold #C9A84C — unchanged
+
+- PIVOT OS™ (The Individual) — Primary: Steel Blue / Teal #378ADD
+- BRIDGE OS™ (The Organization) — Primary: Sage Green #1D9E75
+- Human OS™ (The Culture) — Primary: Gold #C9A84C (same as brand-level gold — intentional)
+
+Source of truth: live site at www.model2message.net.
 
 ## Front-End Principles
 - Hero must answer in 3 seconds: who is this for, what do they get, what do I do next
