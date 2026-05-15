@@ -19,6 +19,7 @@ import ThankYou from './pages/ThankYou'
 export default function App() {
   return (
     <BrowserRouter>
+      <div className="noise-overlay" aria-hidden="true" />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/pivot-os" element={<PivotOSLanding />} />

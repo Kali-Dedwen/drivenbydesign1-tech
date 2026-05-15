@@ -95,7 +95,7 @@ export default function PivotOSLanding() {
 
       {/* ── HERO ── */}
       <section className="min-h-screen flex items-center pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0B1E3A_60%,#0A1628_100%)] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_75%_40%,rgba(74,144,217,0.08),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_30%_42%,rgba(13,115,119,0.08),transparent)] pointer-events-none" />
         <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-20 items-center relative">
           {/* Left column */}
           <div>
@@ -173,16 +173,17 @@ export default function PivotOSLanding() {
             {STEPS.map((s) => (
               <div
                 key={s.num}
-                className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-white/[0.06] rounded-[14px] p-7 relative overflow-hidden hover:-translate-y-1 hover:border-pivot/30 transition-all duration-300"
+                className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-white/[0.06] rounded-[14px] p-7 relative overflow-hidden hover:-translate-y-0.5 hover:border-pivot/30 hover:shadow-[0_4px_24px_rgba(13,115,119,0.18)] transition-all duration-300"
               >
-                <div className="font-display text-[3.5rem] font-black text-pivot/[0.12] absolute top-3 right-4 leading-none pointer-events-none">
+                <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(to_bottom,rgba(13,115,119,0.06),transparent)] pointer-events-none" />
+                <div className="font-display text-[3.5rem] font-black text-pivot/[0.22] absolute top-3 right-4 leading-none pointer-events-none">
                   {s.num}
                 </div>
-                <div className="text-2xl mb-4 w-11 h-11 flex items-center justify-center bg-pivot-light rounded-[10px]">
+                <div className="relative text-2xl mb-4 w-11 h-11 flex items-center justify-center bg-pivot-light rounded-[10px]">
                   {s.icon}
                 </div>
-                <h3 className="font-display text-[1.2rem] font-bold text-white mb-2">{s.title}</h3>
-                <p className="text-[0.85rem] text-white-soft leading-relaxed">{s.body}</p>
+                <h3 className="relative font-display text-[1.2rem] font-bold text-white mb-2">{s.title}</h3>
+                <p className="relative text-[0.85rem] text-white-soft leading-relaxed">{s.body}</p>
               </div>
             ))}
           </div>
@@ -206,21 +207,39 @@ export default function PivotOSLanding() {
             Every framework in PIVOT OS™ is a pending trademark — built, tested,
             and refined through real practitioner engagements.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {TOOLS.map((t) => (
-              <div
-                key={t.name}
-                className="bg-pivot/5 border border-pivot/15 rounded-xl p-6 hover:bg-pivot/10 hover:border-pivot/30 transition-all duration-300"
-              >
-                <p className="font-mono text-[0.65rem] tracking-[0.1em] text-pivot uppercase mb-2">
-                  {t.tm}
-                </p>
-                <h3 className="font-display text-[1.25rem] font-bold text-white mb-2.5">
-                  {t.name}
-                </h3>
-                <p className="text-[0.85rem] text-white-soft leading-relaxed">{t.desc}</p>
-              </div>
-            ))}
+          <div className="flex flex-col gap-5">
+            {/* Featured: RPA™ — system entry point */}
+            <div
+              key={TOOLS[0].name}
+              className="bg-pivot/[0.07] border border-pivot/20 border-l-[3px] border-l-teal rounded-xl p-8 hover:bg-pivot/[0.11] hover:border-pivot/35 transition-all duration-300"
+            >
+              <p className="font-mono text-[0.65rem] tracking-[0.1em] text-pivot uppercase mb-2">
+                {TOOLS[0].tm}
+              </p>
+              <h3 className="font-display text-[1.75rem] font-bold text-white mb-3">
+                {TOOLS[0].name}
+              </h3>
+              <p className="text-[0.95rem] text-white-soft leading-relaxed max-w-[720px]">
+                {TOOLS[0].desc}
+              </p>
+            </div>
+            {/* Remaining 5 — 3-col grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {TOOLS.slice(1).map((t) => (
+                <div
+                  key={t.name}
+                  className="bg-pivot/5 border border-pivot/15 border-l-[3px] border-l-teal rounded-xl p-6 hover:bg-pivot/10 hover:border-pivot/30 transition-all duration-300"
+                >
+                  <p className="font-mono text-[0.65rem] tracking-[0.1em] text-pivot uppercase mb-2">
+                    {t.tm}
+                  </p>
+                  <h3 className="font-display text-[1.25rem] font-bold text-white mb-2.5">
+                    {t.name}
+                  </h3>
+                  <p className="text-[0.85rem] text-white-soft leading-relaxed">{t.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

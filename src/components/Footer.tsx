@@ -26,7 +26,7 @@ export default function Footer() {
       </div>
       <div className="max-w-[1280px] mx-auto mt-6 pt-5 border-t border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center flex-wrap gap-4">
         <p className="text-[0.72rem] text-white-dim">
-          © 2025 M2M~Inc. All rights reserved. SDVOSB · VBE Certified.
+          © 2026 M2M~Inc. All rights reserved. SDVOSB · VBE · SAFe 6 · USPTO · Tuck
         </p>
         <div className="flex gap-6 flex-wrap">
           {FOOTER_LINKS.map((link) => (

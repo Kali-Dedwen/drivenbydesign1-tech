@@ -425,7 +425,7 @@ const styles = `
     margin-bottom: 0.25rem;
   }
   .proof-label {
-    font-size: 0.75rem; color: var(--white-dim);
+    font-size: 0.75rem; color: var(--white);
     letter-spacing: 0.05em; text-transform: uppercase;
     font-family: var(--font-mono);
   }
@@ -526,7 +526,7 @@ const styles = `
   }
 `;
 
-const AUDIENCES = ["VETERANS", "WORKFORCE", "ENTERPRISE", "LEADERS", "BUILDERS"];
+const AUDIENCES = ["LEADERS", "BUILDERS", "PIONEERS", "CHANGEMAKERS", "ARCHITECTS"];
 
 const OS_LANES = [
   {
@@ -575,18 +575,13 @@ export default function M2MHomepage() {
   const [wordIdx, setWordIdx] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
 
-  const audiences = [
-    tx.audience_1,
-    tx.audience_2,
-    tx.audience_3,
-    tx.audience_4,
-  ];
+  const audiences = AUDIENCES;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setWordVisible(false);
       setTimeout(() => {
-        setWordIdx((i) => (i + 1) % 4);
+        setWordIdx((i) => (i + 1) % AUDIENCES.length);
         setWordVisible(true);
       }, 400);
     }, 2800);

@@ -112,7 +112,7 @@ export default function BridgeOSLanding() {
 
       {/* ── HERO ── */}
       <section className="min-h-screen flex items-center pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0C1F35_60%,#0A1628_100%)] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_75%_40%,rgba(72,187,120,0.07),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_30%_42%,rgba(72,187,120,0.08),transparent)] pointer-events-none" />
         <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-20 items-center relative">
           {/* Left column */}
           <div>
@@ -218,7 +218,7 @@ export default function BridgeOSLanding() {
                 {SOLUTIONS.map((s) => (
                   <div
                     key={s}
-                    className="flex items-start gap-3 py-3.5 px-4 rounded-[10px] text-[0.875rem] leading-normal bg-bridge-light border border-bridge-border text-white-soft"
+                    className="flex items-start gap-3 py-3.5 px-4 rounded-[10px] text-[0.875rem] leading-normal bg-[rgba(72,187,120,0.14)] border border-bridge-border border-l-[3px] border-l-bridge shadow-[0_2px_12px_rgba(72,187,120,0.08)] text-white"
                   >
                     <span className="shrink-0 mt-0.5 text-bridge">◆</span>
                     {s}
