@@ -6,7 +6,7 @@
 
 const styles = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  :root{--navy:#0A1628;--navy-mid:#0D2045;--check:#7C6FCD;--check-light:rgba(124,111,205,0.12);--check-border:rgba(124,111,205,0.25);--gold:#C9A84C;--gold-muted:#9E7E38;--bridge:#48BB78;--white:#FFFFFF;--white-soft:#E8EDF5;--white-dim:#A0AEC0;--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif;--font-mono:'JetBrains Mono',monospace;}
+  :root{--navy:#0A1628;--navy-mid:#0D2045;--check:#7C6FCD;--check-light:rgba(124,111,205,0.12);--check-border:rgba(124,111,205,0.25);--gold:#C9A84C;--gold-muted:#9E7E38;--bridge:#1D9E75;--white:#FFFFFF;--white-soft:#E8EDF5;--white-dim:#A0AEC0;--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif;--font-mono:'JetBrains Mono',monospace;}
   html{scroll-behavior:smooth;}body{background:var(--navy);color:var(--white);font-family:var(--font-body);line-height:1.6;overflow-x:hidden;}
   .nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,4rem);background:rgba(10,22,40,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(124,111,205,0.2);}
   .nav-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--white);text-decoration:none;}.nav-logo span{color:var(--check);}
@@ -19,7 +19,7 @@ const styles = `
   .badge{display:inline-flex;align-items:center;gap:0.375rem;padding:0.3rem 0.75rem;border-radius:9999px;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;}
   .badge-check{background:var(--check-light);border:1px solid var(--check-border);color:var(--check);}
   .badge-ojjdp{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);color:var(--gold);}
-  .badge-forsyth{background:rgba(72,187,120,0.1);border:1px solid rgba(72,187,120,0.2);color:var(--bridge);}
+  .badge-forsyth{background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.2);color:var(--bridge);}
   .hero-headline{font-family:var(--font-display);font-size:clamp(2.75rem,5vw,4.5rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em;color:var(--white);margin-bottom:1.25rem;}
   .hero-headline em{color:var(--check);font-style:normal;}
   .hero-sub{font-size:1rem;color:var(--white-soft);line-height:1.75;max-width:500px;margin-bottom:2rem;}
@@ -135,8 +135,8 @@ export default function ProjectCheck() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.875rem" }}>
             {[
               { letter: "C", word: "Crisis Intervention", color: "#7C6FCD" },
-              { letter: "H", word: "Human Capital Development", color: "#4A90D9" },
-              { letter: "E", word: "Education & Credentialing", color: "#48BB78" },
+              { letter: "H", word: "Human Capital Development", color: "#378ADD" },
+              { letter: "E", word: "Education & Credentialing", color: "#1D9E75" },
               { letter: "C", word: "Community Knowledge Transfer", color: "#C9A84C" },
               { letter: "K", word: "Knowledge Systems & Reintegration", color: "#FC8181" },
             ].map((item) => (

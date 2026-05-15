@@ -23,8 +23,8 @@ const styles = `
     --white:        #FFFFFF;
     --white-soft:   #E8EDF5;
     --white-dim:    #A0AEC0;
-    --pivot:        #4A90D9;
-    --bridge:       #48BB78;
+    --pivot:        #378ADD;
+    --bridge:       #1D9E75;
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body:    'DM Sans', system-ui, sans-serif;
     --font-mono:    'JetBrains Mono', monospace;
@@ -534,7 +534,7 @@ const OS_LANES = [
     tag: "Individual",
     tagColor: 'var(--color-pivot)',
     icon: "◈",
-    iconBg: "rgba(74,144,217,0.15)",
+    iconBg: "rgba(55,138,221,0.15)",
     accentColor: 'var(--color-pivot)',
     body: "Career reinvention for veterans and professionals navigating the space between what they were and who they're becoming. A structured system, not a motivational speech.",
   },
@@ -543,7 +543,7 @@ const OS_LANES = [
     tag: "Employer / SMB",
     tagColor: 'var(--color-bridge)',
     icon: "⬡",
-    iconBg: "rgba(72,187,120,0.15)",
+    iconBg: "rgba(29,158,117,0.15)",
     accentColor: 'var(--color-bridge)',
     body: "Workforce transition infrastructure for employers, municipalities, and SMBs managing the human side of organizational change. Built for retention, not replacement.",
   },

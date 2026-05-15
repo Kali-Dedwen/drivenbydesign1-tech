@@ -148,7 +148,7 @@ export default function BridgeIntake() {
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-bridge/20 rounded-2xl p-8 md:p-10 shadow-[0_0_40px_rgba(72,187,120,0.07)]"
+            className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-bridge/20 rounded-2xl p-8 md:p-10 shadow-[0_0_40px_rgba(29,158,117,0.07)]"
           >
             {/* First Name + Last Name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">

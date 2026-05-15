@@ -152,7 +152,7 @@ export default function PivotOSLanding() {
         </div>
       </section>
 
-      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(74,144,217,0.2),transparent)]" />
+      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(55,138,221,0.2),transparent)]" />
 
       {/* ── PROCESS ── */}
       <section id="process" className="py-24 px-[clamp(1.5rem,5vw,4rem)] bg-navy">
@@ -190,7 +190,7 @@ export default function PivotOSLanding() {
         </div>
       </section>
 
-      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(74,144,217,0.2),transparent)]" />
+      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(55,138,221,0.2),transparent)]" />
 
       {/* ── IP TOOLS ── */}
       <section className="py-24 px-[clamp(1.5rem,5vw,4rem)] bg-navy-deep">
@@ -244,7 +244,7 @@ export default function PivotOSLanding() {
         </div>
       </section>
 
-      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(74,144,217,0.2),transparent)]" />
+      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(55,138,221,0.2),transparent)]" />
 
       {/* ── TESTIMONIAL ── */}
       <section className="py-24 px-[clamp(1.5rem,5vw,4rem)] bg-navy">
@@ -252,7 +252,7 @@ export default function PivotOSLanding() {
           <p className="font-mono text-[0.68rem] tracking-[0.18em] text-pivot uppercase mb-3.5 flex items-center gap-3 before:block before:w-[3px] before:h-9 before:bg-pivot before:rounded-sm">
             From the Field
           </p>
-          <div className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-pivot/20 rounded-2xl p-12 relative shadow-[0_0_40px_rgba(74,144,217,0.07)]">
+          <div className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-pivot/20 rounded-2xl p-12 relative shadow-[0_0_40px_rgba(55,138,221,0.07)]">
             <span className="font-display text-[6rem] text-pivot opacity-15 leading-[0.5] mb-4 block">
               &ldquo;
             </span>
@@ -273,7 +273,7 @@ export default function PivotOSLanding() {
 
       {/* ── CTA + EMAIL FORM ── */}
       <section className="py-28 px-[clamp(1.5rem,5vw,4rem)] text-center bg-[linear-gradient(135deg,#0B1E3A_0%,#0A1628_100%)] relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse,rgba(74,144,217,0.07),transparent_70%)] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse,rgba(55,138,221,0.07),transparent_70%)] pointer-events-none" />
         <div className="max-w-[680px] mx-auto relative">
           <p className="font-mono text-[0.68rem] tracking-[0.18em] text-pivot uppercase mb-4">
             Begin Here

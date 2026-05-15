@@ -26,7 +26,7 @@ const ENT_SERVICES = [
 const ARCH_COLS = [
   {
     label: "PIVOT OS™",
-    labelColor: "#4A90D9",
+    labelColor: "#378ADD",
     cards: [
       { title: "Individual Assessment", body: "RPA™ + C.A.L.M.™ at the employee level" },
       { title: "Career Reinvention", body: "Three Spaces Framework™ for individual contributors" },
@@ -42,7 +42,7 @@ const ARCH_COLS = [
   },
   {
     label: "BRIDGE OS™",
-    labelColor: "#48BB78",
+    labelColor: "#1D9E75",
     cards: [
       { title: "Team Transition", body: "Manager readiness + workforce change infrastructure" },
       { title: "Community Workforce", body: "Government + nonprofit re-entry systems" },

@@ -9,8 +9,8 @@ import Footer from "../components/Footer";
 ───────────────────────────────────────────── */
 
 const LANES = [
-  { id: "pivot", label: "PIVOT OS™", sub: "Individual reinvention", color: "#4A90D9", rgb: "74,144,217" },
-  { id: "bridge", label: "BRIDGE OS™", sub: "Employer / workforce", color: "#48BB78", rgb: "72,187,120" },
+  { id: "pivot", label: "PIVOT OS™", sub: "Individual reinvention", color: "#378ADD", rgb: "55,138,221" },
+  { id: "bridge", label: "BRIDGE OS™", sub: "Employer / workforce", color: "#1D9E75", rgb: "29,158,117" },
   { id: "human", label: "Human OS™", sub: "Enterprise / government", color: "#C9A84C", rgb: "201,168,76" },
 ] as const;
 

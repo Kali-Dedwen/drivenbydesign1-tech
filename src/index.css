@@ -13,16 +13,16 @@
   --color-cream: #FAF9F8;
   --color-ink: #1A1C1C;
   --color-ink-muted: #45474C;
-  --color-pivot: #4A90D9;
-  --color-pivot-light: rgba(74, 144, 217, 0.15);
-  --color-pivot-border: rgba(74, 144, 217, 0.25);
+  --color-pivot: #378ADD;
+  --color-pivot-light: rgba(55,138,221, 0.15);
+  --color-pivot-border: rgba(55,138,221, 0.25);
   --color-white-soft: #E8EDF5;
   --color-white-dim: #A0AEC0;
 
   /* BRIDGE OS Brand Tokens */
-  --color-bridge: #48BB78;
-  --color-bridge-light: rgba(72, 187, 120, 0.12);
-  --color-bridge-border: rgba(72, 187, 120, 0.25);
+  --color-bridge: #1D9E75;
+  --color-bridge-light: rgba(29,158,117, 0.12);
+  --color-bridge-border: rgba(29,158,117, 0.25);
   --color-teal: #0D7377;
   --color-teal-deep: #00595C;
   --color-teal-light: #A2F5F9;

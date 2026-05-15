@@ -112,7 +112,7 @@ export default function BridgeOSLanding() {
 
       {/* ── HERO ── */}
       <section className="min-h-screen flex items-center pt-[120px] pb-20 px-[clamp(1.5rem,5vw,4rem)] bg-[linear-gradient(135deg,#0A1628_0%,#0C1F35_60%,#0A1628_100%)] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_30%_42%,rgba(72,187,120,0.08),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_30%_42%,rgba(29,158,117,0.08),transparent)] pointer-events-none" />
         <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-20 items-center relative">
           {/* Left column */}
           <div>
@@ -150,7 +150,7 @@ export default function BridgeOSLanding() {
           </div>
 
           {/* Metrics Panel */}
-          <div className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-bridge/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(72,187,120,0.07)] animate-[fade-in-up_0.6s_0.25s_ease_forwards] opacity-0">
+          <div className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-bridge/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(29,158,117,0.07)] animate-[fade-in-up_0.6s_0.25s_ease_forwards] opacity-0">
             <p className="font-mono text-[0.65rem] tracking-[0.15em] text-bridge uppercase mb-6">
               Why Workforce Transition Fails
             </p>
@@ -178,7 +178,7 @@ export default function BridgeOSLanding() {
         </div>
       </section>
 
-      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(72,187,120,0.2),transparent)]" />
+      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(29,158,117,0.2),transparent)]" />
 
       {/* ── PROBLEM / SOLUTION ── */}
       <section className="py-24 px-[clamp(1.5rem,5vw,4rem)] bg-[#060F1E]">
@@ -218,7 +218,7 @@ export default function BridgeOSLanding() {
                 {SOLUTIONS.map((s) => (
                   <div
                     key={s}
-                    className="flex items-start gap-3 py-3.5 px-4 rounded-[10px] text-[0.875rem] leading-normal bg-[rgba(72,187,120,0.14)] border border-bridge-border border-l-[3px] border-l-bridge shadow-[0_2px_12px_rgba(72,187,120,0.08)] text-white"
+                    className="flex items-start gap-3 py-3.5 px-4 rounded-[10px] text-[0.875rem] leading-normal bg-[rgba(29,158,117,0.14)] border border-bridge-border border-l-[3px] border-l-bridge shadow-[0_2px_12px_rgba(29,158,117,0.08)] text-white"
                   >
                     <span className="shrink-0 mt-0.5 text-bridge">◆</span>
                     {s}
@@ -230,7 +230,7 @@ export default function BridgeOSLanding() {
         </div>
       </section>
 
-      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(72,187,120,0.2),transparent)]" />
+      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(29,158,117,0.2),transparent)]" />
 
       {/* ── SERVICES ── */}
       <section id="services" className="py-24 px-[clamp(1.5rem,5vw,4rem)] bg-navy">
@@ -252,7 +252,7 @@ export default function BridgeOSLanding() {
             {SERVICES.map((s) => (
               <div
                 key={s.title}
-                className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-white/[0.06] border-t-[3px] border-t-bridge rounded-[14px] p-7 hover:-translate-y-1.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_32px_rgba(72,187,120,0.08)] transition-all duration-300"
+                className="bg-[linear-gradient(145deg,#0D2045,#1A3560)] border border-white/[0.06] border-t-[3px] border-t-bridge rounded-[14px] p-7 hover:-translate-y-1.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_32px_rgba(29,158,117,0.08)] transition-all duration-300"
               >
                 <div className="text-2xl mb-4 w-11 h-11 flex items-center justify-center bg-bridge-light rounded-[10px]">
                   {s.icon}
@@ -267,7 +267,7 @@ export default function BridgeOSLanding() {
         </div>
       </section>
 
-      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(72,187,120,0.2),transparent)]" />
+      <div className="w-full h-px bg-[linear-gradient(to_right,transparent,rgba(29,158,117,0.2),transparent)]" />
 
       {/* ── COMMUNITY USE CASES ── */}
       <section className="py-24 px-[clamp(1.5rem,5vw,4rem)] bg-[#060F1E]">
@@ -305,7 +305,7 @@ export default function BridgeOSLanding() {
 
       {/* ── CTA ── */}
       <section className="py-28 px-[clamp(1.5rem,5vw,4rem)] text-center bg-[linear-gradient(135deg,#0C1F35_0%,#0A1628_100%)] relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse,rgba(72,187,120,0.06),transparent_70%)] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse,rgba(29,158,117,0.06),transparent_70%)] pointer-events-none" />
         <div className="max-w-[700px] mx-auto relative">
           <p className="font-mono text-[0.68rem] tracking-[0.18em] text-bridge uppercase mb-4">
             Build the Bridge
