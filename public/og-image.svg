@@ -1,0 +1,21 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="630" fill="#0B1F3A"/>
+<rect x="0" y="0" width="6" height="630" fill="#C9A449"/>
+<rect x="60" y="60" width="1080" height="510" rx="4" fill="#0F2847" opacity="0.6"/>
+<circle cx="980" cy="315" r="210" fill="#0B1F3A" stroke="#C9A449" stroke-width="2" opacity="0.3"/>
+<circle cx="980" cy="315" r="160" fill="#0B1F3A" stroke="#C9A449" stroke-width="1" opacity="0.2"/>
+<text x="980" y="355" font-family="Georgia, serif" font-size="130" font-weight="700" fill="#C9A449" text-anchor="middle" opacity="0.15">M~</text>
+<text x="100" y="148" font-family="Georgia, serif" font-size="22" font-weight="400" fill="#C9A449" letter-spacing="6">M2M~INC.</text>
+<line x1="100" y1="168" x2="340" y2="168" stroke="#C9A449" stroke-width="1" opacity="0.4"/>
+<text x="100" y="260" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#FFFFFF">Built for</text>
+<text x="100" y="348" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#C9A449">Architects</text>
+<text x="100" y="436" font-family="Georgia, serif" font-size="54" font-weight="400" fill="#FFFFFF" opacity="0.9">Who Refuse to Stay Stuck.</text>
+<text x="100" y="502" font-family="Georgia, serif" font-size="18" fill="#C9A449" opacity="0.7" letter-spacing="2">VETERAN-OWNED  ·  SDVOSB/VBE  ·  WINSTON-SALEM NC</text>
+<rect x="100" y="530" width="160" height="36" rx="4" fill="#C9A449" opacity="0.15" stroke="#C9A449" stroke-width="1"/>
+<text x="180" y="553" font-family="Georgia, serif" font-size="13" fill="#C9A449" text-anchor="middle" letter-spacing="1">PIVOT OS™</text>
+<rect x="276" y="530" width="172" height="36" rx="4" fill="#C9A449" opacity="0.15" stroke="#C9A449" stroke-width="1"/>
+<text x="362" y="553" font-family="Georgia, serif" font-size="13" fill="#C9A449" text-anchor="middle" letter-spacing="1">BRIDGE OS™</text>
+<rect x="464" y="530" width="172" height="36" rx="4" fill="#C9A449" opacity="0.15" stroke="#C9A449" stroke-width="1"/>
+<text x="550" y="553" font-family="Georgia, serif" font-size="13" fill="#C9A449" text-anchor="middle" letter-spacing="1">HUMAN OS™</text>
+<text x="1100" y="590" font-family="Georgia, serif" font-size="16" fill="#C9A449" text-anchor="end" opacity="0.5">model2message.net</text>
+</svg>
