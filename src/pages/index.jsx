@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getCurrentLang, translations } from "../lang";
@@ -620,6 +621,17 @@ export default function M2MHomepage() {
               {tx.subheadline}
             </p>
             <div className="hero-cta-group animate-in delay-3">
+              <Link
+                to="/triage"
+                className="btn-primary"
+                style={{
+                  fontSize: "0.95rem",
+                  padding: "1.05rem 2.35rem",
+                  boxShadow: "0 6px 20px rgba(201,168,76,0.28)",
+                }}
+              >
+                Begin Triage →
+              </Link>
               <a href="#platform" className="btn-primary">{tx.cta_primary}</a>
               <a href="#contact" className="btn-secondary">{tx.cta_secondary}</a>
             </div>

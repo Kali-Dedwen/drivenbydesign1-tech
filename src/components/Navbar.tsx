@@ -33,7 +33,13 @@ export default function Navbar() {
           </Link>
         ))}
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <Link
+          to="/triage"
+          className="bg-gold text-navy text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all no-underline whitespace-nowrap"
+        >
+          Find Your OS →
+        </Link>
         <LanguageToggle />
         <button
           onClick={openCalendly}
