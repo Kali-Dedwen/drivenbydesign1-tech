@@ -43,7 +43,7 @@ export default function Navbar() {
         <LanguageToggle />
         <button
           onClick={openCalendly}
-          className="bg-gold text-navy text-[0.8rem] font-bold px-5 py-2 rounded-full tracking-[0.03em] hover:brightness-110 hover:scale-[1.02] transition-all cursor-pointer border-none"
+          className="bg-transparent text-gold text-[0.8rem] font-semibold px-5 py-2 rounded-full tracking-[0.03em] border-[1.5px] border-gold/60 hover:bg-gold/10 transition-colors cursor-pointer"
         >
           Book a Call
         </button>

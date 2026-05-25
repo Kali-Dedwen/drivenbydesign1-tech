@@ -632,7 +632,7 @@ export default function M2MHomepage() {
               >
                 Begin Triage →
               </Link>
-              <a href="#platform" className="btn-primary">{tx.cta_primary}</a>
+              <a href="#platform" className="btn-secondary">{tx.cta_primary}</a>
               <a href="#contact" className="btn-secondary">{tx.cta_secondary}</a>
             </div>
             <div className="trust-bar animate-in delay-4">
