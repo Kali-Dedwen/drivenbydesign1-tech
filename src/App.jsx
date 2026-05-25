@@ -15,6 +15,7 @@ import CribNetwork from './pages/crib-network'
 import FuseNetwork from './pages/fuse-network'
 import PivotDashboard from './pages/PivotDashboard'
 import ThankYou from './pages/ThankYou'
+import Triage from './pages/Triage'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
       <div className="noise-overlay" aria-hidden="true" />
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/triage" element={<Triage />} />
         <Route path="/pivot-os" element={<PivotOSLanding />} />
         <Route path="/pivot-os-landing" element={<PivotOSLanding />} />
         <Route path="/pivot-intake" element={<PivotIntake />} />
