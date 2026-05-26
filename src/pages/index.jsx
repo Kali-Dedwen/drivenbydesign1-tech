@@ -301,6 +301,103 @@ const styles = `
     margin: 0;
   }
 
+  /* ── THESIS SECTION (Hero → Proof bridge) ── */
+  .thesis-section {
+    background: linear-gradient(180deg, #060F1E 0%, var(--navy) 100%);
+    padding: 6rem clamp(1.5rem, 5vw, 4rem);
+    text-align: center;
+    position: relative;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .thesis-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .thesis-accent-line {
+    width: 56px;
+    height: 2px;
+    background: var(--gold);
+    margin: 0 auto 2rem;
+    border-radius: 2px;
+  }
+  .thesis-headline {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    margin-bottom: 1.75rem;
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .thesis-headline em {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .thesis-body {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--white-soft);
+    line-height: 1.7;
+    max-width: 720px;
+    margin: 0 auto 3.5rem;
+  }
+  .thesis-lanes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 880px;
+    margin: 0 auto 3rem;
+  }
+  .thesis-lane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 1.5rem 1rem;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    transition: transform 0.3s, border-color 0.3s, background 0.3s;
+  }
+  .thesis-lane:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201,168,76,0.2);
+    background: rgba(255,255,255,0.04);
+  }
+  .thesis-lane-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    margin-bottom: 0.125rem;
+  }
+  .thesis-lane-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+  }
+  .thesis-lane-tm {
+    font-size: 0.65rem;
+    vertical-align: super;
+    opacity: 0.7;
+  }
+  .thesis-lane-sub {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .thesis-cta-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
   /* ── OS LANE CARDS ── */
   .os-grid {
     display: grid;
@@ -524,6 +621,7 @@ const styles = `
     .nav-links { display: none; }
     .proof-inner { justify-content: center; }
     .proof-divider { display: none; }
+    .thesis-lanes { grid-template-columns: 1fr; gap: 0.875rem; }
   }
 `;
 
@@ -678,6 +776,45 @@ export default function M2MHomepage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── THESIS / HUMAN CAPITAL ── */}
+      <section className="thesis-section" aria-labelledby="thesis-headline">
+        <div className="thesis-inner">
+          <div className="thesis-accent-line" aria-hidden="true" />
+          <h2 id="thesis-headline" className="thesis-headline">
+            Whether You're Rebuilding Yourself, Your Team, or Your Enterprise — <em>Human Capital Is Your Most Underutilized Infrastructure.</em>
+          </h2>
+          <p className="thesis-body">
+            Most organizations invest in technology, systems, and processes. Few invest in the operating system underneath all of it — the people. M2M~Inc. exists at that intersection. Three sovereign platforms. One thesis: when human capital is architected correctly, everything else performs better.
+          </p>
+          <div className="thesis-lanes" role="list">
+            <div className="thesis-lane" role="listitem">
+              <span className="thesis-lane-icon" aria-hidden="true" style={{ color: 'var(--pivot)' }}>◈</span>
+              <span className="thesis-lane-name">
+                PIVOT OS<span className="thesis-lane-tm">™</span>
+              </span>
+              <span className="thesis-lane-sub" style={{ color: 'var(--pivot)' }}>Individual Reinvention</span>
+            </div>
+            <div className="thesis-lane" role="listitem">
+              <span className="thesis-lane-icon" aria-hidden="true" style={{ color: 'var(--bridge)' }}>⬡</span>
+              <span className="thesis-lane-name">
+                BRIDGE OS<span className="thesis-lane-tm">™</span>
+              </span>
+              <span className="thesis-lane-sub" style={{ color: 'var(--bridge)' }}>SMB Transformation</span>
+            </div>
+            <div className="thesis-lane" role="listitem">
+              <span className="thesis-lane-icon" aria-hidden="true" style={{ color: 'var(--gold)' }}>⬢</span>
+              <span className="thesis-lane-name">
+                Human OS<span className="thesis-lane-tm">™</span>
+              </span>
+              <span className="thesis-lane-sub" style={{ color: 'var(--gold)' }}>Enterprise Governance</span>
+            </div>
+          </div>
+          <div className="thesis-cta-wrap">
+            <Link to="/triage" className="btn-primary">Begin Triage →</Link>
           </div>
         </div>
       </section>
