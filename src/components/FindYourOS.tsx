@@ -21,21 +21,21 @@ interface Lane {
 const LANES: Record<LaneKey, Lane> = {
   pivot: {
     name: "PIVOT OS™",
-    tagline: "Your reinvention starts here",
+    tagline: "You're rebuilding yourself",
     accent: "#378ADD",
     path: "/pivot-os",
     cta: "Enter PIVOT OS™",
   },
   bridge: {
     name: "BRIDGE OS™",
-    tagline: "Your workforce transformation starts here",
+    tagline: "You're moving a team through change",
     accent: "#1D9E75",
     path: "/bridge-os",
     cta: "Enter BRIDGE OS™",
   },
   human: {
     name: "Human OS™",
-    tagline: "Your enterprise deployment starts here",
+    tagline: "You're running this across the enterprise",
     accent: "#F0C040",
     path: "/human-os",
     cta: "Enter Human OS™",
@@ -177,8 +177,8 @@ export default function FindYourOS() {
             Which platform was built for you?
           </h2>
           <p className="mt-4 text-[1.05rem] text-white-soft leading-[1.7]">
-            Answer in your own words. As your signal sharpens, M2M routes you to
-            the lane built for where you are — PIVOT, BRIDGE, or Human OS™.
+            Answer in your own words. The more you tell us, the clearer the
+            match — we'll point you to the right lane: PIVOT, BRIDGE, or Human OS™.
           </p>
         </div>
 
@@ -221,7 +221,7 @@ export default function FindYourOS() {
                     aria-hidden="true"
                   />
                   <p className="font-mono text-[0.65rem] tracking-[0.18em] uppercase text-gold mb-2">
-                    Your Signal Reads
+                    Where You Fit
                   </p>
                   <h3 className="font-display text-[1.6rem] font-bold leading-tight mb-1" style={{ color: match.accent }}>
                     {match.name}
@@ -251,8 +251,8 @@ export default function FindYourOS() {
                     Begin Triage
                   </h3>
                   <p className="text-[0.95rem] text-white-soft leading-relaxed mb-6 max-w-[440px]">
-                    Three questions is all it takes. We'll route you to the
-                    operating system built for where you are right now.
+                    A few questions, that's it. We'll point you to the operating
+                    system that fits where you're actually starting from.
                   </p>
                   <Link
                     to="/triage"

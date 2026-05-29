@@ -636,7 +636,7 @@ const OS_LANES = [
     icon: "◈",
     iconBg: "rgba(55,138,221,0.15)",
     accentColor: 'var(--color-pivot)',
-    body: "Career reinvention for veterans and professionals navigating the space between what they were and who they're becoming. A structured system, not a motivational speech.",
+    body: "For veterans and professionals starting over — the stretch between the career that ended and the one that hasn't started yet. A clear path you can work, one step at a time.",
   },
   {
     name: "BRIDGE OS™",
@@ -645,7 +645,7 @@ const OS_LANES = [
     icon: "⬡",
     iconBg: "rgba(29,158,117,0.15)",
     accentColor: 'var(--color-bridge)',
-    body: "Workforce transition infrastructure for employers, municipalities, and SMBs managing the human side of organizational change. Built for retention, not replacement.",
+    body: "For employers, municipalities, and small businesses carrying people through change — a reorg, a layoff, a hard pivot. The aim is to keep your people and bring them with you.",
   },
   {
     name: "Human OS™",
@@ -654,7 +654,7 @@ const OS_LANES = [
     icon: "⬟",
     iconBg: "rgba(201,168,76,0.15)",
     accentColor: 'var(--color-gold)',
-    body: "Enterprise and government workforce intelligence at scale. The full M2M Composure Architecture™ deployed across teams, agencies, and institutions ready to lead through disruption.",
+    body: "For enterprises and agencies running this across thousands of people. The full M2M Composure Architecture™, put to work across teams, departments, and institutions that have to stay steady when everything else isn't.",
   },
 ];
 
@@ -789,10 +789,10 @@ export default function M2MHomepage() {
         <div className="thesis-inner">
           <div className="thesis-accent-line" aria-hidden="true" />
           <h2 id="thesis-headline" className="thesis-headline">
-            Whether You're Rebuilding Yourself, Your Team, or Your Enterprise — <em>Human Capital Is Your Most Underutilized Infrastructure.</em>
+            Whether it's you, your team, or the whole enterprise — <em>the people you already have can do more than you're asking of them.</em>
           </h2>
           <p className="thesis-body">
-            Most organizations invest in technology, systems, and processes. Few invest in the operating system underneath all of it — the people. M2M~Inc. exists at that intersection. Three sovereign platforms. One thesis: when human capital is architected correctly, everything else performs better.
+            Companies spend on tools, systems, and process, then leave the people running them to sort it out on their own. We work the other way. M2M~Inc. builds for the people first — three platforms, one belief earned in the field: get the people right, and the rest of the work follows.
           </p>
           <div className="thesis-lanes" role="list">
             <div className="thesis-lane" role="listitem">
@@ -850,11 +850,11 @@ export default function M2MHomepage() {
       <section className="section" id="platform">
         <div className="section-inner">
           <p className="section-eyebrow">The Platform</p>
-          <h2 className="section-headline">Three Operating Systems.<br />One Human Architecture.</h2>
+          <h2 className="section-headline">Three Operating Systems.<br />Built Around People.</h2>
           <p className="section-sub">
-            Whether you're an individual rebuilding after transition, an employer
-            managing workforce change, or an enterprise scaling human intelligence —
-            there's a lane built for where you are.
+            One person rebuilding. An employer steering a team through change. An
+            enterprise running it across the whole organization. Three different
+            starting points — and a lane for each.
           </p>
           <div className="os-grid">
             {OS_LANES.map((lane) => (
@@ -911,11 +911,12 @@ export default function M2MHomepage() {
             <p className="section-eyebrow">The Architect</p>
             <h2 className="section-headline">Dr. Kevin A. Smith</h2>
             <p style={{ fontSize: "1rem", color: 'var(--color-white-soft)', lineHeight: 1.7, marginBottom: "1.5rem" }}>
-              Founder & Chief Opportunity Officer of M2M~Inc. Navy veteran.
-              Behavioral systems architect. Keynote speaker. The platform is
-              built from lived experience — military discipline, workforce
-              reinvention, and a decade of organizational transformation work
-              across private, public, and nonprofit sectors.
+              Founder & Chief Opportunity Officer of M2M~Inc., Navy veteran,
+              behavioral systems architect, and keynote speaker. He built this
+              platform the long way — out of military service, his own career
+              reinvention, and a decade spent helping organizations across the
+              private, public, and nonprofit sectors move their people through
+              change.
             </p>
             <div className="credential-grid">
               {CREDENTIALS.map((c) => (
@@ -957,11 +958,11 @@ export default function M2MHomepage() {
           </p>
           <h2 className="cta-headline">
             The Ground Is Moving.<br />
-            <span>Are You Pivoting With It?</span>
+            <span>Pivot With It.</span>
           </h2>
           <p className="cta-sub">
-            Schedule a strategic consultation and find out which lane of the
-            Human OS™ platform is built for where you are right now.
+            Book a call. In one conversation we'll work out which lane of the
+            Human OS™ platform fits where you actually are.
           </p>
           <div className="cta-group">
             <a href="mailto:info@model2message.net" className="btn-primary">
