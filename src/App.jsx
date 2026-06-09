@@ -16,6 +16,7 @@ import FuseNetwork from './pages/fuse-network'
 import PivotDashboard from './pages/PivotDashboard'
 import ThankYou from './pages/ThankYou'
 import Triage from './pages/Triage'
+import Portal from './pages/portal'
 
 export default function App() {
   return (
@@ -43,7 +44,7 @@ export default function App() {
         <Route path="/crib-network" element={<CribNetwork />} />
         <Route path="/fuse-network" element={<FuseNetwork />} />
         <Route path="/thank-you" element={<ThankYou />} />
+<Route path="/portal" element={<Portal />} />
       </Routes>
     </BrowserRouter>
   )
-}
