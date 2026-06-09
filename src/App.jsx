@@ -44,7 +44,8 @@ export default function App() {
         <Route path="/crib-network" element={<CribNetwork />} />
         <Route path="/fuse-network" element={<FuseNetwork />} />
         <Route path="/thank-you" element={<ThankYou />} />
-<Route path="/portal" element={<Portal />} />
+        <Route path="/portal" element={<Portal />} />
       </Routes>
     </BrowserRouter>
   )
+}
