@@ -17,10 +17,9 @@ const openCalendly = () => {
 const TIMELINE = [
   { year: "U.S. Navy", title: "Service & Discipline Foundation", body: "Military service instills the operational clarity, mission orientation, and composure under pressure that anchors every M2M framework.", dim: false },
   { year: "Post-Service", title: "Workforce Reinvention", body: "Navigated the civilian transition gap firsthand — the experience that became the blueprint for PIVOT OS™.", dim: false },
-  { year: "2020–Present", title: "M2M~Inc. Founded", body: "Model 2 Message launched as a workforce intelligence firm. Nine proprietary marks now in the USPTO pipeline.", dim: false },
-  { year: "2024", title: "Human OS™ Architecture Complete", body: "Full three-lane platform — PIVOT OS™, BRIDGE OS™, Human OS™ — built, tested, and deployed.", dim: false },
+  { year: "2025–Present", title: "M2M~Inc. Founded", body: "Model 2 Message launched as a workforce intelligence firm. Nine proprietary marks now in the USPTO pipeline.", dim: false },
+  { year: "2026", title: "Human OS™ Architecture Complete", body: "Full three-lane platform — PIVOT OS™, BRIDGE OS™, Human OS™ — built, tested, and deployed.", dim: false },
   { year: "2025–2026", title: "SDVOSB/VBE + Tuck Network", body: "Veteran certifications secured. Wells Fargo Tuck Executive Education cohort confirmed. Enterprise market entry active.", dim: false },
-  { year: "Jun 2026", title: "Jupiter Return Window", body: "12-year expansion cycle begins. The platform is built. The sprint is now.", dim: true },
 ];
 
 const CREDS = [
