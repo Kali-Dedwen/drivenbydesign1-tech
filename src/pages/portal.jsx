@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const T = {
@@ -1671,21 +1671,41 @@ function getUrlParams() {
 
 // ─── MAIN APP ──────────────────────────────────────────────────────────────────
 export default function App() {
-  const urlParams = getUrlParams();
-  const [activePlatform, setActivePlatform] = useState(urlParams.lane);
+  const e = getUrlParams();
+  const [activeLane, setActiveLane] = useState(null);
   const [activeModule, setActiveModule] = useState(null);
+  const [chatOpen, setChatOpen] = useState(null);
   const [completedModules, setCompletedModules] = useState({});
-  const [chatOpen, setChatOpen] = useState(false);
-  const [clientName] = useState(urlParams.name);
-  const [clientIntake] = useState(urlParams);
   const [progressLoaded, setProgressLoaded] = useState(false);
+  const [clientName, setClientName] = useState("");
+  const [intakeData, setIntakeData] = useState({});
+  const [initialized, setInitialized] = useState(false);
+
+  useLayoutEffect(() => {
+    const params = getUrlParams();
+    setActiveLane(params.lane);
+    setClientName(params.name);
+    setIntakeData(params);
+    setInitialized(true);
+  }, []);
+
+  if (!initialized) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#0B1F3A', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+        <div style={{ color: '#C9A84C', fontFamily: "'Cormorant Garamond', serif",
+          fontSize: '1.4rem', fontWeight: 600, letterSpacing: '0.05em' }}>M2M~Inc.</div>
+        <div style={{ color: '#6B7A99', fontSize: '0.85rem' }}>Initializing your portal...</div>
+      </div>
+    );
+  }
 
   const SUPABASE_URL = "https://jnmywpfdykuybrxkdcmc.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpubXl3cGZkeWt1eWJyeGtka21jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU2OTEyMjUsImV4cCI6MjA2MTI2NzIyNX0.w25RCfcHLnYaXTVJQOEJoFoLxlAkDRMFCLEaSBDl3V0";
 
   // Gap 3: Stable client ID — URL name + lane as identifier
-  const clientId = urlParams.name
-    ? `${urlParams.name.toLowerCase().replace(/\s+/g, "-")}-${urlParams.lane.toLowerCase()}`
+  const clientId = clientName
+    ? `${clientName.toLowerCase().replace(/\s+/g, "-")}-${(activeLane || "pivot_os").toLowerCase()}`
     : null;
 
   // Gap 3: Load existing progress from Supabase on mount
@@ -1731,8 +1751,8 @@ export default function App() {
         body: JSON.stringify({
           client_token: clientId,
           client_name: clientName || "Client",
-          platform: activePlatform,
-          os_lane: activePlatform,
+          platform: activeLane,
+          os_lane: activeLane,
           module_id: modId,
           completed: true,
           completed_at: new Date().toISOString(),
@@ -1742,9 +1762,9 @@ export default function App() {
     } catch {}
   };
 
-  const clientIntakeRef = clientIntake;
+  const clientIntakeRef = intakeData;
 
-  const platform = PLATFORMS[activePlatform];
+  const platform = PLATFORMS[activeLane];
   const allModules = platform.phases.flatMap(p => p.modules);
   const completedCount = Object.values(completedModules).filter(Boolean).length;
   const totalCount = allModules.length;
@@ -1796,13 +1816,13 @@ export default function App() {
             {Object.values(PLATFORMS).map(p => (
               <button
                 key={p.id}
-                onClick={() => { setActivePlatform(p.id); setActiveModule(null); }}
+                onClick={() => { setActiveLane(p.id); setActiveModule(null); }}
                 style={{
-                  background: activePlatform === p.id ? "rgba(201,168,76,0.1)" : "rgba(255,255,255,0.03)",
-                  border: `1px solid ${activePlatform === p.id ? T.border : "rgba(255,255,255,0.07)"}`,
+                  background: activeLane === p.id ? "rgba(201,168,76,0.1)" : "rgba(255,255,255,0.03)",
+                  border: `1px solid ${activeLane === p.id ? T.border : "rgba(255,255,255,0.07)"}`,
                   borderRadius: 12, padding: "16px 18px", cursor: "pointer", textAlign: "left",
                   transition: "all 0.2s",
-                  outline: activePlatform === p.id ? `2px solid ${T.gold}` : "none",
+                  outline: activeLane === p.id ? `2px solid ${T.gold}` : "none",
                   outlineOffset: -1,
                 }}
               >
@@ -1875,7 +1895,7 @@ export default function App() {
                       phaseIndex={pi}
                       onOpen={setActiveModule}
                       isActive={activeModule?.id === mod.id}
-                      isCompleted={!!completedModules[`${activePlatform}-${mod.id}`]}
+                      isCompleted={!!completedModules[`${activeLane}-${mod.id}`]}
                     />
                   ))}
                 </div>
@@ -1892,13 +1912,13 @@ export default function App() {
             }}>
               <ModuleDetail
                 mod={activeModule}
-                platform={activePlatform}
+                platform={activeLane}
                 clientName={clientName}
                 clientId={clientId}
                 onClose={() => setActiveModule(null)}
                 onChat={() => setChatOpen(true)}
                 onComplete={() => handleComplete(activeModule.id)}
-                isCompleted={!!completedModules[`${activePlatform}-${activeModule.id}`]}
+                isCompleted={!!completedModules[`${activeLane}-${activeModule.id}`]}
               />
             </div>
           )}
@@ -1926,13 +1946,13 @@ export default function App() {
       {/* Chatbot — single instance */}
       {chatOpen && (
         <Chatbot
-          platform={activePlatform}
+          platform={activeLane}
           clientName={clientName}
           clientIntake={clientIntakeRef}
           currentModule={activeModule?.id || "1.1"}
           moduleTitle={activeModule?.title || platform.phases[0]?.modules[0]?.title}
-          isOpen={chatOpen}
-          onClose={() => setChatOpen(false)}
+          isOpen={!!chatOpen}
+          onClose={() => setChatOpen(null)}
         />
       )}
     </div>
