@@ -79,7 +79,7 @@ export default function SiteChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
-          max_tokens: 800,
+          max_tokens: 300,
           system: SYSTEM_PROMPT,
           messages: history,
         }),
