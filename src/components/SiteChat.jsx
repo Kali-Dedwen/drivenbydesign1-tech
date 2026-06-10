@@ -37,6 +37,7 @@ export default function SiteChat() {
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
   const abortRef = useRef(null);
+  const inFlightRef = useRef(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -54,8 +55,10 @@ export default function SiteChat() {
   }, [isOpen]);
 
   const send = useCallback(async () => {
+    if (inFlightRef.current) return;
     const text = input.trim();
-    if (!text || streaming) return;
+    if (!text) return;
+    inFlightRef.current = true;
     setInput("");
 
     const userMsg = { role: "user", content: text, id: Date.now() };
@@ -86,9 +89,11 @@ export default function SiteChat() {
         signal: abortRef.current.signal,
       });
 
+      console.log("[SiteChat] response.ok:", response.ok, "status:", response.status);
       if (!response.ok) throw new Error(`API ${response.status}`);
 
       const data = await response.json();
+      console.log("[SiteChat] data:", data);
       const reply = data.content?.[0]?.text || "I'm here. Tell me a little more about where you're at.";
 
       setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: reply, streaming: false } : m));
@@ -103,6 +108,7 @@ export default function SiteChat() {
     } finally {
       setStreaming(false);
       abortRef.current = null;
+      inFlightRef.current = false;
     }
   }, [input, streaming, messages]);
 
