@@ -1733,7 +1733,7 @@ export default function App() {
 
   // Gap 3: handleComplete writes to Supabase
   const handleComplete = async (modId) => {
-    const key = `${activePlatform}-${modId}`;
+    const key = `${activeLane}-${modId}`;
     setCompletedModules(prev => ({ ...prev, [key]: true }));
     setActiveModule(null);
 
