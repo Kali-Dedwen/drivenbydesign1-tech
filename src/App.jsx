@@ -22,9 +22,19 @@ import AuthGate from './components/AuthGate'
 import SiteChat from './components/SiteChat'
 
 export default function App() {
+  if (typeof window !== 'undefined' && window.location.hash.includes('#access_token=')) {
+    const target = '/portal' + window.location.hash
+    if (window.location.pathname + window.location.hash !== target) {
+      window.location.replace(target)
+    }
+  }
+
   useEffect(() => {
-    if (window.location.hash.includes('#access_token=') && window.location.pathname !== '/portal') {
-      window.location.replace('/portal' + window.location.hash)
+    if (window.location.hash.includes('#access_token=')) {
+      const target = '/portal' + window.location.hash
+      if (window.location.pathname + window.location.hash !== target) {
+        window.location.replace(target)
+      }
     }
   }, [])
 

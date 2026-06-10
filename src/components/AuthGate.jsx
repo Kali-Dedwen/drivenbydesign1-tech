@@ -26,11 +26,11 @@ export default function AuthGate({ children }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (
-      window.location.hash.includes("#access_token=") &&
-      window.location.pathname !== "/portal"
-    ) {
-      window.location.replace("/portal" + window.location.hash);
+    if (window.location.hash.includes("#access_token=")) {
+      const target = "/portal" + window.location.hash;
+      if (window.location.pathname + window.location.hash !== target) {
+        window.location.replace(target);
+      }
     }
   }, []);
 
