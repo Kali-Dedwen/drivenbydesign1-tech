@@ -1150,7 +1150,7 @@ Write ONE opening statement — 2-4 sentences maximum. Rules:
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-6",
         max_tokens: 200,
         messages: [{ role: "user", content: openingPrompt }],
       }),
@@ -1193,7 +1193,7 @@ Write ONE opening statement — 2-4 sentences maximum. Rules:
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-6",
           max_tokens: 1000,
           system: sysPrompt,
           messages: history,
