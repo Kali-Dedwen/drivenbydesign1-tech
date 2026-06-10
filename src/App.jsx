@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Homepage from './pages/index'
 import PivotOSLanding from './pages/PivotOSLanding'
@@ -21,6 +22,12 @@ import AuthGate from './components/AuthGate'
 import SiteChat from './components/SiteChat'
 
 export default function App() {
+  useEffect(() => {
+    if (window.location.hash.includes('#access_token=') && window.location.pathname !== '/portal') {
+      window.location.replace('/portal' + window.location.hash)
+    }
+  }, [])
+
   return (
     <BrowserRouter>
       <div className="noise-overlay" aria-hidden="true" />
