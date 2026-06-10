@@ -17,6 +17,7 @@ import PivotDashboard from './pages/PivotDashboard'
 import ThankYou from './pages/ThankYou'
 import Triage from './pages/Triage'
 import Portal from './pages/portal'
+import SiteChat from './components/SiteChat'
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="/portal" element={<Portal />} />
       </Routes>
+      <SiteChat />
     </BrowserRouter>
   )
 }
