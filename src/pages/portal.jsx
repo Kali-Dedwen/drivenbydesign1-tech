@@ -1764,7 +1764,7 @@ export default function App() {
 
   const clientIntakeRef = intakeData;
 
-  const platform = PLATFORMS[activeLane];
+  const platform = PLATFORMS[activeLane] || PLATFORMS.PIVOT_OS;
   const allModules = platform.phases.flatMap(p => p.modules);
   const completedCount = Object.values(completedModules).filter(Boolean).length;
   const totalCount = allModules.length;
