@@ -82,48 +82,16 @@ export default function SiteChat() {
           max_tokens: 800,
           system: SYSTEM_PROMPT,
           messages: history,
-          stream: true,
         }),
         signal: abortRef.current.signal,
       });
 
-      if (!response.ok || !response.body) throw new Error(`API ${response.status}`);
+      if (!response.ok) throw new Error(`API ${response.status}`);
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let full = "";
-      let buffer = "";
+      const data = await response.json();
+      const reply = data.content?.[0]?.text || "I'm here. Tell me a little more about where you're at.";
 
-      const processLine = (line) => {
-        if (!line.startsWith("data:")) return;
-        const payload = line.slice(5).trim();
-        if (!payload || payload === "[DONE]") return;
-        try {
-          const data = JSON.parse(payload);
-          if (data.type === "content_block_delta" && data.delta?.text) {
-            full += data.delta.text;
-            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: full } : m));
-          }
-        } catch {}
-      };
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          buffer += decoder.decode();
-          break;
-        }
-        buffer += decoder.decode(value, { stream: true });
-        let nlIdx;
-        while ((nlIdx = buffer.indexOf("\n")) !== -1) {
-          const line = buffer.slice(0, nlIdx);
-          buffer = buffer.slice(nlIdx + 1);
-          processLine(line);
-        }
-      }
-      if (buffer.length > 0) processLine(buffer);
-
-      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: full, streaming: false } : m));
+      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: reply, streaming: false } : m));
     } catch (err) {
       if (err.name !== "AbortError") {
         setMessages(prev => prev.map(m =>
