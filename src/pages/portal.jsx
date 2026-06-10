@@ -1689,17 +1689,6 @@ export default function App() {
     setInitialized(true);
   }, []);
 
-  if (!initialized) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#0B1F3A', display: 'flex',
-        alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
-        <div style={{ color: '#C9A84C', fontFamily: "'Cormorant Garamond', serif",
-          fontSize: '1.4rem', fontWeight: 600, letterSpacing: '0.05em' }}>M2M~Inc.</div>
-        <div style={{ color: '#6B7A99', fontSize: '0.85rem' }}>Initializing your portal...</div>
-      </div>
-    );
-  }
-
   const SUPABASE_URL = "https://jnmywpfdykuybrxkdcmc.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpubXl3cGZkeWt1eWJyeGtka21jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU2OTEyMjUsImV4cCI6MjA2MTI2NzIyNX0.w25RCfcHLnYaXTVJQOEJoFoLxlAkDRMFCLEaSBDl3V0";
 
@@ -1730,6 +1719,17 @@ export default function App() {
       .catch(() => {})
       .finally(() => setProgressLoaded(true));
   }, [clientId]);
+
+  if (!initialized) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#0B1F3A', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+        <div style={{ color: '#C9A84C', fontFamily: "'Cormorant Garamond', serif",
+          fontSize: '1.4rem', fontWeight: 600, letterSpacing: '0.05em' }}>M2M~Inc.</div>
+        <div style={{ color: '#6B7A99', fontSize: '0.85rem' }}>Initializing your portal...</div>
+      </div>
+    );
+  }
 
   // Gap 3: handleComplete writes to Supabase
   const handleComplete = async (modId) => {
