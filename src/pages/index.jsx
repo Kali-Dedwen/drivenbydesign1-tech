@@ -734,6 +734,19 @@ export default function M2MHomepage() {
               <a href="#platform" className="btn-secondary">{tx.cta_primary}</a>
               <a href="#contact" className="btn-secondary">{tx.cta_secondary}</a>
             </div>
+            <p className="animate-in delay-3" style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.75rem",
+              letterSpacing: "0.08em",
+              color: "var(--white-dim)",
+              marginTop: "-1.5rem",
+              marginBottom: "2.25rem",
+            }}>
+              Returning client?{" "}
+              <Link to="/portal" style={{ color: "var(--white-dim)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                Enter your portal →
+              </Link>
+            </p>
             <div className="trust-bar animate-in delay-4">
               {["SDVOSB", "VBE", "SAFe 6", "Tuck", "USPTO"].map((item, i) => (
                 <span key={item} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
