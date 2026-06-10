@@ -92,24 +92,38 @@ export default function SiteChat() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let full = "";
+      let buffer = "";
+
+      const processLine = (line) => {
+        if (!line.startsWith("data:")) return;
+        const payload = line.slice(5).trim();
+        if (!payload || payload === "[DONE]") return;
+        try {
+          const data = JSON.parse(payload);
+          if (data.type === "content_block_delta" && data.delta?.text) {
+            full += data.delta.text;
+            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: full } : m));
+          }
+        } catch {}
+      };
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value);
-        const lines = chunk.split("\n").filter(l => l.startsWith("data:"));
-        for (const line of lines) {
-          try {
-            const data = JSON.parse(line.slice(5));
-            if (data.type === "content_block_delta" && data.delta?.text) {
-              full += data.delta.text;
-              setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: full } : m));
-            }
-          } catch {}
+        if (done) {
+          buffer += decoder.decode();
+          break;
+        }
+        buffer += decoder.decode(value, { stream: true });
+        let nlIdx;
+        while ((nlIdx = buffer.indexOf("\n")) !== -1) {
+          const line = buffer.slice(0, nlIdx);
+          buffer = buffer.slice(nlIdx + 1);
+          processLine(line);
         }
       }
+      if (buffer.length > 0) processLine(buffer);
 
-      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, streaming: false } : m));
+      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: full, streaming: false } : m));
     } catch (err) {
       if (err.name !== "AbortError") {
         setMessages(prev => prev.map(m =>
@@ -303,7 +317,6 @@ function MessageBubble({ role, content, streaming }) {
         fontSize: 13,
         lineHeight: 1.5,
         border: isUser ? "none" : `1px solid ${T.border}`,
-        whiteSpace: "pre-wrap",
         wordBreak: "break-word",
       }}
     >
@@ -330,21 +343,52 @@ function MessageBubble({ role, content, streaming }) {
 
 function renderContent(text) {
   if (!text) return null;
-  const parts = text.split(/(https?:\/\/[^\s]+|\/portal\b)/g);
-  return parts.map((part, i) => {
-    const isExternal = /^https?:\/\//.test(part);
-    const isInternal = part === "/portal" || part.startsWith("/portal");
-    if (!isExternal && !isInternal) return part;
+  const paragraphs = text.split(/\n{2,}/);
+  return paragraphs.map((para, pIdx) => {
+    const lines = para.split("\n");
     return (
-      <a
-        key={i}
-        href={part}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noopener noreferrer" : undefined}
-        className="m2m-chat-link"
-      >
-        {part}
-      </a>
+      <p key={pIdx} style={{ margin: pIdx === 0 ? 0 : "8px 0 0 0" }}>
+        {lines.map((line, lIdx) => (
+          <span key={lIdx}>
+            {renderInline(line, `${pIdx}-${lIdx}`)}
+            {lIdx < lines.length - 1 && <br />}
+          </span>
+        ))}
+      </p>
     );
   });
+}
+
+function renderInline(text, keyPrefix) {
+  if (!text) return null;
+  const linkParts = text.split(/(https?:\/\/[^\s]+|\/portal\b)/g);
+  const out = [];
+  linkParts.forEach((part, i) => {
+    const isExternal = /^https?:\/\//.test(part);
+    const isInternal = part === "/portal" || part.startsWith("/portal");
+    if (isExternal || isInternal) {
+      out.push(
+        <a
+          key={`${keyPrefix}-l-${i}`}
+          href={part}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          className="m2m-chat-link"
+        >
+          {part}
+        </a>
+      );
+    } else {
+      // Parse **bold** in plain text segments
+      const boldParts = part.split(/(\*\*[^*]+\*\*)/g);
+      boldParts.forEach((bp, j) => {
+        if (/^\*\*[^*]+\*\*$/.test(bp)) {
+          out.push(<strong key={`${keyPrefix}-b-${i}-${j}`}>{bp.slice(2, -2)}</strong>);
+        } else if (bp) {
+          out.push(<span key={`${keyPrefix}-t-${i}-${j}`}>{bp}</span>);
+        }
+      });
+    }
+  });
+  return out;
 }
