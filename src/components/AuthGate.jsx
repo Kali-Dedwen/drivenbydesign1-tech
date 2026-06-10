@@ -25,6 +25,16 @@ export default function AuthGate({ children }) {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (
+      window.location.hash.includes("#access_token=") &&
+      window.location.pathname !== "/portal"
+    ) {
+      window.location.replace("/portal" + window.location.hash);
+    }
+  }, []);
+
+  useEffect(() => {
     let mounted = true;
 
     supabase.auth.getSession().then(({ data }) => {
