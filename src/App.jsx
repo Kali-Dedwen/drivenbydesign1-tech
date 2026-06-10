@@ -17,6 +17,7 @@ import PivotDashboard from './pages/PivotDashboard'
 import ThankYou from './pages/ThankYou'
 import Triage from './pages/Triage'
 import Portal from './pages/portal'
+import AuthGate from './components/AuthGate'
 import SiteChat from './components/SiteChat'
 
 export default function App() {
@@ -45,7 +46,7 @@ export default function App() {
         <Route path="/crib-network" element={<CribNetwork />} />
         <Route path="/fuse-network" element={<FuseNetwork />} />
         <Route path="/thank-you" element={<ThankYou />} />
-        <Route path="/portal" element={<Portal />} />
+        <Route path="/portal" element={<AuthGate><Portal /></AuthGate>} />
       </Routes>
       <SiteChat />
     </BrowserRouter>

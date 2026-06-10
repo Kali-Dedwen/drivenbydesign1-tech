@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
+import { useAuthUser } from "../components/AuthGate";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const T = {
@@ -1415,7 +1416,7 @@ function ModuleCard({ mod, phaseIndex, onOpen, isActive, isCompleted }) {
 }
 
 // ─── MODULE DETAIL VIEW ────────────────────────────────────────────────────────
-function ModuleDetail({ mod, platform, clientName, clientId, onClose, onChat, onComplete, isCompleted }) {
+function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, onClose, onChat, onComplete, isCompleted }) {
   const platformData = PLATFORMS[platform];
   const isCheckpoint = mod.type === "checkpoint" || mod.type === "graduation";
 
@@ -1425,8 +1426,8 @@ function ModuleDetail({ mod, platform, clientName, clientId, onClose, onChat, on
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const SUPABASE_URL = "https://jnmywpfdykuybrxkdcmc.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpubXl3cGZkeWt1eWJyeGtka21jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU2OTEyMjUsImV4cCI6MjA2MTI2NzIyNX0.w25RCfcHLnYaXTVJQOEJoFoLxlAkDRMFCLEaSBDl3V0";
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://jnmywpfdykuybrxkdcmc.supabase.co";
+  const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpubXl3cGZkeWt1eWJyeGtka21jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU2OTEyMjUsImV4cCI6MjA2MTI2NzIyNX0.w25RCfcHLnYaXTVJQOEJoFoLxlAkDRMFCLEaSBDl3V0";
 
   const handleCheckpointSubmit = async () => {
     if (!submissionText.trim()) return;
@@ -1444,8 +1445,10 @@ function ModuleDetail({ mod, platform, clientName, clientId, onClose, onChat, on
           "Prefer": "return=minimal",
         },
         body: JSON.stringify({
-          client_token: clientId || "anonymous",
-          client_name: clientName || "Client",
+          user_id: userId || null,
+          email: userEmail || null,
+          client_token: clientId || userId || "anonymous",
+          client_name: clientName || userEmail || "Client",
           platform: platform,
           os_lane: platform,
           checkpoint_id: mod.id,
@@ -1671,6 +1674,10 @@ function getUrlParams() {
 
 // ─── MAIN APP ──────────────────────────────────────────────────────────────────
 export default function App() {
+  const { user, signOut } = useAuthUser();
+  const userId = user?.id || null;
+  const userEmail = user?.email || "";
+
   const e = getUrlParams();
   const [activeLane, setActiveLane] = useState(null);
   const [activeModule, setActiveModule] = useState(null);
@@ -1680,32 +1687,47 @@ export default function App() {
   const [clientName, setClientName] = useState("");
   const [intakeData, setIntakeData] = useState({});
   const [initialized, setInitialized] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+
+  // URL params still hydrate the portal when present. If the URL declared no
+  // ?lane=, we leave the door open for the progress-load effect to restore the
+  // user's last saved lane from Supabase.
+  const urlHasLane = (() => {
+    try { return new URLSearchParams(window.location.search).has("lane"); }
+    catch { return false; }
+  })();
 
   useLayoutEffect(() => {
     const params = getUrlParams();
     setActiveLane(params.lane);
-    setClientName(params.name);
+    setClientName(params.name || (userEmail ? userEmail.split("@")[0] : ""));
     setIntakeData(params);
     setInitialized(true);
-  }, []);
+  }, [userEmail]);
 
-  const SUPABASE_URL = "https://jnmywpfdykuybrxkdcmc.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpubXl3cGZkeWt1eWJyeGtka21jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU2OTEyMjUsImV4cCI6MjA2MTI2NzIyNX0.w25RCfcHLnYaXTVJQOEJoFoLxlAkDRMFCLEaSBDl3V0";
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://jnmywpfdykuybrxkdcmc.supabase.co";
+  const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpubXl3cGZkeWt1eWJyeGtka21jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU2OTEyMjUsImV4cCI6MjA2MTI2NzIyNX0.w25RCfcHLnYaXTVJQOEJoFoLxlAkDRMFCLEaSBDl3V0";
 
-  // Gap 3: Stable client ID — URL name + lane as identifier
-  const clientId = clientName
+  // Legacy client_token kept for back-compat with rows written before auth.
+  // Primary identity is now the Supabase auth user_id.
+  const legacyClientToken = clientName
     ? `${clientName.toLowerCase().replace(/\s+/g, "-")}-${(activeLane || "pivot_os").toLowerCase()}`
     : null;
 
-  // Gap 3: Load existing progress from Supabase on mount
+  // Load existing progress for the signed-in user. Also restore last-saved lane
+  // when the URL didn't specify one (returning-user flow).
   useEffect(() => {
-    if (!clientId) { setProgressLoaded(true); return; }
-    fetch(`${SUPABASE_URL}/rest/v1/m2m_module_progress?client_token=eq.${encodeURIComponent(clientId)}&select=platform,module_id,completed`, {
-      headers: {
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-    })
+    if (!userId) { setProgressLoaded(true); return; }
+    fetch(
+      `${SUPABASE_URL}/rest/v1/m2m_module_progress?user_id=eq.${userId}` +
+      `&select=platform,module_id,completed,completed_at&order=completed_at.desc.nullslast`,
+      {
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+      }
+    )
       .then(r => r.json())
       .then(rows => {
         if (Array.isArray(rows) && rows.length > 0) {
@@ -1714,11 +1736,16 @@ export default function App() {
             if (row.completed) rebuilt[`${row.platform}-${row.module_id}`] = true;
           });
           setCompletedModules(rebuilt);
+
+          if (!urlHasLane) {
+            const lastPlatform = rows.find(r => r.platform && PLATFORMS[r.platform])?.platform;
+            if (lastPlatform) setActiveLane(lastPlatform);
+          }
         }
       })
       .catch(() => {})
       .finally(() => setProgressLoaded(true));
-  }, [clientId]);
+  }, [userId]);
 
   if (!initialized) {
     return (
@@ -1731,16 +1758,16 @@ export default function App() {
     );
   }
 
-  // Gap 3: handleComplete writes to Supabase
+  // handleComplete writes the row keyed to the signed-in user.
   const handleComplete = async (modId) => {
     const key = `${activeLane}-${modId}`;
     setCompletedModules(prev => ({ ...prev, [key]: true }));
     setActiveModule(null);
 
-    if (!clientId) return;
+    if (!userId) return;
 
     try {
-      await fetch(`${SUPABASE_URL}/rest/v1/m2m_module_progress`, {
+      await fetch(`${SUPABASE_URL}/rest/v1/m2m_module_progress?on_conflict=user_id,os_lane,module_id`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1749,8 +1776,10 @@ export default function App() {
           "Prefer": "resolution=merge-duplicates,return=minimal",
         },
         body: JSON.stringify({
-          client_token: clientId,
-          client_name: clientName || "Client",
+          user_id: userId,
+          email: userEmail,
+          client_token: legacyClientToken || userId,
+          client_name: clientName || userEmail || "Client",
           platform: activeLane,
           os_lane: activeLane,
           module_id: modId,
@@ -1760,6 +1789,14 @@ export default function App() {
         }),
       });
     } catch {}
+  };
+
+  const handleSignOut = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try { await signOut(); }
+    catch {}
+    finally { setSigningOut(false); }
   };
 
   const clientIntakeRef = intakeData;
@@ -1787,7 +1824,7 @@ export default function App() {
             <div style={{ width: 1, height: 18, background: T.border }} />
             <div style={{ color: T.muted, fontSize: 12 }}>Client Portal</div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div style={{ color: T.muted, fontSize: 12 }}>
               {clientName && <span>Welcome, <span style={{ color: T.gold }}>{clientName}</span></span>}
             </div>
@@ -1800,6 +1837,28 @@ export default function App() {
               }}
             >
               <span style={{ fontSize: 14 }}>◎</span> Ask the Guide
+            </button>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              disabled={signingOut}
+              title={userEmail ? `Signed in as ${userEmail}` : "Sign out"}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: T.gold,
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: 0.3,
+                cursor: signingOut ? "not-allowed" : "pointer",
+                opacity: signingOut ? 0.5 : 0.85,
+                padding: "4px 2px",
+                textDecoration: "underline",
+                textUnderlineOffset: 3,
+                textDecorationColor: "rgba(201,168,76,0.4)",
+              }}
+            >
+              {signingOut ? "Signing out…" : "Sign out"}
             </button>
           </div>
         </div>
@@ -1914,7 +1973,9 @@ export default function App() {
                 mod={activeModule}
                 platform={activeLane}
                 clientName={clientName}
-                clientId={clientId}
+                clientId={legacyClientToken || userId}
+                userId={userId}
+                userEmail={userEmail}
                 onClose={() => setActiveModule(null)}
                 onChat={() => setChatOpen(true)}
                 onComplete={() => handleComplete(activeModule.id)}
