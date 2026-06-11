@@ -9,6 +9,59 @@ export const config = { maxDuration: 60 };
 const OS_LANES = new Set(["PIVOT_OS", "BRIDGE_OS", "HUMAN_OS"]);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Make.com sometimes sends array fields as comma/newline-delimited strings
+// or JSON-stringified arrays. Accept all three shapes; dedupe and normalize.
+function normalizeMemberEmails(input) {
+  if (input == null) return [];
+
+  let candidates;
+  if (Array.isArray(input)) {
+    candidates = input;
+  } else if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (trimmed.startsWith("[")) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        candidates = Array.isArray(parsed) ? parsed : trimmed.split(/[\s,;]+/);
+      } catch {
+        candidates = trimmed.split(/[\s,;]+/);
+      }
+    } else {
+      candidates = trimmed.split(/[\s,;]+/);
+    }
+  } else {
+    return [];
+  }
+
+  // Flatten one level — handles ["a@x.com, b@y.com"] (array with delimited string)
+  const flat = candidates.flatMap((c) =>
+    typeof c === "string" ? c.split(/[\s,;]+/) : [c]
+  );
+
+  return [
+    ...new Set(
+      flat
+        .map((e) => String(e ?? "").trim().toLowerCase())
+        .filter((e) => EMAIL_RE.test(e))
+    ),
+  ];
+}
+
+// If member insertion fails after the cohort row is already written, delete
+// the cohort so we don't leave orphan rows that Kev has to clean up by hand.
+// m2m_cohort_members CASCADE-deletes via FK, so partial member inserts also clear.
+async function cleanupOrphanCohort(admin, cohortId) {
+  const { error } = await admin.from("m2m_cohorts").delete().eq("id", cohortId);
+  if (error) {
+    console.error("[provision-cohort] orphan_cleanup_failed", {
+      cohort_id: cohortId,
+      detail: error.message,
+    });
+    return { cleaned: false, error: error.message };
+  }
+  return { cleaned: true };
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -26,8 +79,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Server misconfigured: missing Supabase credentials" });
   }
 
-  const body = req.body || {};
+  // Vercel Node runtime auto-parses application/json; defensively parse if a
+  // raw string slips through (some Make.com configurations send text/plain).
+  let body = req.body;
+  if (typeof body === "string") {
+    try { body = JSON.parse(body); } catch { body = {}; }
+  }
+  body = body || {};
   const { cohort_name, os_lane, facilitator_email, member_emails, start_date } = body;
+
+  const normalizedEmails = normalizeMemberEmails(member_emails);
 
   const validationErrors = [];
   if (!cohort_name || typeof cohort_name !== "string") {
@@ -39,25 +100,29 @@ export default async function handler(req, res) {
   if (!facilitator_email || !EMAIL_RE.test(facilitator_email)) {
     validationErrors.push("facilitator_email is required and must be a valid email");
   }
-  if (!Array.isArray(member_emails) || member_emails.length === 0) {
-    validationErrors.push("member_emails must be a non-empty array");
+  if (normalizedEmails.length === 0) {
+    validationErrors.push(
+      "member_emails must contain at least one valid email (accepts array, " +
+      "delimited string, or JSON-stringified array)"
+    );
   }
   if (start_date && !/^\d{4}-\d{2}-\d{2}$/.test(start_date)) {
     validationErrors.push("start_date must be YYYY-MM-DD");
   }
   if (validationErrors.length) {
+    console.error("[provision-cohort] validation_failed", {
+      validationErrors,
+      received_member_emails_type: Array.isArray(member_emails)
+        ? "array"
+        : typeof member_emails,
+      received_member_emails_sample:
+        typeof member_emails === "string"
+          ? member_emails.slice(0, 200)
+          : Array.isArray(member_emails)
+          ? member_emails.slice(0, 5)
+          : member_emails,
+    });
     return res.status(400).json({ error: "validation_failed", details: validationErrors });
-  }
-
-  const normalizedEmails = [
-    ...new Set(
-      member_emails
-        .map((e) => String(e).trim().toLowerCase())
-        .filter((e) => EMAIL_RE.test(e))
-    ),
-  ];
-  if (normalizedEmails.length === 0) {
-    return res.status(400).json({ error: "validation_failed", details: ["member_emails contained no valid email addresses"] });
   }
 
   const admin = createClient(supabaseUrl, serviceKey, {
@@ -85,12 +150,47 @@ export default async function handler(req, res) {
     email,
     status: "active",
   }));
-  const { error: memberErr } = await admin.from("m2m_cohort_members").insert(memberRows);
+
+  // .select() after .insert() so we can verify how many rows actually landed.
+  // Without it, supabase-js returns { data: null, error: null } on success —
+  // a silent 0-row insert (RLS quirk, trigger, partial constraint) would be invisible.
+  const { data: insertedMembers, error: memberErr } = await admin
+    .from("m2m_cohort_members")
+    .insert(memberRows)
+    .select("id, cohort_id, email");
+
   if (memberErr) {
+    console.error("[provision-cohort] members_insert_failed", {
+      cohort_id: cohort.id,
+      attempted: memberRows.length,
+      detail: memberErr.message,
+    });
+    const orphan_cleanup = await cleanupOrphanCohort(admin, cohort.id);
     return res.status(500).json({
       error: "members_insert_failed",
       detail: memberErr.message,
       cohort_id: cohort.id,
+      attempted_rows: memberRows.length,
+      orphan_cleanup,
+    });
+  }
+
+  const insertedCount = insertedMembers?.length ?? 0;
+  if (insertedCount !== memberRows.length) {
+    console.error("[provision-cohort] member_count_mismatch", {
+      cohort_id: cohort.id,
+      expected: memberRows.length,
+      inserted: insertedCount,
+      emails_attempted: normalizedEmails,
+    });
+    const orphan_cleanup = await cleanupOrphanCohort(admin, cohort.id);
+    return res.status(500).json({
+      error: "member_count_mismatch",
+      detail: `Inserted ${insertedCount} of ${memberRows.length} member rows`,
+      cohort_id: cohort.id,
+      expected: memberRows.length,
+      inserted: insertedCount,
+      orphan_cleanup,
     });
   }
 
