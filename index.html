@@ -61,12 +61,17 @@
 
     <script>
       (function() {
-        if (window.location.hash.includes('access_token=')) {
-          var target = '/portal' + window.location.hash;
-          var current = window.location.pathname + window.location.hash;
-          if (current !== target) {
-            window.location.replace(target);
-          }
+        if (!window.location.hash.includes('access_token=')) return;
+        var stored = null;
+        try { stored = window.localStorage.getItem('authRedirect'); } catch (e) {}
+        // Only accept same-origin absolute paths; anything else falls back to /portal.
+        var target = (stored && stored.charAt(0) === '/' && stored.charAt(1) !== '/')
+          ? stored
+          : '/portal';
+        try { window.localStorage.removeItem('authRedirect'); } catch (e) {}
+        var targetPath = target.split('?')[0].split('#')[0];
+        if (window.location.pathname !== targetPath) {
+          window.location.replace(target + window.location.hash);
         }
       })();
     </script>

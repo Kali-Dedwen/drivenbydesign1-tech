@@ -131,6 +131,25 @@ function LoginScreen() {
     setSending(true);
     setError("");
     try {
+      // Persist intended post-auth path so the index.html bootstrap script can
+      // restore it after the magic-link hash callback (otherwise it falls back
+      // to /portal).
+      if (typeof window !== "undefined") {
+        try {
+          const path = window.location.pathname;
+          const returnPath =
+            path === "/dashboard" || path.startsWith("/dashboard/")
+              ? "/dashboard"
+              : "/portal";
+          window.localStorage.setItem(
+            "authRedirect",
+            returnPath + (window.location.search || "")
+          );
+        } catch (storageErr) {
+          // localStorage unavailable (private mode, etc.) — emailRedirectTo
+          // still points at the right path; bootstrap will fall back to /portal.
+        }
+      }
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email: trimmed,
         options: {
