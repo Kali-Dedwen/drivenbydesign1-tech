@@ -15,6 +15,7 @@ import ProjectCheck from './pages/project-check'
 import CribNetwork from './pages/crib-network'
 import FuseNetwork from './pages/fuse-network'
 import PivotDashboard from './pages/PivotDashboard'
+import FacilitatorDashboard from './pages/FacilitatorDashboard'
 import ThankYou from './pages/ThankYou'
 import Triage from './pages/Triage'
 import Portal from './pages/portal'
@@ -55,7 +56,8 @@ export default function App() {
         <Route path="/manifesto" element={<Manifesto />} />
         <Route path="/practitioner" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Practitioner Access — Coming Soon</h1></div>} />
         <Route path="/accessibility" element={<Accessibility />} />
-        <Route path="/dashboard" element={<PivotDashboard />} />
+        <Route path="/dashboard" element={<AuthGate><FacilitatorDashboard /></AuthGate>} />
+        <Route path="/pivot-dashboard" element={<PivotDashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/speaking" element={<Speaking />} />
         <Route path="/contact" element={<Contact />} />

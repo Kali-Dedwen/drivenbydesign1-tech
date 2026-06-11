@@ -58,6 +58,18 @@
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
 
     <link rel="preconnect" href="https://assets.calendly.com" />
+
+    <script>
+      (function() {
+        if (window.location.hash.includes('access_token=')) {
+          var target = '/portal' + window.location.hash;
+          var current = window.location.pathname + window.location.hash;
+          if (current !== target) {
+            window.location.replace(target);
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
