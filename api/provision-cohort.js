@@ -63,6 +63,11 @@ async function cleanupOrphanCohort(admin, cohortId) {
 }
 
 export default async function handler(req, res) {
+  console.log(
+    "[provision-cohort] body received:",
+    JSON.stringify(req.body).slice(0, 500)
+  );
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -86,7 +91,14 @@ export default async function handler(req, res) {
     try { body = JSON.parse(body); } catch { body = {}; }
   }
   body = body || {};
-  const { cohort_name, os_lane, facilitator_email, member_emails, start_date } = body;
+  const { cohort_name, os_lane, facilitator_email, start_date } = body;
+  let member_emails = body.member_emails;
+
+  // Make.com's scenarios_run API wraps array fields as JSON-stringified strings.
+  // Unwrap here so downstream sees a real array. Helper still handles edge shapes.
+  if (typeof member_emails === "string") {
+    try { member_emails = JSON.parse(member_emails); } catch (e) {}
+  }
 
   const normalizedEmails = normalizeMemberEmails(member_emails);
 
