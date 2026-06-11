@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuthUser } from "../components/AuthGate";
 
@@ -15,6 +15,7 @@ const T = {
   border:    "rgba(201,168,76,0.2)",
   borderGray:"rgba(26,58,107,0.12)",
   success:   "#2d7a4a",
+  danger:    "#c4444f",
   white:     "#ffffff",
 };
 
@@ -29,6 +30,8 @@ const LANE_LABEL = {
   BRIDGE_OS: "BRIDGE OS™",
   HUMAN_OS: "Human OS™",
 };
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function laneTotal(laneKey) {
   return LANE_TOTAL_MODULES[laneKey] ?? 12;
@@ -49,63 +52,65 @@ export default function FacilitatorDashboard() {
   const [members, setMembers] = useState([]);
   const [progress, setProgress] = useState([]);
   const [expandedCohortId, setExpandedCohortId] = useState(null);
+  // { [cohortId]: { email, busy, error } }
+  const [enrollState, setEnrollState] = useState({});
+  const [removeBusyId, setRemoveBusyId] = useState(null);
+
+  const refresh = useCallback(async () => {
+    setErrorMsg("");
+    try {
+      const { data: cohortRows, error: cErr } = await supabase
+        .from("m2m_cohorts")
+        .select("id,cohort_name,os_lane,facilitator_email,start_date,status,created_at")
+        .order("created_at", { ascending: false });
+      if (cErr) throw cErr;
+
+      const cohortIds = (cohortRows || []).map((c) => c.id);
+      if (!cohortIds.length) {
+        setCohorts([]);
+        setMembers([]);
+        setProgress([]);
+        return;
+      }
+
+      const { data: memberRows, error: mErr } = await supabase
+        .from("m2m_cohort_members")
+        .select("id,cohort_id,user_id,email,enrolled_at,status")
+        .in("cohort_id", cohortIds);
+      if (mErr) throw mErr;
+
+      const memberEmails = Array.from(
+        new Set((memberRows || []).map((m) => (m.email || "").toLowerCase()).filter(Boolean))
+      );
+
+      let progressRows = [];
+      if (memberEmails.length) {
+        const { data: progData, error: pErr } = await supabase
+          .from("m2m_module_progress")
+          .select("email,os_lane,module_id,completed,completed_at,status")
+          .in("email", memberEmails);
+        if (pErr) throw pErr;
+        progressRows = progData || [];
+      }
+
+      setCohorts(cohortRows || []);
+      setMembers(memberRows || []);
+      setProgress(progressRows);
+    } catch (err) {
+      setErrorMsg(err?.message || "Could not load cohort data.");
+    }
+  }, []);
 
   useEffect(() => {
+    if (!facilitatorEmail) return;
     let cancelled = false;
-    async function load() {
+    (async () => {
       setLoading(true);
-      setErrorMsg("");
-      try {
-        const { data: cohortRows, error: cErr } = await supabase
-          .from("m2m_cohorts")
-          .select("id,cohort_name,os_lane,facilitator_email,start_date,status,created_at")
-          .order("created_at", { ascending: false });
-        if (cErr) throw cErr;
-        if (cancelled) return;
-
-        const cohortIds = (cohortRows || []).map((c) => c.id);
-        if (!cohortIds.length) {
-          setCohorts([]);
-          setMembers([]);
-          setProgress([]);
-          setLoading(false);
-          return;
-        }
-
-        const { data: memberRows, error: mErr } = await supabase
-          .from("m2m_cohort_members")
-          .select("id,cohort_id,user_id,email,enrolled_at,status")
-          .in("cohort_id", cohortIds);
-        if (mErr) throw mErr;
-        if (cancelled) return;
-
-        const memberEmails = Array.from(
-          new Set((memberRows || []).map((m) => (m.email || "").toLowerCase()).filter(Boolean))
-        );
-
-        let progressRows = [];
-        if (memberEmails.length) {
-          const { data: progData, error: pErr } = await supabase
-            .from("m2m_module_progress")
-            .select("email,os_lane,module_id,completed,completed_at,status")
-            .in("email", memberEmails);
-          if (pErr) throw pErr;
-          progressRows = progData || [];
-        }
-
-        if (cancelled) return;
-        setCohorts(cohortRows || []);
-        setMembers(memberRows || []);
-        setProgress(progressRows);
-      } catch (err) {
-        if (!cancelled) setErrorMsg(err?.message || "Could not load cohort data.");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-    if (facilitatorEmail) load();
+      await refresh();
+      if (!cancelled) setLoading(false);
+    })();
     return () => { cancelled = true; };
-  }, [facilitatorEmail]);
+  }, [facilitatorEmail, refresh]);
 
   const myCohorts = useMemo(
     () => cohorts.filter((c) => (c.facilitator_email || "").toLowerCase() === facilitatorEmail),
@@ -116,10 +121,11 @@ export default function FacilitatorDashboard() {
 
   const cohortSummaries = useMemo(() => {
     return myCohorts.map((cohort) => {
-      const cohortMembers = members.filter((m) => m.cohort_id === cohort.id);
+      const allCohortMembers = members.filter((m) => m.cohort_id === cohort.id);
+      const activeCohortMembers = allCohortMembers.filter((m) => m.status === "active");
       const total = laneTotal(cohort.os_lane);
 
-      const perMember = cohortMembers.map((m) => {
+      const perMember = activeCohortMembers.map((m) => {
         const email = (m.email || "").toLowerCase();
         const memberProgress = progress.filter(
           (p) =>
@@ -142,12 +148,12 @@ export default function FacilitatorDashboard() {
         };
       });
 
-      const cohortTotalSlots = cohortMembers.length * total;
+      const cohortTotalSlots = activeCohortMembers.length * total;
       const cohortCompleted = perMember.reduce((sum, p) => sum + p.completedCount, 0);
 
       return {
         ...cohort,
-        memberCount: cohortMembers.length,
+        memberCount: activeCohortMembers.length,
         cohortCompletionPct: pct(cohortCompleted, cohortTotalSlots),
         perMember,
         totalModules: total,
@@ -163,6 +169,88 @@ export default function FacilitatorDashboard() {
         )
       : 0;
 
+  const handleSignOut = useCallback(async () => {
+    try { await signOut(); } catch { /* ignore */ }
+    if (typeof window !== "undefined") {
+      window.location.assign("/dashboard");
+    }
+  }, [signOut]);
+
+  const setEnrollField = (cohortId, patch) =>
+    setEnrollState((prev) => ({
+      ...prev,
+      [cohortId]: { email: "", busy: false, error: "", ...(prev[cohortId] || {}), ...patch },
+    }));
+
+  const handleAddMember = async (cohort) => {
+    const current = enrollState[cohort.id] || { email: "" };
+    const trimmed = (current.email || "").trim();
+    if (!trimmed) {
+      setEnrollField(cohort.id, { error: "Enter an email." });
+      return;
+    }
+    if (!EMAIL_RE.test(trimmed)) {
+      setEnrollField(cohort.id, { error: "That doesn't look like a valid email." });
+      return;
+    }
+    const lower = trimmed.toLowerCase();
+
+    const existing = members.find(
+      (m) =>
+        m.cohort_id === cohort.id &&
+        (m.email || "").toLowerCase() === lower
+    );
+
+    if (existing && existing.status === "active") {
+      setEnrollField(cohort.id, { error: "Already enrolled in this cohort." });
+      return;
+    }
+
+    setEnrollField(cohort.id, { busy: true, error: "" });
+    try {
+      if (existing && existing.status !== "active") {
+        // Reactivate an inactive row rather than creating a duplicate.
+        const { error: updErr } = await supabase
+          .from("m2m_cohort_members")
+          .update({ status: "active" })
+          .eq("id", existing.id);
+        if (updErr) throw updErr;
+      } else {
+        const { error: insErr } = await supabase
+          .from("m2m_cohort_members")
+          .insert({ cohort_id: cohort.id, email: trimmed, status: "active" });
+        if (insErr) {
+          if (/duplicate|unique/i.test(insErr.message || "")) {
+            setEnrollField(cohort.id, { busy: false, error: "Already enrolled in this cohort." });
+            return;
+          }
+          throw insErr;
+        }
+      }
+      await refresh();
+      setEnrollField(cohort.id, { email: "", busy: false, error: "" });
+    } catch (err) {
+      setEnrollField(cohort.id, { busy: false, error: err?.message || "Could not enroll member." });
+    }
+  };
+
+  const handleRemoveMember = async (memberId) => {
+    setRemoveBusyId(memberId);
+    setErrorMsg("");
+    try {
+      const { error: rmErr } = await supabase
+        .from("m2m_cohort_members")
+        .update({ status: "inactive" })
+        .eq("id", memberId);
+      if (rmErr) throw rmErr;
+      await refresh();
+    } catch (err) {
+      setErrorMsg(err?.message || "Could not remove member.");
+    } finally {
+      setRemoveBusyId(null);
+    }
+  };
+
   if (loading) {
     return <FullScreenMessage title="Facilitator Dashboard" sub="Loading cohorts…" />;
   }
@@ -173,7 +261,7 @@ export default function FacilitatorDashboard() {
         title="Access restricted"
         sub={`This dashboard is for cohort facilitators. ${facilitatorEmail || "Your account"} is not listed as a facilitator on any active cohort.`}
         action={
-          <button onClick={signOut} style={btnGhost}>
+          <button onClick={handleSignOut} style={btnGhost}>
             Sign out
           </button>
         }
@@ -192,7 +280,7 @@ export default function FacilitatorDashboard() {
             Signed in as <span style={{ color: T.goldLight }}>{facilitatorEmail}</span>
           </div>
         </div>
-        <button onClick={signOut} style={btnGhost}>
+        <button onClick={handleSignOut} style={btnGhost}>
           Sign out
         </button>
       </header>
@@ -201,7 +289,7 @@ export default function FacilitatorDashboard() {
 
       <section style={statsRow}>
         <StatCard label="Active Cohorts" value={cohortSummaries.length} />
-        <StatCard label="Total Members" value={totalMembers} />
+        <StatCard label="Active Members" value={totalMembers} />
         <StatCard label="Avg Cohort Completion" value={`${avgCompletion}%`} />
       </section>
 
@@ -214,6 +302,7 @@ export default function FacilitatorDashboard() {
         ) : (
           cohortSummaries.map((cohort) => {
             const expanded = expandedCohortId === cohort.id;
+            const enroll = enrollState[cohort.id] || { email: "", busy: false, error: "" };
             return (
               <article key={cohort.id} style={cohortCard}>
                 <button
@@ -237,29 +326,62 @@ export default function FacilitatorDashboard() {
                 </button>
 
                 {expanded && (
-                  <div style={memberTableWrap}>
+                  <div style={memberPanel}>
+                    <form
+                      onSubmit={(e) => { e.preventDefault(); handleAddMember(cohort); }}
+                      style={enrollRow}
+                    >
+                      <input
+                        type="email"
+                        placeholder="member@email.com"
+                        value={enroll.email}
+                        disabled={enroll.busy}
+                        onChange={(e) => setEnrollField(cohort.id, { email: e.target.value, error: "" })}
+                        style={enrollInput}
+                      />
+                      <button
+                        type="submit"
+                        disabled={enroll.busy || !enroll.email.trim()}
+                        style={enroll.busy || !enroll.email.trim() ? btnPrimaryDisabled : btnPrimary}
+                      >
+                        {enroll.busy ? "Enrolling…" : "Add Member"}
+                      </button>
+                    </form>
+                    {enroll.error && <div style={inlineError}>{enroll.error}</div>}
+
                     {cohort.perMember.length === 0 ? (
-                      <div style={{ color: T.muted, padding: "14px 18px" }}>No members enrolled.</div>
+                      <div style={{ color: T.muted, padding: "14px 18px" }}>No active members enrolled.</div>
                     ) : (
                       <table style={memberTable}>
                         <thead>
                           <tr>
                             <th style={thStyle}>Member</th>
-                            <th style={thStyle}>Status</th>
+                            <th style={thStyle}>Enrolled</th>
                             <th style={thStyle}>Modules</th>
                             <th style={thStyle}>Progress</th>
+                            <th style={thStyleRight}></th>
                           </tr>
                         </thead>
                         <tbody>
                           {cohort.perMember.map((m) => (
                             <tr key={m.memberId}>
                               <td style={tdStyle}>{m.email}</td>
-                              <td style={tdStyle}>{m.status || "active"}</td>
+                              <td style={tdStyle}>{formatDate(m.enrolledAt)}</td>
                               <td style={tdStyle}>
                                 {m.completedCount} / {cohort.totalModules}
                               </td>
                               <td style={tdStyle}>
                                 <ProgressBar pct={m.completionPct} />
+                              </td>
+                              <td style={tdStyleRight}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveMember(m.memberId)}
+                                  disabled={removeBusyId === m.memberId}
+                                  style={btnRemove}
+                                >
+                                  {removeBusyId === m.memberId ? "Removing…" : "Remove"}
+                                </button>
                               </td>
                             </tr>
                           ))}
@@ -277,6 +399,13 @@ export default function FacilitatorDashboard() {
       <footer style={footer}>FL/II Doctrine · Trust/Liability Gate active · To the work.</footer>
     </div>
   );
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toISOString().slice(0, 10);
 }
 
 function FullScreenMessage({ title, sub, action }) {
@@ -414,7 +543,65 @@ const chevron = (expanded) => ({
   transition: "transform 0.2s",
   transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
 });
-const memberTableWrap = { borderTop: `1px solid ${T.border}`, background: "rgba(0,0,0,0.18)" };
+const memberPanel = { borderTop: `1px solid ${T.border}`, background: "rgba(0,0,0,0.18)" };
+const enrollRow = {
+  display: "flex",
+  gap: 10,
+  padding: "16px 22px",
+  alignItems: "center",
+};
+const enrollInput = {
+  flex: 1,
+  background: "rgba(255,255,255,0.05)",
+  border: `1px solid ${T.border}`,
+  borderRadius: 8,
+  padding: "10px 14px",
+  color: T.white,
+  fontSize: 14,
+  outline: "none",
+  fontFamily: "inherit",
+};
+const btnPrimary = {
+  background: T.gold,
+  border: "none",
+  borderRadius: 8,
+  padding: "10px 18px",
+  color: T.navy,
+  fontSize: 13,
+  fontWeight: 800,
+  letterSpacing: 0.5,
+  cursor: "pointer",
+};
+const btnPrimaryDisabled = {
+  ...{
+    background: "rgba(201,168,76,0.25)",
+    border: "none",
+    borderRadius: 8,
+    padding: "10px 18px",
+    color: T.goldDim,
+    fontSize: 13,
+    fontWeight: 800,
+    letterSpacing: 0.5,
+    cursor: "not-allowed",
+  },
+};
+const btnRemove = {
+  background: "transparent",
+  border: `1px solid rgba(196,68,79,0.4)`,
+  color: "#ff9aa3",
+  padding: "6px 12px",
+  borderRadius: 6,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: 0.5,
+  cursor: "pointer",
+  textTransform: "uppercase",
+};
+const inlineError = {
+  color: "#ff9aa3",
+  fontSize: 12,
+  padding: "0 22px 14px",
+};
 const memberTable = { width: "100%", borderCollapse: "collapse" };
 const thStyle = {
   textAlign: "left",
@@ -426,6 +613,7 @@ const thStyle = {
   fontWeight: 700,
   borderBottom: `1px solid ${T.border}`,
 };
+const thStyleRight = { ...thStyle, textAlign: "right" };
 const tdStyle = {
   padding: "12px 22px",
   fontSize: 13,
@@ -433,6 +621,7 @@ const tdStyle = {
   borderBottom: "1px solid rgba(255,255,255,0.04)",
   verticalAlign: "middle",
 };
+const tdStyleRight = { ...tdStyle, textAlign: "right" };
 const emptyState = {
   background: T.navy,
   border: `1px dashed ${T.border}`,

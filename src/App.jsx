@@ -22,21 +22,22 @@ import Portal from './pages/portal'
 import AuthGate from './components/AuthGate'
 import SiteChat from './components/SiteChat'
 
+const AUTH_RETURN_PATHS = ['/portal', '/dashboard']
+
+function rewriteAccessTokenHash() {
+  if (typeof window === 'undefined') return
+  if (!window.location.hash.includes('#access_token=')) return
+  const path = window.location.pathname
+  if (AUTH_RETURN_PATHS.some((p) => path === p || path.startsWith(p + '/'))) return
+  // Lands at "/" or some other path — fall back to /portal for legacy magic links.
+  window.location.replace('/portal' + window.location.hash)
+}
+
 export default function App() {
-  if (typeof window !== 'undefined' && window.location.hash.includes('#access_token=')) {
-    const target = '/portal' + window.location.hash
-    if (window.location.pathname + window.location.hash !== target) {
-      window.location.replace(target)
-    }
-  }
+  rewriteAccessTokenHash()
 
   useEffect(() => {
-    if (window.location.hash.includes('#access_token=')) {
-      const target = '/portal' + window.location.hash
-      if (window.location.pathname + window.location.hash !== target) {
-        window.location.replace(target)
-      }
-    }
+    rewriteAccessTokenHash()
   }, [])
 
   return (

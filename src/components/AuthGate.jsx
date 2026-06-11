@@ -26,12 +26,12 @@ export default function AuthGate({ children }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.location.hash.includes("#access_token=")) {
-      const target = "/portal" + window.location.hash;
-      if (window.location.pathname + window.location.hash !== target) {
-        window.location.replace(target);
-      }
-    }
+    if (!window.location.hash.includes("#access_token=")) return;
+    const path = window.location.pathname;
+    // Preserve magic-link landings on auth-aware routes (/portal, /dashboard).
+    if (path === "/portal" || path.startsWith("/portal/")) return;
+    if (path === "/dashboard" || path.startsWith("/dashboard/")) return;
+    window.location.replace("/portal" + window.location.hash);
   }, []);
 
   useEffect(() => {
@@ -110,11 +110,18 @@ function LoginScreen() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  // Preserve any URL query params (?name=&lane=&...) so they still hydrate the
-  // portal after the magic-link redirect lands on /portal#access_token=…
+  // Send the magic-link callback back to whichever auth-gated route the user
+  // started from (/portal or /dashboard), preserving any ?name=&lane=… params.
   const redirectTo =
     typeof window !== "undefined"
-      ? `${window.location.origin}/portal${window.location.search || ""}`
+      ? (() => {
+          const path = window.location.pathname;
+          const returnPath =
+            path === "/dashboard" || path.startsWith("/dashboard/")
+              ? "/dashboard"
+              : "/portal";
+          return `${window.location.origin}${returnPath}${window.location.search || ""}`;
+        })()
       : undefined;
 
   const handleSubmit = async (e) => {
