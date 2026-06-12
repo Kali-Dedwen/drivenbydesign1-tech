@@ -21,6 +21,7 @@ import Triage from './pages/Triage'
 import Portal from './pages/portal'
 import AuthGate from './components/AuthGate'
 import SiteChat from './components/SiteChat'
+import SovereignApprovalDashboard from './components/SovereignApprovalDashboard'
 
 const AUTH_RETURN_PATHS = ['/portal', '/dashboard']
 
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/dashboard" element={<AuthGate><FacilitatorDashboard /></AuthGate>} />
         <Route path="/pivot-dashboard" element={<PivotDashboard />} />
+        <Route path="/portal/approvals" element={<SovereignApprovalDashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/speaking" element={<Speaking />} />
         <Route path="/contact" element={<Contact />} />
