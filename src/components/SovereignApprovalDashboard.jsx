@@ -295,7 +295,7 @@ export default function SovereignApprovalDashboard() {
 
   // Connect to live Supabase
   async function connectLive(keyOverride) {
-    const key = keyOverride || anonKey;
+    const key = (typeof keyOverride === "string" ? keyOverride : null) || anonKey || "";
     if (!key.trim()) return;
     setConnecting(true);
     try {
