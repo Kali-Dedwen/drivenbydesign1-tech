@@ -279,6 +279,13 @@ export default function SovereignApprovalDashboard() {
       PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]
     );
     setPending(sorted);
+
+    // Auto-connect if key exists in storage
+    const stored = localStorage.getItem("sb_anon_key");
+    if (stored) {
+      setAnonKey(stored);
+      connectLive(stored);
+    }
   }, []);
 
   function showToast(msg, type = "success") {
@@ -287,11 +294,12 @@ export default function SovereignApprovalDashboard() {
   }
 
   // Connect to live Supabase
-  async function connectLive() {
-    if (!anonKey.trim()) return;
+  async function connectLive(keyOverride) {
+    const key = keyOverride || anonKey;
+    if (!key.trim()) return;
     setConnecting(true);
     try {
-      const headers = { apikey: anonKey, Authorization: `Bearer ${anonKey}` };
+      const headers = { apikey: key, Authorization: `Bearer ${key}` };
       const [pRes, aRes] = await Promise.all([
         fetch(`${SUPABASE_URL}/rest/v1/approval_queue?status=eq.Pending&order=created_at.desc&limit=20`, { headers }),
         fetch(`${SUPABASE_URL}/rest/v1/sovereign_execution_log?order=created_at.desc&limit=20`, { headers }),
@@ -300,6 +308,7 @@ export default function SovereignApprovalDashboard() {
         const [pData, aData] = await Promise.all([pRes.json(), aRes.json()]);
         setPending([...pData].sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]));
         setActivity(aData);
+        localStorage.setItem("sb_anon_key", key);
         setConnected(true);
         showToast(`Live — ${pData.length} pending · ${aData.length} log entries`);
       } else {
