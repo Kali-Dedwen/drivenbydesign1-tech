@@ -4,5 +4,7 @@
     { "source": "/portal(.*)", "destination": "/index.html" },
     { "source": "/dashboard(.*)", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "buildCommand": "echo 'skip build'",
+  "outputDirectory": "."
 }
