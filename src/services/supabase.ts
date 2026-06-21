@@ -17,12 +17,15 @@ import type {
 } from "../types.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL ?? "https://jnmywpfdykuybrxkdcmc.supabase.co";
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ?? "";
 
-// CRITICAL: Use anon key + agent_worker role — NOT service_role
-// service_role bypasses RLS. agent_worker enforces the policy.
+// CRITICAL: Never use service_role in the agent path — it bypasses RLS.
+// The anon key only bootstraps the client (Postgres role 'anon'). The agent
+// then SIGNS IN to obtain an 'authenticated' JWT, which is the role every
+// write policy is granted to. RLS still fires under the authenticated session.
 // See: governance.yaml + procurement_pipeline RLS policy
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY ?? "";
+const SUPABASE_AGENT_EMAIL = process.env.SUPABASE_AGENT_EMAIL ?? "";
+const SUPABASE_AGENT_PASSWORD = process.env.SUPABASE_AGENT_PASSWORD ?? "";
 
 function generateTraceId(): string {
   return `M2M-${Date.now()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
@@ -41,12 +44,36 @@ function buildResponse<T>(data: T | null, error: string | null): M2MApiResponse<
 export class M2MSupabaseService {
   private client: SupabaseClient;
 
+  private authed = false;
+
   constructor() {
-    if (!SUPABASE_ANON_KEY && !SUPABASE_SERVICE_KEY) {
-      throw new Error("SUPABASE_ANON_KEY or SUPABASE_SERVICE_KEY must be set");
+    if (!SUPABASE_ANON_KEY) {
+      throw new Error("SUPABASE_ANON_KEY must be set");
     }
-    // Use anon key so RLS fires. Service key is emergency-only.
-    this.client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY || SUPABASE_SERVICE_KEY);
+    if (!SUPABASE_AGENT_EMAIL || !SUPABASE_AGENT_PASSWORD) {
+      throw new Error(
+        "SUPABASE_AGENT_EMAIL and SUPABASE_AGENT_PASSWORD must be set — the agent " +
+        "must sign in to hold the 'authenticated' role. The bare anon key is role " +
+        "'anon' and matches none of the write policies."
+      );
+    }
+    // anon key bootstraps the client; the agent signs in (ensureAuth) for an
+    // 'authenticated' JWT. RLS still fires — we never use service_role.
+    this.client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false, autoRefreshToken: true },
+    });
+  }
+
+  // Sign in once to upgrade the session from 'anon' to 'authenticated'.
+  // Every DB method awaits this before issuing a query so RLS sees the right role.
+  private async ensureAuth(): Promise<void> {
+    if (this.authed) return;
+    const { error } = await this.client.auth.signInWithPassword({
+      email: SUPABASE_AGENT_EMAIL,
+      password: SUPABASE_AGENT_PASSWORD,
+    });
+    if (error) throw new Error(`Agent authentication failed: ${error.message}`);
+    this.authed = true;
   }
 
   // -----------------------------------------------------------
@@ -56,6 +83,7 @@ export class M2MSupabaseService {
   // -----------------------------------------------------------
 
   async getPendingComplianceRecords(): Promise<M2MApiResponse<ProcurementRecord[]>> {
+    await this.ensureAuth();
     const { data, error } = await this.client
       .from("procurement_pipeline")
       .select("*")
@@ -72,6 +100,7 @@ export class M2MSupabaseService {
     traceId: string,
     workflowRunId?: string
   ): Promise<M2MApiResponse<ProcurementRecord>> {
+    await this.ensureAuth();
     // Enforce: agent can NEVER write approved_production
     const blockedStatuses = ["approved_production"];
     if (blockedStatuses.includes(newStatus)) {
@@ -97,6 +126,7 @@ export class M2MSupabaseService {
   async logComplianceAssessment(
     assessment: Omit<ComplianceAssessment, "assessed_at">
   ): Promise<M2MApiResponse<ComplianceAssessment>> {
+    await this.ensureAuth();
     const record = { ...assessment, assessed_at: new Date().toISOString() };
     const { data, error } = await this.client
       .from("compliance_assessments")
@@ -114,6 +144,7 @@ export class M2MSupabaseService {
   async createPrometheusReview(
     review: Omit<PrometheusReview, "id" | "created_at">
   ): Promise<M2MApiResponse<PrometheusReview>> {
+    await this.ensureAuth();
     const { data, error } = await this.client
       .from("prometheus_reviews")
       .insert({ ...review, created_at: new Date().toISOString() })
@@ -124,6 +155,7 @@ export class M2MSupabaseService {
   }
 
   async getActiveRiskRegister(): Promise<M2MApiResponse<RiskRegisterEntry[]>> {
+    await this.ensureAuth();
     const { data, error } = await this.client
       .from("prometheus_risk_register")
       .select("*")
@@ -140,15 +172,15 @@ export class M2MSupabaseService {
     details: Record<string, unknown>,
     traceId: string
   ): Promise<M2MApiResponse<{ id: string }>> {
+    await this.ensureAuth();
     const { data, error } = await this.client
       .from("prometheus_audit_log")
       .insert({
-        entity_type: entityType,
-        entity_id: entityId,
-        event,
-        details,
-        trace_id: traceId,
-        logged_at: new Date().toISOString(),
+        entity: `${entityType}:${entityId}`,
+        event_type: event,
+        detail: { ...details, trace_id: traceId },
+        actor: "m2m-sovereign-mcp",
+        module_invoked: event,
       })
       .select("id")
       .single();
@@ -163,6 +195,7 @@ export class M2MSupabaseService {
   async logSkillExecution(
     execution: Omit<DartSkillExecution, "executed_at">
   ): Promise<M2MApiResponse<DartSkillExecution>> {
+    await this.ensureAuth();
     const record = { ...execution, executed_at: new Date().toISOString() };
     const { data, error } = await this.client
       .from("dart_skill_executions")
@@ -178,6 +211,7 @@ export class M2MSupabaseService {
   // -----------------------------------------------------------
 
   async upsertDod(dod: DefinitionOfDone): Promise<M2MApiResponse<DefinitionOfDone>> {
+    await this.ensureAuth();
     const { data, error } = await this.client
       .from("dart_definition_of_done")
       .upsert(dod, { onConflict: "skill_id,platform" })
@@ -188,6 +222,7 @@ export class M2MSupabaseService {
   }
 
   async getDodStatus(skillId: string): Promise<M2MApiResponse<DefinitionOfDone[]>> {
+    await this.ensureAuth();
     const { data, error } = await this.client
       .from("dart_definition_of_done")
       .select("*")
@@ -205,6 +240,7 @@ export class M2MSupabaseService {
     queryVector: number[],
     matchCount: number = 3
   ): Promise<M2MApiResponse<Array<{ content: string; similarity: number }>>> {
+    await this.ensureAuth();
     const { data, error } = await this.client.rpc("match_compliance_embeddings", {
       query_embedding: queryVector,
       match_count: matchCount,

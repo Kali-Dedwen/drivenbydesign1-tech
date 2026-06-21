@@ -222,12 +222,22 @@ export function registerDartTools(server: McpServer): void {
       }
 
       const report = formatDodReport(result.data);
+      const platforms_evaluated  = result.data.length;
+      const platforms_complete   = result.data.filter(d => d.dod_status === "COMPLETE").length;
+      const platforms_blocked    = result.data.filter(d => d.dod_status === "BLOCKED").length;
+      const platforms_incomplete = result.data.filter(d => d.dod_status === "INCOMPLETE").length;
       const summary = {
         skill_id,
-        platforms_evaluated: result.data.length,
-        platforms_complete: result.data.filter(d => d.dod_status === "COMPLETE").length,
-        platforms_blocked: result.data.filter(d => d.dod_status === "BLOCKED").length,
-        fully_done: result.data.every(d => d.dod_status === "COMPLETE"),
+        platforms_evaluated,
+        platforms_complete,
+        platforms_blocked,
+        platforms_incomplete,
+        // fully_done requires >=1 platform COMPLETE and zero INCOMPLETE/BLOCKED.
+        // The empty set is NOT done — guards the [].every() === true bug.
+        fully_done: platforms_evaluated > 0
+                    && platforms_complete > 0
+                    && platforms_incomplete === 0
+                    && platforms_blocked === 0,
         report,
       };
 
