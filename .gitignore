@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+*.key
+*.pem
+config/production.json
+.DS_Store
+*.log
+coverage/

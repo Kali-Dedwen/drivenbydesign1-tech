@@ -1,0 +1,54 @@
+# .claude/governance.yaml - Enterprise Policy Enforcement File
+version: "2026.1"
+metadata:
+  organization: "Model 2 Message Inc."
+  classification: "Proprietary-Restricted"
+  sdvosb: "M2M~Inc. only — never SAF, never CenterMarq"
+
+command_restrictions:
+  blocked_patterns:
+    - "rm -rf /"
+    - "curl * | bash"
+    - "git push origin production --force"
+    - "supabase db reset --linked"   # Never reset production DB
+  require_approval:
+    - "sudo"
+    - "docker run"
+    - "npm install -g"
+    - "supabase migration up"        # All migrations require Kev auth
+
+file_protection_rules:
+  read_only_paths:
+    - ".env"
+    - "**/*.key"
+    - "config/production.json"
+    - "supabase/migrations/*.sql"    # Migrations are append-only
+  block_modification: true
+
+ultracode_permissions:
+  # Claude Code dynamic workflow runtime is explicitly allowed
+  # Overrides shell-execution caution for workflow orchestration scripts
+  allow_dynamic_workflow_runtime: true
+  allow_subagent_spawning: true
+  subagent_budget_warning_threshold: 20  # Alert Kev if >20 subagents spawn
+  effort_level_for_mcp_builds: "ultracode"
+  effort_level_for_routine: "high"
+
+content_policies:
+  prevent_hardcoded_secrets: true
+  enforce_dependency_scans: true
+  allowed_code_patterns:
+    - "OWASP_Top_10_Compliant"
+  certification_hard_rules:
+    - rule: "SAF_NO_SDVOSB"
+      description: "SAF (Solutions Afoot LLC) never holds SDVOSB in any output, code, or data"
+      enforcement: "PROMETHEUS_hard_block"
+    - rule: "M2M_SDVOSB_ONLY"
+      description: "SDVOSB attribution belongs to M2M~Inc. exclusively"
+      enforcement: "PROMETHEUS_hard_block"
+
+audit_telemetry:
+  target_sink: "compliance-stream.internal.net:syslog"
+  log_level: "VERBOSE_CONVERSATION"
+  supabase_audit_table: "prometheus_audit_log"
+  trace_id_required: true
