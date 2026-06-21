@@ -47,16 +47,14 @@ export default function About() {
             <p className="font-mono text-[0.68rem] tracking-[0.18em] text-gold uppercase mb-4 flex items-center gap-3 before:block before:w-8 before:h-[1.5px] before:bg-gold animate-[fade-in-up_0.6s_0.1s_ease_forwards] opacity-0">
               The Sovereign Architect
             </p>
-            <h1 className="font-display text-[clamp(3rem,6vw,5.5rem)] font-black leading-none tracking-tight text-white mb-3 animate-[fade-in-up_0.6s_0.25s_ease_forwards] opacity-0">
-              Dr. Kevin
-              <br />
-              A. Smith
+            <h1 className="font-display text-[clamp(2.2rem,5vw,5.5rem)] font-black leading-none tracking-tight text-white mb-3 animate-[fade-in-up_0.6s_0.25s_ease_forwards] opacity-0">
+              Dr. Kevin A. Smith
             </h1>
             <p className="font-mono text-[0.75rem] tracking-[0.15em] text-gold-muted uppercase mb-6 animate-[fade-in-up_0.6s_0.4s_ease_forwards] opacity-0">
               Founder & Chief Opportunity Officer · M2M~Inc.
             </p>
             <p className="text-[1.05rem] text-white-soft leading-[1.75] max-w-[480px] animate-[fade-in-up_0.6s_0.4s_ease_forwards] opacity-0">
-              Navy veteran. Behavioral systems architect. Workforce intelligence
+              Veteran. Behavioral systems architect. Workforce intelligence
               practitioner. Built the Human OS™ platform from lived experience —
               not theory.
             </p>
@@ -221,7 +219,7 @@ export default function About() {
               — <strong className="text-gold">Dr. Kevin A. Smith</strong> · Founder,
               M2M~Inc.
               <br />
-              <span>Navy Veteran · Hon. D.H.L. · Sovereign Architect</span>
+              <span>Veteran · Hon. D.H.L. · Sovereign Architect</span>
             </p>
           </div>
         </div>
