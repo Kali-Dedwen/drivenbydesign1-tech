@@ -47,7 +47,7 @@ export default function About() {
             <p className="font-mono text-[0.68rem] tracking-[0.18em] text-gold uppercase mb-4 flex items-center gap-3 before:block before:w-8 before:h-[1.5px] before:bg-gold animate-[fade-in-up_0.6s_0.1s_ease_forwards] opacity-0">
               The Sovereign Architect
             </p>
-            <h1 className="font-display text-[clamp(2.2rem,5vw,5.5rem)] font-black leading-none tracking-tight text-white mb-3 animate-[fade-in-up_0.6s_0.25s_ease_forwards] opacity-0">
+            <h1 className="font-display text-[clamp(1.6rem,4.2vw,5.5rem)] font-black leading-none tracking-tight text-white mb-3 animate-[fade-in-up_0.6s_0.25s_ease_forwards] opacity-0 whitespace-nowrap">
               Dr. Kevin A. Smith
             </h1>
             <p className="font-mono text-[0.75rem] tracking-[0.15em] text-gold-muted uppercase mb-6 animate-[fade-in-up_0.6s_0.4s_ease_forwards] opacity-0">
