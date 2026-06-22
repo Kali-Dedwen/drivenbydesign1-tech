@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import { useAuthUser } from "../components/AuthGate";
+import { ModuleContentRenderer } from "../components/ModuleContentRenderer";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const T = {
@@ -1534,8 +1535,8 @@ function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, 
           </div>
         )}
 
-        <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 14, lineHeight: 1.8, marginBottom: 28 }}>
-          {mod.content}
+        <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
+          <ModuleContentRenderer text={mod.content} variant="content" />
         </div>
 
         <div style={{
@@ -1546,7 +1547,7 @@ function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, 
             Module Exercise
           </div>
           <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, lineHeight: 1.7 }}>
-            {mod.exercise}
+            <ModuleContentRenderer text={mod.exercise} variant="exercise" />
           </div>
         </div>
 

@@ -24,4 +24,30 @@ function App() {
 export default App;
 
 === RESULT ===
+Live at: https://model2message.net/sovereign=== ADD TO App.jsx (or App.tsx) ===
+
+1. Import at top (with your other page imports):
+   import SovereignCommand from "./pages/SovereignCommand";
+
+2. Inside your <Routes> block, add:
+   <Route path="/sovereign" element={<SovereignCommand />} />
+
+=== EXAMPLE (if your App.jsx currently looks like this) ===
+
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import SovereignCommand from "./pages/SovereignCommand";   // ADD THIS
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/sovereign" element={<SovereignCommand />} />  // ADD THIS
+    </Routes>
+  );
+}
+
+export default App;
+
+=== RESULT ===
 Live at: https://model2message.net/sovereign
