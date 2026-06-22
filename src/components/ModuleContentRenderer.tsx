@@ -84,8 +84,8 @@ function parseContent(raw: string): Block[] {
       continue;
     }
 
-    // Heading: "First:" / "Second:" / "Third:" / standalone capitalized label
-    const thirdLevel = line.match(/^(First|Second|Third|Fourth|Fifth)[:\s]/i);
+    // Heading: "First:" / "Second:" / "Third:" — only when colon-terminated (section label, not mid-sentence)
+    const thirdLevel = line.match(/^(First|Second|Third|Fourth|Fifth):\s/i);
     if (thirdLevel) {
       flushAll();
       blocks.push({ kind: "heading", text: line, level: 3 });
@@ -183,7 +183,7 @@ function HeadingBlock({ text, level }: { text: string; level: 2 | 3 }) {
   const styles: React.CSSProperties =
     level === 2
       ? { fontSize: 15, fontWeight: 700, color: T.white, margin: "24px 0 10px", letterSpacing: 0.2 }
-      : { fontSize: 13, fontWeight: 700, color: T.goldLight, margin: "20px 0 8px", textTransform: "uppercase", letterSpacing: 1.2 };
+      : { fontSize: 14, fontWeight: 600, color: T.goldLight, margin: "18px 0 6px", letterSpacing: 0, fontStyle: "normal" };
   return <div style={styles}>{text}</div>;
 }
 
