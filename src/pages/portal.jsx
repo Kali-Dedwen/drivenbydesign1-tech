@@ -1389,7 +1389,14 @@ function ModuleCard({ mod, phaseIndex, onOpen, isActive, isCompleted }) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-expanded={isActive}
+      aria-label={`Open module ${mod.id}: ${mod.title}${isCompleted ? " (complete)" : ""}`}
       onClick={() => onOpen(mod)}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); onOpen(mod); }
+      }}
       style={{
         background: isActive ? "rgba(201,168,76,0.08)" : "rgba(255,255,255,0.03)",
         border: `1px solid ${isActive ? T.border : "rgba(255,255,255,0.06)"}`,
@@ -1417,7 +1424,7 @@ function ModuleCard({ mod, phaseIndex, onOpen, isActive, isCompleted }) {
 }
 
 // ─── MODULE DETAIL VIEW ────────────────────────────────────────────────────────
-function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, onClose, onChat, onComplete, isCompleted }) {
+function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, isFocusMode, onClose, onChat, onComplete, isCompleted }) {
   const platformData = PLATFORMS[platform];
   const isCheckpoint = mod.type === "checkpoint" || mod.type === "graduation";
 
@@ -1505,9 +1512,15 @@ function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, 
   };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", overflowY: "auto" }}>
+    <div data-fm-scroll style={{ height: "100%", display: "flex", flexDirection: "column", overflowY: "auto" }}>
       <div style={{ padding: "24px 28px 0" }}>
-        <button onClick={onClose} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 13, padding: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 6 }}>
+        <button
+          onClick={onClose}
+          aria-expanded={isFocusMode ? true : undefined}
+          aria-controls="fm-panel"
+          aria-label="Back to modules — close focus view"
+          style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 13, padding: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 6 }}
+        >
           ← Back to modules
         </button>
         <div style={{ color: T.gold, fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>
@@ -1681,7 +1694,13 @@ export default function App() {
 
   const e = getUrlParams();
   const [activeLane, setActiveLane] = useState(null);
-  const [activeModule, setActiveModule] = useState(null);
+  // Focus Mode: activeModuleId drives which module is open; isFocusMode toggles
+  // the collapsed-rail / full-width expanded layout. The module object itself is
+  // derived from activeModuleId below so there is a single source of truth.
+  const [activeModuleId, setActiveModuleId] = useState(null);
+  const [isFocusMode, setIsFocusMode] = useState(false);
+  const [completingId, setCompletingId] = useState(null); // module mid gold-check animation
+  const [liveMessage, setLiveMessage] = useState("");      // aria-live announcements
   const [chatOpen, setChatOpen] = useState(null);
   const [completedModules, setCompletedModules] = useState({});
   const [progressLoaded, setProgressLoaded] = useState(false);
@@ -1689,6 +1708,14 @@ export default function App() {
   const [intakeData, setIntakeData] = useState({});
   const [initialized, setInitialized] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+
+  // Refs: phase headings (for scroll-to-next-phase on phase completion), the
+  // focus panel (scroll reset + focus trap), and the element that opened focus
+  // mode (to restore focus on exit). touchRef tracks swipe gestures on mobile.
+  const phaseRefs = useRef({});
+  const focusPanelRef = useRef(null);
+  const lastTriggerRef = useRef(null);
+  const touchRef = useRef({ x: 0, y: 0 });
 
   // URL params still hydrate the portal when present. If the URL declared no
   // ?lane=, we leave the door open for the progress-load effect to restore the
@@ -1748,6 +1775,107 @@ export default function App() {
       .finally(() => setProgressLoaded(true));
   }, [userId]);
 
+  // Restore focus position on reload. The profile row records the user's
+  // current_module / current_phase / os_lane (written on every completion). If
+  // the saved module still exists in the lane, drop the user back into focus
+  // mode exactly where they left off.
+  useEffect(() => {
+    if (!userId) return;
+    fetch(
+      `${SUPABASE_URL}/rest/v1/m2m_client_profiles?id=eq.${userId}` +
+      `&select=os_lane,current_phase,current_module`,
+      {
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+      }
+    )
+      .then(r => r.json())
+      .then(rows => {
+        const prof = Array.isArray(rows) ? rows[0] : null;
+        if (!prof) return;
+        const targetLane = (prof.os_lane && PLATFORMS[prof.os_lane]) ? prof.os_lane : null;
+        if (!urlHasLane && targetLane) setActiveLane(targetLane);
+        const laneForCheck = targetLane || activeLane || "PIVOT_OS";
+        const exists = !!prof.current_module && PLATFORMS[laneForCheck]?.phases
+          .some(p => p.modules.some(m => m.id === prof.current_module));
+        if (exists) {
+          setActiveModuleId(prof.current_module);
+          setIsFocusMode(true);
+        }
+      })
+      .catch(() => {});
+  }, [userId]);
+
+  // ─── FOCUS MODE CONTROLS ──────────────────────────────────────────────────
+  // Defined above the early `!initialized` return so the hooks below run on
+  // every render (Rules of Hooks). These touch only state setters and refs.
+
+  // Enter focus mode on a module. Remembers the trigger element for focus return.
+  const openModule = (mod) => {
+    if (typeof document !== "undefined") lastTriggerRef.current = document.activeElement;
+    setActiveModuleId(mod.id);
+    setIsFocusMode(true);
+    setLiveMessage(`Opened module ${mod.id}: ${mod.title}.`);
+  };
+
+  // Exit focus mode: collapse back to the full module list and restore focus.
+  const exitFocus = () => {
+    setIsFocusMode(false);
+    setActiveModuleId(null);
+    setCompletingId(null);
+    const trigger = lastTriggerRef.current;
+    if (trigger && typeof trigger.focus === "function") {
+      requestAnimationFrame(() => trigger.focus());
+    }
+  };
+
+  // Swipe-right on mobile closes focus mode (mirrors the Back button / Esc).
+  const onTouchStart = (ev) => {
+    const t = ev.touches[0];
+    touchRef.current = { x: t.clientX, y: t.clientY };
+  };
+  const onTouchEnd = (ev) => {
+    const t = ev.changedTouches[0];
+    const dx = t.clientX - touchRef.current.x;
+    const dy = t.clientY - touchRef.current.y;
+    if (dx > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) exitFocus();
+  };
+
+  // Esc closes focus mode; Tab is trapped within the focus panel while open.
+  useEffect(() => {
+    if (!isFocusMode) return;
+    const onKey = (ev) => {
+      if (ev.key === "Escape") { ev.preventDefault(); exitFocus(); return; }
+      if (ev.key === "Tab" && focusPanelRef.current) {
+        const focusables = focusPanelRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+        else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [isFocusMode]);
+
+  // On opening / switching the focused module: reset scroll to the top of the
+  // module content and move focus into the panel (completes the focus trap).
+  useEffect(() => {
+    if (!isFocusMode || !activeModuleId) return;
+    const panel = focusPanelRef.current;
+    if (!panel) return;
+    panel.scrollTop = 0;
+    const scroller = panel.querySelector("[data-fm-scroll]");
+    if (scroller) scroller.scrollTop = 0;
+    const firstBtn = panel.querySelector("button");
+    if (firstBtn) firstBtn.focus();
+  }, [activeModuleId, isFocusMode]);
+
   if (!initialized) {
     return (
       <div style={{ minHeight: '100vh', background: '#0B1F3A', display: 'flex',
@@ -1759,13 +1887,45 @@ export default function App() {
     );
   }
 
-  // handleComplete writes the row keyed to the signed-in user.
-  const handleComplete = async (modId) => {
-    const key = `${activeLane}-${modId}`;
-    setCompletedModules(prev => ({ ...prev, [key]: true }));
-    setActiveModule(null);
+  const platform = PLATFORMS[activeLane] || PLATFORMS.PIVOT_OS;
+  const allModules = platform.phases.flatMap(p => p.modules);
+  const completedCount = Object.values(completedModules).filter(Boolean).length;
+  const totalCount = allModules.length;
+  const progressPct = Math.round((completedCount / totalCount) * 100);
 
+  // Single source of truth: derive the open module object from activeModuleId.
+  const activeModule = activeModuleId ? allModules.find(m => m.id === activeModuleId) || null : null;
+
+  // Resolve the next module after `modId`. samePhase=true when the next module
+  // lives in the same phase (auto-advance, stay in focus); samePhase=false when
+  // the next module is the first of the following phase (exit focus, scroll list).
+  const getNextModule = (modId) => {
+    for (let pi = 0; pi < platform.phases.length; pi++) {
+      const ph = platform.phases[pi];
+      const mi = ph.modules.findIndex(m => m.id === modId);
+      if (mi !== -1) {
+        if (mi + 1 < ph.modules.length) return { mod: ph.modules[mi + 1], phase: ph, samePhase: true };
+        const nph = platform.phases[pi + 1];
+        if (nph && nph.modules.length) return { mod: nph.modules[0], phase: nph, samePhase: false };
+        return null; // final module in the curriculum
+      }
+    }
+    return null;
+  };
+
+  const findPhaseOf = (modId) =>
+    platform.phases.find(ph => ph.modules.some(m => m.id === modId)) || null;
+
+  // Best-effort persistence: upsert the completion row and update the profile
+  // pointer. Network failures are swallowed — the optimistic local state already
+  // reflects completion and the UI must not stall on Supabase.
+  const persistCompletion = async (modId) => {
     if (!userId) return;
+    const entry = allModules.find(m => m.id === modId);
+    const next = getNextModule(modId);
+    const nextModId = next ? next.mod.id : modId;
+    const nextPhase = next ? next.phase.id : (findPhaseOf(modId)?.id ?? null);
+    const nowIso = new Date().toISOString();
 
     try {
       await fetch(`${SUPABASE_URL}/rest/v1/m2m_module_progress?on_conflict=user_id,os_lane,module_id`, {
@@ -1778,18 +1938,72 @@ export default function App() {
         },
         body: JSON.stringify({
           user_id: userId,
+          client_id: userId,
           email: userEmail,
           client_token: legacyClientToken || userId,
           client_name: clientName || userEmail || "Client",
           platform: activeLane,
           os_lane: activeLane,
           module_id: modId,
+          module_title: entry?.title || null,
           completed: true,
-          completed_at: new Date().toISOString(),
-          status: "COMPLETE",
+          completed_at: nowIso,
+          status: "completed",
         }),
       });
     } catch {}
+
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/m2m_client_profiles?id=eq.${userId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "Prefer": "return=minimal",
+        },
+        body: JSON.stringify({
+          current_module: nextModId,
+          current_phase: nextPhase,
+          updated_at: nowIso,
+        }),
+      });
+    } catch {}
+  };
+
+  // Advance after the gold-check animation: next module in-phase stays in focus;
+  // last-in-phase exits focus and scrolls the list to the next phase.
+  const advanceFrom = (modId) => {
+    const next = getNextModule(modId);
+    if (next && next.samePhase) {
+      setActiveModuleId(next.mod.id); // stay in focus mode
+      setLiveMessage(`Module complete. Advancing to module ${next.mod.id}: ${next.mod.title}.`);
+    } else if (next) {
+      exitFocus();
+      setLiveMessage(`Phase complete. Continue with Phase ${next.phase.id}: ${next.phase.name}.`);
+      requestAnimationFrame(() => {
+        const el = phaseRefs.current[next.phase.id];
+        if (el && typeof el.scrollIntoView === "function") {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    } else {
+      exitFocus();
+      setLiveMessage("Final module complete. You've finished the curriculum.");
+    }
+  };
+
+  // handleComplete: optimistic local state → fire persistence → show the 400ms
+  // gold checkmark → advance. Keyed to the signed-in user via persistCompletion.
+  const handleComplete = (modId) => {
+    if (completingId) return; // guard against double-fire mid-animation
+    setCompletedModules(prev => ({ ...prev, [`${activeLane}-${modId}`]: true }));
+    setCompletingId(modId);
+    void persistCompletion(modId);
+    setTimeout(() => {
+      setCompletingId(null);
+      advanceFrom(modId);
+    }, 400);
   };
 
   const handleSignOut = async () => {
@@ -1802,18 +2016,34 @@ export default function App() {
 
   const clientIntakeRef = intakeData;
 
-  const platform = PLATFORMS[activeLane] || PLATFORMS.PIVOT_OS;
-  const allModules = platform.phases.flatMap(p => p.modules);
-  const completedCount = Object.values(completedModules).filter(Boolean).length;
-  const totalCount = allModules.length;
-  const progressPct = Math.round((completedCount / totalCount) * 100);
-
   return (
     <div style={{
       minHeight: "100vh", background: T.ink,
       fontFamily: "'Inter', 'Segoe UI', sans-serif",
       color: T.white,
     }}>
+      {/* Focus Mode layout + animations. Inline-style file, so the responsive
+          breakpoint (md = 768px) and 300ms transition live in a scoped <style>. */}
+      <style>{`
+        .fm-shell { display: grid; gap: 20px; grid-template-columns: 1fr; transition: grid-template-columns 0.3s ease; }
+        @media (min-width: 768px) { .fm-shell[data-focus="true"] { grid-template-columns: 64px 1fr; } }
+        @media (max-width: 767px) { .fm-shell[data-focus="true"] .fm-rail { display: none; } }
+        .fm-rail { transition: opacity 0.3s ease; }
+        .fm-panel { animation: fmPanelIn 0.3s ease; }
+        @keyframes fmPanelIn { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+        .fm-check-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(15,37,69,0.82); border-radius: 14px; z-index: 5; animation: fmFade 0.4s ease; }
+        .fm-check { width: 84px; height: 84px; border-radius: 50%; background: rgba(201,168,76,0.15); border: 2px solid ${T.gold}; color: ${T.gold}; font-size: 44px; display: flex; align-items: center; justify-content: center; animation: fmPop 0.4s cubic-bezier(.2,.8,.2,1); }
+        @keyframes fmPop { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fmFade { from { opacity: 0; } to { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { .fm-shell, .fm-panel, .fm-check, .fm-check-overlay { transition: none; animation: none; } }
+      `}</style>
+
+      {/* Screen-reader announcements for completion / advance / phase changes. */}
+      <div aria-live="polite" role="status" style={{
+        position: "absolute", width: 1, height: 1, padding: 0, margin: -1,
+        overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0,
+      }}>{liveMessage}</div>
+
       {/* Top nav */}
       <div style={{
         background: T.navy, borderBottom: `1px solid ${T.border}`,
@@ -1876,7 +2106,7 @@ export default function App() {
             {Object.values(PLATFORMS).map(p => (
               <button
                 key={p.id}
-                onClick={() => { setActiveLane(p.id); setActiveModule(null); }}
+                onClick={() => { setActiveLane(p.id); exitFocus(); }}
                 style={{
                   background: activeLane === p.id ? "rgba(201,168,76,0.1)" : "rgba(255,255,255,0.03)",
                   border: `1px solid ${activeLane === p.id ? T.border : "rgba(255,255,255,0.07)"}`,
@@ -1925,51 +2155,106 @@ export default function App() {
           </div>
         </div>
 
-        {/* Content area */}
-        <div style={{ display: "grid", gridTemplateColumns: activeModule ? "1fr 1.2fr" : "1fr", gap: 20 }}>
+        {/* Content area — Focus Mode shell. Not focused: full module list.
+            Focused: collapsed rail (64px icon strip md+, hidden mobile) + the
+            full-width expanded module panel. */}
+        <div className="fm-shell" data-focus={isFocusMode ? "true" : "false"}>
 
-          {/* Module list */}
-          <div>
-            {platform.phases.map((phase, pi) => (
-              <div key={phase.id} style={{ marginBottom: 24 }}>
-                <div style={{
-                  display: "flex", alignItems: "center", gap: 12, marginBottom: 12,
-                  paddingBottom: 10, borderBottom: `1px solid rgba(255,255,255,0.06)`,
-                }}>
-                  <div style={{
-                    width: 28, height: 28, borderRadius: "50%",
-                    background: `rgba(201,168,76,0.15)`, border: `1px solid ${T.border}`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: T.gold, fontSize: 12, fontWeight: 800,
-                  }}>{phase.id}</div>
-                  <div>
-                    <div style={{ color: T.white, fontSize: 15, fontWeight: 700 }}>Phase {phase.id}: {phase.name}</div>
-                    <div style={{ color: T.muted, fontSize: 12 }}>{phase.subtitle}</div>
+          {/* Module list rail */}
+          <div className="fm-rail">
+            {isFocusMode ? (
+              /* Collapsed icon strip — phase numbers + per-module dots (md+ only;
+                 hidden on mobile so the panel is full-width). */
+              <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "center", paddingTop: 4, position: "sticky", top: 76 }}>
+                {platform.phases.map(phase => (
+                  <div key={phase.id} style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+                    <div title={`Phase ${phase.id}: ${phase.name}`} style={{
+                      width: 26, height: 26, borderRadius: "50%",
+                      background: "rgba(201,168,76,0.15)", border: `1px solid ${T.border}`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: T.gold, fontSize: 11, fontWeight: 800,
+                    }}>{phase.id}</div>
+                    {phase.modules.map(mod => {
+                      const done = !!completedModules[`${activeLane}-${mod.id}`];
+                      const active = activeModuleId === mod.id;
+                      return (
+                        <button
+                          key={mod.id}
+                          onClick={() => openModule(mod)}
+                          title={`Module ${mod.id}: ${mod.title}`}
+                          aria-label={`Module ${mod.id}: ${mod.title}${done ? " (complete)" : ""}`}
+                          aria-current={active ? "true" : undefined}
+                          style={{
+                            width: 11, height: 11, borderRadius: "50%", padding: 0,
+                            cursor: "pointer",
+                            background: done ? T.success : active ? T.gold : "rgba(255,255,255,0.18)",
+                            border: active ? `2px solid ${T.goldLight}` : "none",
+                            outline: "none",
+                          }}
+                        />
+                      );
+                    })}
                   </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 8 }}>
-                  {phase.modules.map(mod => (
-                    <ModuleCard
-                      key={mod.id}
-                      mod={mod}
-                      phaseIndex={pi}
-                      onOpen={setActiveModule}
-                      isActive={activeModule?.id === mod.id}
-                      isCompleted={!!completedModules[`${activeLane}-${mod.id}`]}
-                    />
-                  ))}
-                </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div>
+                {platform.phases.map((phase, pi) => (
+                  <div
+                    key={phase.id}
+                    ref={el => { phaseRefs.current[phase.id] = el; }}
+                    style={{ marginBottom: 24, scrollMarginTop: 76 }}
+                  >
+                    <div style={{
+                      display: "flex", alignItems: "center", gap: 12, marginBottom: 12,
+                      paddingBottom: 10, borderBottom: `1px solid rgba(255,255,255,0.06)`,
+                    }}>
+                      <div style={{
+                        width: 28, height: 28, borderRadius: "50%",
+                        background: `rgba(201,168,76,0.15)`, border: `1px solid ${T.border}`,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        color: T.gold, fontSize: 12, fontWeight: 800,
+                      }}>{phase.id}</div>
+                      <div>
+                        <div style={{ color: T.white, fontSize: 15, fontWeight: 700 }}>Phase {phase.id}: {phase.name}</div>
+                        <div style={{ color: T.muted, fontSize: 12 }}>{phase.subtitle}</div>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 8 }}>
+                      {phase.modules.map(mod => (
+                        <ModuleCard
+                          key={mod.id}
+                          mod={mod}
+                          phaseIndex={pi}
+                          onOpen={openModule}
+                          isActive={activeModuleId === mod.id}
+                          isCompleted={!!completedModules[`${activeLane}-${mod.id}`]}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Module detail */}
-          {activeModule && (
-            <div style={{
-              background: T.navy, borderRadius: 14,
-              border: `1px solid ${T.border}`,
-              position: "sticky", top: 76, maxHeight: "calc(100vh - 100px)", overflowY: "auto",
-            }}>
+          {/* Expanded module panel (focus mode) */}
+          {isFocusMode && activeModule && (
+            <div
+              ref={focusPanelRef}
+              id="fm-panel"
+              className="fm-panel"
+              role="region"
+              aria-label={`Module ${activeModule.id}: ${activeModule.title}`}
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+              style={{
+                background: T.navy, borderRadius: 14,
+                border: `1px solid ${T.border}`,
+                position: "relative",
+                maxHeight: "calc(100vh - 100px)", overflowY: "auto",
+              }}
+            >
               <ModuleDetail
                 mod={activeModule}
                 platform={activeLane}
@@ -1977,11 +2262,17 @@ export default function App() {
                 clientId={legacyClientToken || userId}
                 userId={userId}
                 userEmail={userEmail}
-                onClose={() => setActiveModule(null)}
+                isFocusMode={isFocusMode}
+                onClose={exitFocus}
                 onChat={() => setChatOpen(true)}
                 onComplete={() => handleComplete(activeModule.id)}
                 isCompleted={!!completedModules[`${activeLane}-${activeModule.id}`]}
               />
+              {completingId === activeModule.id && (
+                <div className="fm-check-overlay" aria-hidden="true">
+                  <div className="fm-check">✓</div>
+                </div>
+              )}
             </div>
           )}
         </div>
