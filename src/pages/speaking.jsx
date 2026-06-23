@@ -103,7 +103,7 @@ export default function Speaking() {
           <li><a href="/pivot-os">PIVOT OS™</a></li>
           <li><a href="/bridge-os">BRIDGE OS™</a></li>
           <li><a href="/human-os">Human OS™</a></li>
-          <li><a href="/contact" className="nav-cta">Book Kev</a></li>
+          <li><a href="/contact" className="nav-cta">Book Kevin</a></li>
         </ul>
       </nav>
 

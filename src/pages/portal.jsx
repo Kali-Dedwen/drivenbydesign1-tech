@@ -135,7 +135,7 @@ Take the three competencies you've identified as most likely invisible to the ma
             id: "1.4", title: "Clarity Checkpoint", duration: "30 min", type: "checkpoint",
             content: `The Clarity Checkpoint is the first authentication gate in the PIVOT OS™ process. Before you build a narrative, before you position yourself in any market, you need a documented foundation. That foundation is what you've built in Phase 1.
 
-This checkpoint is not a performance. It is a diagnostic submission. Kev reviews every Clarity Checkpoint personally and will provide specific written feedback before you advance to Phase 2. The feedback is not evaluative, it's calibrating. The goal is to surface any significant blind spots in your self-assessment before they get baked into your narrative.
+This checkpoint is not a performance. It is a diagnostic submission. Kevin reviews every Clarity Checkpoint personally and will provide specific written feedback before you advance to Phase 2. The feedback is not evaluative, it's calibrating. The goal is to surface any significant blind spots in your self-assessment before they get baked into your narrative.
 
 What makes a strong Clarity Checkpoint submission: specificity over generality, honesty over polish, patterns over individual incidents. The clients who advance fastest through PIVOT OS™ are not the ones with the most impressive backgrounds, they're the ones who submitted the most honest Phase 1 work.
 
@@ -242,7 +242,7 @@ For your highest-scored gap, answer this: is the gap there because (a) you don't
             id: "2.4", title: "Narrative Checkpoint", duration: "45 min", type: "checkpoint",
             content: `The Narrative Checkpoint marks the completion of Phase 2 and the transition to market-facing work in Phase 3. At this point, you should have a documented Clarity Statement, an Authority Inventory, a working Sovereign Story in at least its fourth draft, and an AJI™ gap analysis with your primary gap identified and its root cause named.
 
-The review at this checkpoint is primarily focused on the Sovereign Story. Kev reads every Narrative Checkpoint submission and provides written feedback on three dimensions: narrative coherence (does the story make sense on its own terms?), market legibility (will the intended audience understand and be moved by this?), and tension authenticity (has the real tension been named, or is this the polished version?).
+The review at this checkpoint is primarily focused on the Sovereign Story. Kevin reads every Narrative Checkpoint submission and provides written feedback on three dimensions: narrative coherence (does the story make sense on its own terms?), market legibility (will the intended audience understand and be moved by this?), and tension authenticity (has the real tension been named, or is this the polished version?).
 
 Common reasons narratives are returned for revision: the Tension is vague or missing; the Through-Line doesn't actually connect past experience to the transition in a way the target audience would find credible; the Landing over-claims or under-specifies; the story sounds like a press release rather than a person.
 
@@ -352,11 +352,11 @@ For each Relationships at Risk conversation, write the follow-up sequence: what 
             id: "3.4", title: "Graduation Checkpoint", duration: "60 min", type: "graduation",
             content: `PIVOT OS™ Graduation is the final authentication gate in your reinvention process. It is not a ceremony and it is not a formality. It is the documented record that the work was done, not performed, done, and that the foundation for your next chapter is real and specific, not aspirational and vague.
 
-Kev reviews every Graduation Checkpoint personally. The review covers four dimensions: completeness (are all required deliverables present?), specificity (does each deliverable contain real, actionable content or does it stay at the level of aspiration?), coherence (do the deliverables form a unified picture of a specific person with a specific direction?), and authenticity (does this read like someone who has done genuine self-examination, or someone who has done the performance of self-examination?).
+Kevin reviews every Graduation Checkpoint personally. The review covers four dimensions: completeness (are all required deliverables present?), specificity (does each deliverable contain real, actionable content or does it stay at the level of aspiration?), coherence (do the deliverables form a unified picture of a specific person with a specific direction?), and authenticity (does this read like someone who has done genuine self-examination, or someone who has done the performance of self-examination?).
 
 Graduation does not mean you're finished. It means the architecture is built. The Sovereign Story is drafted and has been through review. The LinkedIn profile has been rebuilt from the ground up. The RPA™ transition is sequenced. The Sully Sequence™ is mapped. The AJI™ gap is named and a behavioral commitment is in place.
 
-What happens after Graduation: Kev provides written sign-off and specific next-step guidance. For clients continuing to Phase 4 work (launch, ongoing coaching, placement support), Graduation is the entry point. For clients completing PIVOT OS™ as a self-directed program, the Graduation deliverables are your operational toolkit for the next 90 days.
+What happens after Graduation: Kevin provides written sign-off and specific next-step guidance. For clients continuing to Phase 4 work (launch, ongoing coaching, placement support), Graduation is the entry point. For clients completing PIVOT OS™ as a self-directed program, the Graduation deliverables are your operational toolkit for the next 90 days.
 
 One final note: the hardest part of PIVOT OS™ is not the work in the modules. The hardest part is submitting work that is honest rather than impressive. If you've been doing the impressive version rather than the honest version, your Graduation Checkpoint will show it, and it will be returned. That's not a failure. That's the system working.`,
             exercise: `The Graduation Checkpoint submission has five required components. Each one has a minimum specificity standard, submissions that don't meet the standard will be returned with specific feedback.
@@ -470,7 +470,7 @@ Meta-Question 2: Of your FAILs, which one would do the most damage if it surface
           },
           {
             id: "1.3", title: "Diagnosis Checkpoint", duration: "45 min", type: "checkpoint",
-            content: `The Diagnosis Checkpoint is the gate between understanding your problem and building your solution. Kev reviews every submission personally. The standard for advancing to Phase 2 is not that your organization is ready, many organizations aren't, and that's exactly why they're here. The standard is that you have an honest, specific picture of where you are.
+            content: `The Diagnosis Checkpoint is the gate between understanding your problem and building your solution. Kevin reviews every submission personally. The standard for advancing to Phase 2 is not that your organization is ready, many organizations aren't, and that's exactly why they're here. The standard is that you have an honest, specific picture of where you are.
 
 The most common reason Diagnosis Checkpoints are returned: organizations describe their problems in the language of solutions. "We need better communication" is a solution framing. "We have a cultural coherence gap where our stated value of transparency is systematically undermined by a promotion process that rewards people who manage up rather than communicate down, and our turnover data shows the people leaving are disproportionately high performers who cite trust issues", that's a diagnosis.
 
@@ -574,7 +574,7 @@ Write your BRIDGE plan for the next 90 days. For each 30-day period: what phase 
             id: "2.4", title: "Design Checkpoint", duration: "45 min", type: "checkpoint",
             content: `The Design Checkpoint is the gate between diagnosis and deployment. At this point, you should have a clear organizational health picture, a Seven Must-Haves readiness scorecard, a Workforce Architecture assessment with specific prescriptions, a Talent Retention analysis with a 90-day action plan, and a BRIDGE phase diagnosis with a 30/60/90-day plan.
 
-Kev reviews every Design Checkpoint with a specific question in mind: is this organization ready to move to deployment, or does it need more design work first? The most common reason checkpoints are returned: the design is sound on paper but the political reality of the organization hasn't been accounted for. The plan assumes leadership alignment that doesn't exist. The plan assumes resource availability that hasn't been confirmed. The plan is built for an idealized version of the organization rather than the actual one.
+Kevin reviews every Design Checkpoint with a specific question in mind: is this organization ready to move to deployment, or does it need more design work first? The most common reason checkpoints are returned: the design is sound on paper but the political reality of the organization hasn't been accounted for. The plan assumes leadership alignment that doesn't exist. The plan assumes resource availability that hasn't been confirmed. The plan is built for an idealized version of the organization rather than the actual one.
 
 The honest test of a strong Design Checkpoint submission: could you hand this document to your most skeptical board member or C-suite colleague and have them say, "I understand the problem, I understand the proposed approach, and I understand why this approach addresses the root cause rather than the symptom"? If not, there's more design work to do.`,
             exercise: `Four components, each with a specificity standard.
@@ -702,7 +702,7 @@ Bystanders move based on organizational signals, not direct engagement. Write th
           },
           {
             id: "3.5", title: "Graduation Checkpoint", duration: "60 min", type: "graduation",
-            content: `BRIDGE OS™ Graduation is the authentication that your transformation architecture is complete, honest, and ready for deployment. Kev reviews every submission against two standards: is it real, and is it complete?
+            content: `BRIDGE OS™ Graduation is the authentication that your transformation architecture is complete, honest, and ready for deployment. Kevin reviews every submission against two standards: is it real, and is it complete?
 
 Real means the document reflects your actual organization: the political dynamics, the specific people, the genuine gaps, rather than an idealized version of what you wish your organization was. The most common reason BRIDGE Graduation Checkpoints are returned: the design is technically sound but politically naive. It doesn't account for the specific Blocker who will undermine Phase 1. It assumes the leadership alignment that was claimed in the kickoff meeting has actually been sustained.
 
@@ -1066,11 +1066,11 @@ Build a 12-month compliance calendar for your organization. Include: all certifi
             id: "3.5", title: "Graduation Checkpoint", duration: "90 min", type: "graduation",
             content: `Human OS™ Graduation is the highest authentication threshold in the M2M stack. The standard is not just that the work is complete; it is that the work is board-ready, implementation-ready, and politically real. Every deliverable in this submission will be reviewed against one question: could this be handed to the most demanding senior stakeholder in your system tomorrow, and would it answer their most important questions with sufficient honesty and specificity to earn their confidence?
 
-Kev reviews every Human OS™ Graduation personally. The review takes longer than PIVOT or BRIDGE Graduation reviews because the material is more complex, the stakes are higher, and the standard is stricter. Expect written feedback within five business days.
+Kevin reviews every Human OS™ Graduation personally. The review takes longer than PIVOT or BRIDGE Graduation reviews because the material is more complex, the stakes are higher, and the standard is stricter. Expect written feedback within five business days.
 
 The most common reason Human OS™ Graduation Checkpoints are returned: the compliance layer is incomplete, either because the GovCon compliance assessment wasn't done with sufficient specificity, or because the AI governance compliance section is handled at a conceptual rather than operational level. At Human OS™ altitude, "we plan to address compliance" is not an acceptable answer. The compliance posture must be documented at the certification level, gap level, and remediation plan level.
 
-After Graduation, Kev provides specific next-step guidance. For organizations continuing to Phase 4 work (board presentation, executive coaching, GovCon BD support, enterprise partnership development), Graduation is the entry point. For organizations completing Human OS™ as a self-directed program, the Graduation package is your operational toolkit for the next 18 months.`,
+After Graduation, Kevin provides specific next-step guidance. For organizations continuing to Phase 4 work (board presentation, executive coaching, GovCon BD support, enterprise partnership development), Graduation is the entry point. For organizations completing Human OS™ as a self-directed program, the Graduation package is your operational toolkit for the next 18 months.`,
             exercise: `Human OS™ Graduation requires six components. Each must meet board-ready specificity standards.
 
 Component 1, Implementation Sequence
@@ -1542,7 +1542,7 @@ function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, 
                 Sovereign Architect Review
               </div>
               <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 1.5 }}>
-                Kev reviews every {mod.type} personally. Submitting this checkpoint initiates that review. You will receive written feedback before advancing.
+                Kevin reviews every {mod.type} personally. Submitting this checkpoint initiates that review. You will receive written feedback before advancing.
               </div>
             </div>
           </div>
@@ -1574,7 +1574,7 @@ function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, 
               Submit Your {mod.type === "graduation" ? "Graduation" : "Checkpoint"} Work
             </div>
             <div style={{ color: T.muted, fontSize: 12, marginBottom: 14, lineHeight: 1.5 }}>
-              Paste or write your responses to the exercise above. Kev will review and provide written feedback within 48 hours.
+              Paste or write your responses to the exercise above. Kevin will review and provide written feedback within 48 hours.
             </div>
             {submitted ? (
               <div style={{
@@ -1585,10 +1585,10 @@ function ModuleDetail({ mod, platform, clientName, clientId, userId, userEmail, 
                 <span style={{ fontSize: 18, marginTop: 1 }}>✓</span>
                 <div>
                   <div style={{ color: "#5abe7f", fontWeight: 700, fontSize: 14, marginBottom: 4 }}>
-                    Submitted. Kev will review within 48 hours.
+                    Submitted. Kevin will review within 48 hours.
                   </div>
                   <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 1.5 }}>
-                    Your work is logged and this module is marked complete. Written feedback will come directly from Kev. If you need to add anything, reply to that message.
+                    Your work is logged and this module is marked complete. Written feedback will come directly from Kevin. If you need to add anything, reply to that message.
                   </div>
                 </div>
               </div>

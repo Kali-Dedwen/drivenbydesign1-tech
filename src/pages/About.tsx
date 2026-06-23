@@ -108,7 +108,7 @@ export default function About() {
               <p>
                 A <strong className="text-white">U.S. Navy veteran</strong> with
                 roots in South Boston, Virginia and an operational base in
-                Winston-Salem, NC, Kev has spent the last decade at the intersection
+                Winston-Salem, NC, Kevin has spent the last decade at the intersection
                 of behavioral science, workforce development, and organizational
                 transformation. His platform sits on nine proprietary marks because
                 the frameworks he built didn't exist anywhere else.
@@ -229,7 +229,7 @@ export default function About() {
       <section className="py-24 px-[clamp(1.5rem,5vw,4rem)] text-center bg-[linear-gradient(135deg,#0D2045_0%,#0A1628_100%)]">
         <div className="max-w-[640px] mx-auto">
           <p className="font-mono text-[0.68rem] tracking-[0.18em] text-gold uppercase mb-4">
-            Work With Kev
+            Work With Kevin
           </p>
           <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-white leading-[1.1] mb-4 tracking-tight">
             Ready to Build
@@ -252,7 +252,7 @@ export default function About() {
               to="/speaking"
               className="bg-transparent text-gold text-[0.875rem] font-semibold py-3.5 px-8 rounded-full border-[1.5px] border-gold no-underline inline-block hover:bg-gold/[0.08] transition-colors"
             >
-              Invite Kev to Speak
+              Invite Kevin to Speak
             </Link>
           </div>
         </div>
