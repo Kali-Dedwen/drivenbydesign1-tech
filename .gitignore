@@ -2,3 +2,9 @@ node_modules/
 dist/
 .env.local
 .env.local.*
+
+# M2M canonical identity layer â€” kept local, never committed
+.claude/canonical/
+
+# Build artifacts — never commit
+src/pages/*.zip
