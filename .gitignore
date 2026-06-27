@@ -8,3 +8,7 @@ dist/
 
 # Build artifacts — never commit
 src/pages/*.zip
+# Sovereign Stack local context, never commit
+CLAUDE.local.md
+CLAUDE.*.local.md
+.claude/local/
