@@ -26,20 +26,24 @@ import SovereignApprovalDashboard from './components/SovereignApprovalDashboard'
 
 const AUTH_RETURN_PATHS = ['/portal', '/dashboard']
 
-function rewriteAccessTokenHash() {
+// PKCE flow: Supabase delivers ?code= as a query param, not #access_token= hash.
+// If the user lands at a non-auth route (e.g. "/") with ?code= in the URL,
+// redirect them to /portal so AuthGate can complete the code exchange.
+function rewritePkceCode() {
   if (typeof window === 'undefined') return
-  if (!window.location.hash.includes('#access_token=')) return
+  const params = new URLSearchParams(window.location.search)
+  if (!params.get('code')) return
   const path = window.location.pathname
   if (AUTH_RETURN_PATHS.some((p) => path === p || path.startsWith(p + '/'))) return
-  // Lands at "/" or some other path — fall back to /portal for legacy magic links.
-  window.location.replace('/portal' + window.location.hash)
+  // Lands at "/" or some other non-auth path — redirect to /portal with the code intact.
+  window.location.replace('/portal' + window.location.search)
 }
 
 export default function App() {
-  rewriteAccessTokenHash()
+  rewritePkceCode()
 
   useEffect(() => {
-    rewriteAccessTokenHash()
+    rewritePkceCode()
   }, [])
 
   return (
@@ -57,7 +61,7 @@ export default function App() {
         <Route path="/human-intake" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Human OS™ Enterprise Intake — Coming Soon</h1></div>} />
         <Route path="/archive" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Archive — Coming Soon</h1></div>} />
         <Route path="/manifesto" element={<Manifesto />} />
-<Route path="/sovereign" element={<SovereignCommand />} />
+        <Route path="/sovereign" element={<SovereignCommand />} />
         <Route path="/practitioner" element={<div style={{ color: '#fff', background: '#0A1628', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Sans, sans-serif' }}><h1>Practitioner Access — Coming Soon</h1></div>} />
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/dashboard" element={<AuthGate><FacilitatorDashboard /></AuthGate>} />

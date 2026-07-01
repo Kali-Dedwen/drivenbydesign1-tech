@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -60,25 +60,26 @@
     <link rel="preconnect" href="https://assets.calendly.com" />
 
     <script>
+      // PKCE auth flow: Supabase delivers ?code= as a query param (not #access_token= hash).
+      // This script runs before React mounts. If the user lands on a non-auth route
+      // (e.g. "/" or "/triage") with ?code= in the URL, redirect to /portal so
+      // AuthGate can complete the PKCE code exchange.
       (function() {
-        if (!window.location.hash.includes('access_token=')) return;
-        var stored = null;
-        try { stored = window.localStorage.getItem('authRedirect'); } catch (e) {}
-        // Only accept same-origin absolute paths; anything else falls back to /portal.
-        var target = (stored && stored.charAt(0) === '/' && stored.charAt(1) !== '/')
-          ? stored
-          : '/portal';
-        try { window.localStorage.removeItem('authRedirect'); } catch (e) {}
-        var targetPath = target.split('?')[0].split('#')[0];
-        if (window.location.pathname !== targetPath) {
-          window.location.replace(target + window.location.hash);
-        }
+        var params = new URLSearchParams(window.location.search);
+        if (!params.get('code')) return;
+        var path = window.location.pathname;
+        var authPaths = ['/portal', '/dashboard'];
+        var isAuthPath = authPaths.some(function(p) {
+          return path === p || path.indexOf(p + '/') === 0;
+        });
+        if (isAuthPath) return;
+        window.location.replace('/portal' + window.location.search);
       })();
     </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
     <script src="https://assets.calendly.com/assets/external/widget.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

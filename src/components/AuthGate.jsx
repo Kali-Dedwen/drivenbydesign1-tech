@@ -24,14 +24,21 @@ export default function AuthGate({ children }) {
   const [session, setSession] = useState(null);
   const [checking, setChecking] = useState(true);
 
+  // PKCE flow: Supabase delivers ?code= as a query param (not #access_token= hash).
+  // detectSessionInUrl: true on the client handles the code exchange automatically.
+  // This effect just cleans up the ?code= from the URL bar after exchange completes.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!window.location.hash.includes("#access_token=")) return;
-    const path = window.location.pathname;
-    // Preserve magic-link landings on auth-aware routes (/portal, /dashboard).
-    if (path === "/portal" || path.startsWith("/portal/")) return;
-    if (path === "/dashboard" || path.startsWith("/dashboard/")) return;
-    window.location.replace("/portal" + window.location.hash);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("code")) {
+      // Remove ?code= from the URL bar once Supabase has consumed it.
+      // The onAuthStateChange listener below will fire with the new session.
+      const cleanUrl =
+        window.location.pathname +
+        window.location.search.replace(/[?&]code=[^&]+/, "").replace(/^&/, "?") +
+        window.location.hash;
+      window.history.replaceState({}, "", cleanUrl || window.location.pathname);
+    }
   }, []);
 
   useEffect(() => {
@@ -45,6 +52,7 @@ export default function AuthGate({ children }) {
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession ?? null);
+      if (newSession) setChecking(false);
     });
 
     return () => {
@@ -110,8 +118,8 @@ function LoginScreen() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  // Send the magic-link callback back to whichever auth-gated route the user
-  // started from (/portal or /dashboard), preserving any ?name=&lane=… params.
+  // PKCE: emailRedirectTo still points at the correct route.
+  // Supabase will append ?code= to this URL when the user clicks the link.
   const redirectTo =
     typeof window !== "undefined"
       ? (() => {
@@ -131,25 +139,6 @@ function LoginScreen() {
     setSending(true);
     setError("");
     try {
-      // Persist intended post-auth path so the index.html bootstrap script can
-      // restore it after the magic-link hash callback (otherwise it falls back
-      // to /portal).
-      if (typeof window !== "undefined") {
-        try {
-          const path = window.location.pathname;
-          const returnPath =
-            path === "/dashboard" || path.startsWith("/dashboard/")
-              ? "/dashboard"
-              : "/portal";
-          window.localStorage.setItem(
-            "authRedirect",
-            returnPath + (window.location.search || "")
-          );
-        } catch (storageErr) {
-          // localStorage unavailable (private mode, etc.) — emailRedirectTo
-          // still points at the right path; bootstrap will fall back to /portal.
-        }
-      }
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email: trimmed,
         options: {
